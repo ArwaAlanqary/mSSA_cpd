@@ -1,0 +1,5 @@
+Namespace(CRITIC_ITERS=5, RNN_hid_dim=10, batch_size=64, cuda=True, data_path='./data/beedance/beedance-2.mat', eval_freq=25, gpu=0, grad_clip=10.0, lambda_ae=0.001, lambda_real=1.0, lr=0.0003, max_iter=2000, momentum=0.0, optim='adam', random_seed=1126, save_path='experiment_log/beedance-2.wnd-25.lambda_ae-0.001000.lambda_real-1.000000.clip-0.100000', sub_dim=1, trn_ratio=0.6, val_ratio=0.8, weight_clip=0.1, weight_decay=0.0, wnd_dim=25)
+Traceback (most recent call last):
+  File "klcpd.py", line 153, in <module>
+    raise EnvironmentError("GPU device not available!")
+EnvironmentError: GPU device not available!
