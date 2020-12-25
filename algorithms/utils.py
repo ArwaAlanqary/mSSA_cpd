@@ -42,3 +42,16 @@ def convert_binary_to_intervals(binary_array, min_interval_length=2):
     return list_of_intervals  
 
 
+def estimate_rank(mat, th = 0.9):
+    _,S,_ = np.linalg.svd(mat)
+    S = np.cumsum(S)
+    threshold = th*S[-1]
+    r = np.argmax(S>threshold)
+    return r+1
+
+def scale_ts(x, method='minmax'):
+    x = np.array(x)
+    if method == 'normalize': 
+        return (x - np.mean(x))/ np.std(x)
+    if method == 'minmax': 
+        return (x - np.min(x))/ (np.max(x) - np.min(x))

@@ -39,6 +39,6 @@ def compute_f1_score(actual, detected, margin=0):
         f1_score (float):
             The f1 score 
     """
-    recall = _compute_recall(actual, detected, margin=0)
-    precision = _compute_precision(actual, detected, margin=0)
+    recall = _compute_recall(actual, detected, margin)
+    precision = _compute_precision(actual, detected, margin)
     return recall*precision/(recall+precision)
