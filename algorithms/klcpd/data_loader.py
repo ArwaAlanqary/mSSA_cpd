@@ -7,17 +7,16 @@ import scipy.io as sio
 import math
 import torch
 from torch.autograd import Variable
-
+import pandas as pd
 
 class DataLoader(object):
-    def __init__(self, data_path,wnd_dim,  trn_ratio=0.6, val_ratio=0.8):
+    def __init__(self, data_path,wnd_dim, trn_ratio=0.6, val_ratio=0.8, sub_dim = 1):
         self.cuda = True
         self.data_path = data_path
         self.p_wnd_dim = 25
         self.f_wnd_dim = wnd_dim
         self.sub_dim = sub_dim
-        self.batch_size = args.batch_size
-
+        
         # load data
         self.load_data(trn_ratio=trn_ratio, val_ratio=val_ratio)
 
@@ -28,12 +27,16 @@ class DataLoader(object):
         self.split_data()
 
     # load data
-    def load_data(self, trn_ratio=0.6, val_ratio=0.8):
-        assert(os.path.lexists(self.data_path))
-        dataset = sio.loadmat(self.data_path)
-        self.Y = dataset['Y']                                   # Y: time series data, time length x number of variables
-        self.L = dataset['L']                                   # L: label of anomaly, time length x 1
+    def load_data(self, trn_ratio=0.4, val_ratio=0.7):
+        assert(os.path.lexists(self.data_path+'_ts.csv'))
+        ts = pd.read_csv(self.data_path+'_ts.csv', header = None)
+        self.Y = ts[[1]].values 
         self.T, self.D = self.Y.shape                           # T: time length; D: variable dimension
+                                          # Y: time series data, time length x number of variables
+        labels = pd.read_csv(self.data_path+'_labels.csv', header = None)
+        labels = labels.values[1:,0]
+        self.L = np.zeros([self.T,1])                              # L: label of anomaly, time length x 1
+        self.L[labels] = 1
         self.n_trn = int(np.ceil(self.T * trn_ratio))           # n_trn: first index of val set
         self.n_val = int(np.ceil(self.T * val_ratio))           # n_val: first index of tst set
         self.var_dim = self.D * self.sub_dim
