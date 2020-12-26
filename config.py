@@ -112,7 +112,8 @@ DATASETS = [
 ALGORITHMS = [
     "microsoft_ssa",
     "hybrid_cusum", 
-    "hybrid_cusum_moving_window"
+    "hybrid_cusum_moving_window",
+    "klcpd"
 ]
 
 PARAMS = {
@@ -125,6 +126,11 @@ PARAMS = {
          'power_martingale_epsilon': [0.1], 
          'confidence': [95.0], 
          'columns': [{'result': 'ts'}]
+    }
+        "klcpd": {
+        'lambda_real': [0.001, 0.1,1,10],
+         'lambda_ae':[0.001,0.1,1,10],
+         'wnd_dim':[5,10,20,25]
     }
 }
 

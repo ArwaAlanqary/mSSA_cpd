@@ -34,7 +34,7 @@ class DataLoader(object):
         self.T, self.D = self.Y.shape                           # T: time length; D: variable dimension
                                           # Y: time series data, time length x number of variables
         labels = pd.read_csv(self.data_path+'_labels.csv', header = None)
-        labels = labels.values[1:,0]
+        labels = labels.values[:,0]
         self.L = np.zeros([self.T,1])                              # L: label of anomaly, time length x 1
         self.L[labels] = 1
         self.n_trn = int(np.ceil(self.T * trn_ratio))           # n_trn: first index of val set

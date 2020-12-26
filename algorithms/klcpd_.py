@@ -72,7 +72,7 @@ class NetD(nn.Module):
 
 
 class KLCPD(nn.Module):
-    def __init__(self,lambda_real = 0.1,CRITIC_ITERS=5, weight_clip =0.1,  lambda_ae = 0.001, lr = 3e-4, eval_freq = 50, grad_clip = 10., weight_decay =0., momentum =0,   RNN_hid_dim =10,max_iter =100, optim = 'adam', batch_size =128, wnd_dim=25, sub_dim = 1,gpu =  0,trn_ratio = 0.4, val_ratio = 0.7, random_seed =1126, data_name = 'data_name'):
+    def __init__(self,lambda_real = 0.1,CRITIC_ITERS=5, weight_clip =0.1,  lambda_ae = 0.001, lr = 3e-4, eval_freq = 50, grad_clip = 10., weight_decay =0., momentum =0,   RNN_hid_dim =10,max_iter =2000, optim = 'adam', batch_size =64, wnd_dim=25, sub_dim = 1,gpu =  0,trn_ratio = 0.4, val_ratio = 0.7, random_seed =1126, data_name = 'data_name'):
         super(KLCPD, self).__init__()
 
         self.trn_ratio = trn_ratio
@@ -332,8 +332,8 @@ class KLCPD(nn.Module):
 
                 # stopping condition
                 #if best_mmd_real < 1e-4:
-                if mmd2_real.mean().data.item() < 1e-5:
-                    exit(0)
+                # if mmd2_real.mean().data.item() < 1e-5:
+                #     exit(0)
     
     def detect(self, ts = None):
         # Y, L should be numpy array
@@ -378,10 +378,11 @@ class KLCPD(nn.Module):
 
         L_pred = Y_pred
         fp_list, tp_list, thresholds = sklearn.metrics.roc_curve(L_true, L_pred)
-        f1 = 0
+        f1 = -1
+        threshold = L_pred.mean()
         for thre in thresholds:
             f1_temp = sklearn.metrics.f1_score(L_true, L_pred>thre)
-            if f1_temp>f1:
+            if f1_temp>=f1:
                 f1 = f1_temp
                 threshold = thre
                 print('f1:', f1)
