@@ -3,7 +3,7 @@
 
 from __future__ import print_function
 import argparse
-import cPickle as pickle
+import pickle
 import math
 import numpy as np
 import os
@@ -15,18 +15,18 @@ import torch.nn as nn
 from torch.autograd import Variable
 import torch.backends.cudnn as cudnn
 
-import klcpd.mmd_util
+import klcpd.mmd_util as mmd_util
 from klcpd.data_loader import DataLoader
 from klcpd.optim import Optim
 import utils
 
 class NetG(nn.Module):
-    def __init__(self, args, data):
+    def __init__(self, wnd_dim,RNN_hid_dim,  data):
         super(NetG, self).__init__()
-        self.wnd_dim = args.wnd_dim
+        self.wnd_dim = wnd_dim
         self.var_dim = data.var_dim
         self.D = data.D
-        self.RNN_hid_dim = args.RNN_hid_dim
+        self.RNN_hid_dim = RNN_hid_dim
 
         self.rnn_enc_layer = nn.GRU(self.var_dim, self.RNN_hid_dim, num_layers=1, batch_first=True)
         self.rnn_dec_layer = nn.GRU(self.var_dim, self.RNN_hid_dim, num_layers=1, batch_first=True)
@@ -52,13 +52,13 @@ class NetG(nn.Module):
 
 
 class NetD(nn.Module):
-    def __init__(self, args, data):
+    def __init__(self, wnd_dim, RNN_hid_dim,data):
         super(NetD, self).__init__()
 
-        self.wnd_dim = args.wnd_dim
+        self.wnd_dim = wnd_dim
         self.var_dim = data.var_dim
         self.D = data.D
-        self.RNN_hid_dim = args.RNN_hid_dim
+        self.RNN_hid_dim = RNN_hid_dim
 
         self.rnn_enc_layer = nn.GRU(self.var_dim, self.RNN_hid_dim, batch_first=True)
         self.rnn_dec_layer = nn.GRU(self.RNN_hid_dim, self.var_dim, batch_first=True)
@@ -72,7 +72,9 @@ class NetD(nn.Module):
 
 
 class KLCPD(nn.Module):
-    def __init__(self,lambda_real = 0.1,CRITIC_ITERS=5, weight_clip =0.1,  lambda_ae = 0.001, lr = 3e-4, eval_freq = 50, grad_clip = 10., weight_decay = 0.,weight_decay =0.,  RNN_hid_dim =10,max_iter =100, opti = 'adam', batch_size =128, wnd_dim=25, sub_dim = 1,gpu =  0,trn_ratio = 0.4, val_ratio, = 0.7, random_seed =1126):
+    def __init__(self,lambda_real = 0.1,CRITIC_ITERS=5, weight_clip =0.1,  lambda_ae = 0.001, lr = 3e-4, eval_freq = 50, grad_clip = 10., weight_decay =0., momentum =0,   RNN_hid_dim =10,max_iter =100, optim = 'adam', batch_size =128, wnd_dim=25, sub_dim = 1,gpu =  0,trn_ratio = 0.4, val_ratio = 0.7, random_seed =1126, data_name = 'data_name'):
+        super(KLCPD, self).__init__()
+
         self.trn_ratio = trn_ratio
         self.val_ratio = val_ratio
         self.gpu = gpu
@@ -87,7 +89,7 @@ class KLCPD(nn.Module):
         # optimization
         self.batch_size = batch_size 
         self.max_iter = max_iter 
-        self.opti =opti m
+        self.optim =optim
         self.lr = lr
         self.weight_decay = weight_decay 
         self.momentum = momentum 
@@ -100,9 +102,10 @@ class KLCPD(nn.Module):
         self.weight_clip = weight_clip
         self.lambda_ae = lambda_ae 
         self.lambda_real= lambda_real
-        
+
+
         # save models
-        self.save_path = 'exp_simulate/' + '%s.wnd-%d.lambda_ae-%f.lambda_real-%f.clip-%f' % (data_name, wnd_dim, lambda_ae, lambda_real, weight_clip)
+        self.save_path = 'klcpd/exp_simulate/' + '%s.wnd-%d.lambda_ae-%f.lambda_real-%f.clip-%f' % (data_name, wnd_dim, lambda_ae, lambda_real, weight_clip)
         
         
         if not os.path.exists(self.save_path):
@@ -120,7 +123,7 @@ class KLCPD(nn.Module):
         # ========= Setup GPU device and fix random seed=========#
         if torch.cuda.is_available():
             self.cuda = True
-            torch.cuda.set_device(self..gpu)
+            torch.cuda.set_device(self.gpu)
             print('Using GPU device', torch.cuda.current_device())
         else:
             raise EnvironmentError("GPU device not available!")
@@ -140,20 +143,21 @@ class KLCPD(nn.Module):
         # [INFO] https://discuss.pytorch.org/t/non-reproducible-result-with-gpu/1831
         cudnn.enabled = True
 
-    def train(self, data = '..'):
+    def train(self, data_path = '..'):
 
         # ========= Load Dataset and initialize model=========#
-        self.Data = DataLoader(data,self.wnd_dim, self.batch_size, trn_ratio=self.trn_ratio, val_ratio= self.val_ratio)
-        netG = NetG(self, self.Data)
-        netD = NetD(self, self.Data)
-
+        self.Data = DataLoader(data_path,self.wnd_dim, trn_ratio=self.trn_ratio, val_ratio= self.val_ratio)
+        netG = NetG(self.wnd_dim, self.RNN_hid_dim, self.Data)
+        netD = NetD(self.wnd_dim, self.RNN_hid_dim, self.Data)
+        self.netG = netG
+        self.netD = netD
         if self.cuda:
-            netG.cuda()
-            netD.cuda()
-        netG_params_count = sum([p.nelement() for p in netG.parameters()])
-        netD_params_count = sum([p.nelement() for p in netD.parameters()])
-        print(netG)
-        print(netD)
+            self.netG.cuda()
+            self.netD.cuda()
+        netG_params_count = sum([p.nelement() for p in self.netG.parameters()])
+        netD_params_count = sum([p.nelement() for p in self.netD.parameters()])
+        print(self.netG)
+        print(self.netD)
         print('netG has number of parameters: %d' % (netG_params_count))
         print('netD has number of parameters: %d' % (netD_params_count))
         one = torch.tensor(1,dtype=torch.float).to(torch.cuda.current_device())
@@ -161,14 +165,14 @@ class KLCPD(nn.Module):
 
 
         # ========= Setup loss function and optimizer  =========#
-        optimizerG = Optim(netG.parameters(),
+        optimizerG = Optim(self.netG.parameters(),
                            self.optim,
                            lr=self.lr,
                            grad_clip=self.grad_clip,
                            weight_decay=self.weight_decay,
                            momentum=self.momentum)
 
-        optimizerD = Optim(netD.parameters(),
+        optimizerD = Optim(self.netD.parameters(),
                            self.optim,
                            lr=self.lr,
                            grad_clip=self.grad_clip,
@@ -180,8 +184,8 @@ class KLCPD(nn.Module):
         #sigma_list = [1.0]
         #sigma_list = mmd_util.median_heuristic(Data.Y_subspace, beta=1.)
         sigma_list = mmd_util.median_heuristic(self.Data.Y_subspace, beta=.5)
-        sigma_var = torch.FloatTensor(sigma_list).cuda()
-        print('sigma_list:', sigma_var)
+        self.sigma_var = torch.FloatTensor(sigma_list).cuda()
+        print('sigma_list:', self.sigma_var)
 
 
         # ========= Main loop for adversarial training kernel with negative samples X_f + noise =========#
@@ -207,18 +211,18 @@ class KLCPD(nn.Module):
         for epoch in range(1, self.max_iter + 1):
             trn_loader = self.Data.get_batches(self.Data.trn_set, batch_size=self.batch_size, shuffle=True)
             bidx = 0
-            netD.train()
+            self.netD.train()
             while bidx < n_batchs:
-                netD.train()
+                self.netD.train()
                 ############################
                 # (1) Update D network
                 ############################
-                for p in netD.parameters():
+                for p in self.netD.parameters():
                     p.requires_grad = True
 
-                for diters in range(self..CRITIC_ITERS):
+                for diters in range(self.CRITIC_ITERS):
                     # clamp parameters of NetD encoder to a cube
-                    for p in netD.rnn_enc_layer.parameters():
+                    for p in self.netD.rnn_enc_layer.parameters():
                         p.data.clamp_(-self.weight_clip, self.weight_clip)
                     if bidx == n_batchs:
                         break
@@ -229,20 +233,20 @@ class KLCPD(nn.Module):
                     bidx += 1
 
                     # real data
-                    X_p_enc, X_p_dec = netD(X_p)
-                    X_f_enc, X_f_dec = netD(X_f)
+                    X_p_enc, X_p_dec = self.netD(X_p)
+                    X_f_enc, X_f_dec = self.netD(X_f)
 
                     # fake data
                     noise = torch.cuda.FloatTensor(1, batch_size, self.RNN_hid_dim).normal_(0, 1)
                     noise = Variable(noise, requires_grad=True) # total freeze netG
-                    Y_f = Variable(netG(X_p, X_f, noise).data)
-                    Y_f_enc, Y_f_dec = netD(Y_f)
+                    Y_f = Variable(self.netG(X_p, X_f, noise).data)
+                    Y_f_enc, Y_f_dec = self.netD(Y_f)
 
                     # batchwise MMD2 loss between X_f and Y_f
-                    D_mmd2 = mmd_util.batch_mmd2_loss(X_f_enc, Y_f_enc, sigma_var)
+                    D_mmd2 = mmd_util.batch_mmd2_loss(X_f_enc, Y_f_enc, self.sigma_var)
 
                     # batchwise MMD loss between X_p and X_f
-                    mmd2_real = mmd_util.batch_mmd2_loss(X_p_enc, X_f_enc, sigma_var)
+                    mmd2_real = mmd_util.batch_mmd2_loss(X_p_enc, X_f_enc, self.sigma_var)
 
                     # reconstruction loss
                     real_L2_loss = torch.mean((X_f - X_f_dec)**2)
@@ -251,7 +255,7 @@ class KLCPD(nn.Module):
                     #fake_L2_loss = torch.mean((Y_f - Y_f_dec)**2) * 0.0
 
                     # update netD
-                    netD.zero_grad()
+                    self.netD.zero_grad()
                     lossD = D_mmd2.mean() - lambda_ae * (real_L2_loss + fake_L2_loss) - lambda_real * mmd2_real.mean()
                     #lossD = 0.0 * D_mmd2.mean() - lambda_ae * (real_L2_loss + fake_L2_loss) - lambda_real * mmd2_real.mean()
                     #lossD = -real_L2_loss
@@ -261,7 +265,7 @@ class KLCPD(nn.Module):
                 ############################
                 # (2) Update G network
                 ############################
-                for p in netD.parameters():
+                for p in self.netD.parameters():
                     p.requires_grad = False  # to avoid computation
 
                 if bidx == n_batchs:
@@ -273,19 +277,19 @@ class KLCPD(nn.Module):
                 bidx += 1
 
                 # real data
-                X_f_enc, X_f_dec = netD(X_f)
+                X_f_enc, X_f_dec = self.netD(X_f)
 
                 # fake data
                 noise = torch.cuda.FloatTensor(1, batch_size, self.RNN_hid_dim).normal_(0, 1)
                 noise = Variable(noise)
-                Y_f = netG(X_p, X_f, noise)
-                Y_f_enc, Y_f_dec = netD(Y_f)
+                Y_f = self.netG(X_p, X_f, noise)
+                Y_f_enc, Y_f_dec = self.netD(Y_f)
 
                 # batchwise MMD2 loss between X_f and Y_f
-                G_mmd2 = mmd_util.batch_mmd2_loss(X_f_enc, Y_f_enc, sigma_var)
+                G_mmd2 = mmd_util.batch_mmd2_loss(X_f_enc, Y_f_enc, self.sigma_var)
                 print(G_mmd2.mean(), D_mmd2.mean().data.item())
                 # update netG
-                netG.zero_grad()
+                self.netG.zero_grad()
                 lossG = G_mmd2.mean()
                 #lossG = 0.0 * G_mmd2.mean()
                 lossG.backward(one)
@@ -318,11 +322,12 @@ class KLCPD(nn.Module):
                         best_val_auc = val_dict['auc']
                         best_tst_auc = tst_dict['auc']
                         best_epoch = epoch
+                        self.threshold = val_dict['threshold']
                         save_pred_name = '%s/pred.pkl' % (self.save_path)
                         with open(save_pred_name, 'wb') as f:
                             pickle.dump(tst_dict, f)
-                        torch.save(netG.state_dict(), '%s/netG.pkl' % (self.save_path))
-                        torch.save(netD.state_dict(), '%s/netD.pkl' % (self.save_path))
+                        torch.save(self.netG.state_dict(), '%s/netG.pkl' % (self.save_path))
+                        torch.save(self.netD.state_dict(), '%s/netD.pkl' % (self.save_path))
                     print(" [best_val_auc %.6f best_tst_auc %.6f best_epoch %3d]" % (best_val_auc, best_tst_auc, best_epoch))
 
                 # stopping condition
@@ -334,7 +339,7 @@ class KLCPD(nn.Module):
         # Y, L should be numpy array
 
         L_tst = self.Data.tst_set['L'].numpy()
-
+        data = self.Data.tst_set
 
         self.netD.eval()
         loader = self.Data
@@ -343,21 +348,19 @@ class KLCPD(nn.Module):
             X_p, X_f = inputs[0], inputs[1]
             self.batch_size = X_p.size(0)
 
-            X_p_enc, _ = netD(X_p)
-            X_f_enc, _ = netD(X_f)
-            Y_pred_batch = mmd_util.batch_mmd2_loss(X_p_enc, X_f_enc, sigma_var)
+            X_p_enc, _ = self.netD(X_p)
+            X_f_enc, _ = self.netD(X_f)
+            Y_pred_batch = mmd_util.batch_mmd2_loss(X_p_enc, X_f_enc, self.sigma_var)
             Y_pred.append(Y_pred_batch.data.cpu().numpy())
         Y_pred = np.concatenate(Y_pred, axis=0)
 
         L_pred = Y_pred
         self.score = L_pred
         # get the best threshold somehow and calculate cps ..
-        fp_list, tp_list, thresholds = sklearn.metrics.roc_curve(L_tst, L_pred)
-        ### Compute F1 score
-        ### get best thresholds
+        binary = self.score > self.threshold
         ### return binaries based on threshold 
 
-        self.cp = utils.convert_binary_to_intervals( .. )
+        self.cp = utils.convert_binary_to_intervals(binary)
         
     def detect_evaluate(self, data, Y_true, L_true):
         # Y, L should be numpy array
@@ -367,20 +370,26 @@ class KLCPD(nn.Module):
         for inputs in loader.get_batches(data, self.batch_size, shuffle=False):
             X_p, X_f = inputs[0], inputs[1]
             self.batch_size = X_p.size(0)
-
-            X_p_enc, _ = netD(X_p)
-            X_f_enc, _ = netD(X_f)
-            Y_pred_batch = mmd_util.batch_mmd2_loss(X_p_enc, X_f_enc, sigma_var)
+            X_p_enc, _ = self.netD(X_p)
+            X_f_enc, _ = self.netD(X_f)
+            Y_pred_batch = mmd_util.batch_mmd2_loss(X_p_enc, X_f_enc, self.sigma_var)
             Y_pred.append(Y_pred_batch.data.cpu().numpy())
         Y_pred = np.concatenate(Y_pred, axis=0)
 
         L_pred = Y_pred
         fp_list, tp_list, thresholds = sklearn.metrics.roc_curve(L_true, L_pred)
+        f1 = 0
+        for thre in thresholds:
+            f1_temp = sklearn.metrics.f1_score(L_true, L_pred>thre)
+            if f1_temp>f1:
+                f1 = f1_temp
+                threshold = thre
+                print('f1:', f1)
         auc = sklearn.metrics.auc(fp_list, tp_list)
         eval_dict = {'Y_pred': Y_pred,
                      'L_pred': L_pred,
                      'Y_true': Y_true,
                      'L_true': L_true,
-                     'mse': -1, 'mae': -1, 'auc': auc}
+                     'mse': -1, 'mae': -1, 'auc': auc, 'threshold': threshold}
         return eval_dict
 
