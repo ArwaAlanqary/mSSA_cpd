@@ -1,6 +1,9 @@
 ##############################################################################
 #                      Experiment parameters and settings                    #
 ##############################################################################
+from algorithms.microsoft_ssa import microsoft_ssa
+from algorithms.klcpd_ import KLCPD
+
 DATADIR = "data"
 
 DATASETS = [
@@ -109,12 +112,14 @@ DATASETS = [
     
 ]
 
-ALGORITHMS = [
-    "microsoft_ssa",
-    "hybrid_cusum", 
-    "hybrid_cusum_moving_window",
-    "klcpd"
-]
+ALGORITHMS = {
+    "microsoft_ssa":microsoft_ssa,
+    "hybrid_cusum": KLCPD, 
+    "hybrid_cusum_moving_window": KLCPD,
+    "klcpd": KLCPD
+}
+
+
 
 PARAMS = {
     "microsoft_ssa": {
