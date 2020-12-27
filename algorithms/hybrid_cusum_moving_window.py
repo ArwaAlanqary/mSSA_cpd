@@ -162,7 +162,7 @@ class hybrid_cusum_moving_window:
            cp = cp+current_cp
         cp = 1* (cp!=0)    
         self.cp = utils.convert_binary_to_intervals(cp, min_interval_length=2)
-        return singular_score, distance_score
+        
 
 
 
