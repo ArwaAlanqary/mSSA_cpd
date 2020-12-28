@@ -2,7 +2,8 @@ import os
 import numpy as np
 import pandas as pd
 from nimbusml.timeseries import SsaChangePointDetector
-import utils
+import algorithms.utils as utils
+
 
 class microsoft_ssa: 
   def __init__(self, training_window_size, seasonal_window_size, change_history_length, 

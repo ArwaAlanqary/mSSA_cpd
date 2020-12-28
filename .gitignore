@@ -1,6 +1,8 @@
-cpd_venv
+cpd_venv/
 .ipynb_checkpoints/
 __pycache__/
 Untitled.ipynb
 prototyping.ipynb
 .DS_Store
+venv/
+
