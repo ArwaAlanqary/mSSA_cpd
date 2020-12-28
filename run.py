@@ -20,7 +20,13 @@ dataset = "synth/struct_ts",
 data_path = os.path.join(os.getcwd(), "Data")
 data = pd.read_csv(os.path.join(data_path,  "{}_ts.csv".format(dataset)), header=None)
 labels = pd.read_csv(os.path.join(data_path, "{}_labels.csv".format(dataset)), header=None)
+
+######### SPLIT? #############
 ts = data[1].values
+# ts_train, labels_train
+# ts_validate, labels_validate
+# ts_test, labels_test
+
 
 
 
