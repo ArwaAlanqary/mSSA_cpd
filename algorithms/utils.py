@@ -1,6 +1,8 @@
 import os
 import numpy as np
 import pandas as pd
+from datetime import datetime
+import json
 
 def convert_binary_to_intervals(binary_array, min_interval_length=2): 
     """
@@ -49,9 +51,94 @@ def estimate_rank(mat, th = 0.9):
     r = np.argmax(S>threshold)
     return r+1
 
+
 def scale_ts(x, method='minmax'):
     x = np.array(x)
     if method == 'normalize': 
         return (x - np.mean(x))/ np.std(x)
     if method == 'minmax': 
         return (x - np.min(x))/ (np.max(x) - np.min(x))
+
+
+def data_split(ts, labels, ratio=(0.3,0.3,0.4)): 
+    """
+    Split the time series and corrisponding cp labels into training, validation, and testing segments.
+    Args:
+        ts (array):
+            Time series data
+        labels (list):
+            Change point labels
+        ratio (tuple): 
+            Tuple of taining, validation, and testing in this order (must sum up to 1)
+    
+    Returns:
+        split_ts (dict):
+            {
+            'train': {ts: array, labels: list},
+            'validate': {ts: array, labels: list}, 
+            'test': {ts: array, labels: list}
+            }
+
+    """
+    labels = np.array(labels)
+    split_data = {}
+    n = len(ts)
+    cp = labels[:, 0]
+    end_train = int(ratio[0] * n) #exclusive
+    end_validate = int((ratio[0]+ratio[1]) * n) #exculsive 
+    end_train_labels = np.where(cp < end_train)[0] #exculsive 
+    if len(end_train_labels): 
+        end_train_labels = end_train_labels[-1] + 1 #exculsive 
+    else: 
+        end_train_labels = 0
+    end_validate_labels = np.where(cp < end_validate)[0]
+    if len(end_validate_labels): 
+        end_validate_labels = end_validate_labels[-1] + 1 #exculsive 
+    else: 
+        end_validate_labels = 0
+    split_data['train'] = {'ts': ts[:end_train], 'labels': labels[:end_train_labels]}
+    split_data['validate'] = {'ts': ts[end_train:end_validate], 'labels': labels[end_train_labels:end_validate_labels] - end_train}
+    split_data['test'] = {'ts': ts[end_validate:], 'labels': labels[end_validate_labels:] - end_validate}
+    
+    return split_data
+
+def json_converter(obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        elif isinstance(obj, datetime.datetime):
+            return obj.__str__()
+
+def save_results_json(experiment, model, param, score, path, status='success', error=''): 
+    results = {}
+    results['status'] = status
+    results['error'] = str(error)
+    results['algorithm'] = experiment['algorithm_name']
+    results['dataset'] = experiment['dataset']
+    results['data_name'] = experiment['data_name']
+    results['param'] =  param
+    if status == 'success':
+        results['cp'] = model.cp
+        results['score'] = {'metric': experiment['metric'], 'value': score}
+    else: 
+        results['cp'] = None
+        results['score'] = None
+    if not os.path.exists(path):
+        os.makedirs(path)
+    with open('{0}/{1}_{2}.json'.format(path, experiment['data_name'], 
+        datetime.now().strftime('%Y%m%d%H%M%S')), 'w') as file:
+        json.dump(results, file, default=json_converter)
+
+def save_results_table(experiment, score, path, status='success'): 
+# store algorithm/data/f1_score 
+    with open('{}/results_table.csv'.format(path),'a+') as outfile:
+        algorithm_name = experiment['algorithm_name']
+        dataset = experiment['dataset']
+        data_name = experiment['data_name']
+        if status == 'success': 
+            outfile.write(f'{algorithm_name},{dataset}, {data_name}, {status}, {score},\n')
+        else: 
+            outfile.write(f'{algorithm_name},{dataset}, {data_name},{status},{None},\n')

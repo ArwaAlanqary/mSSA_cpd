@@ -2,9 +2,10 @@
 #                      Experiment parameters and settings                    #
 ##############################################################################
 from algorithms.microsoft_ssa import microsoft_ssa
-from algorithms.klcpd_ import KLCPD
+# from algorithms.klcpd_ import KLCPD
 from algorithms.hybrid_cusum_moving_window import hybrid_cusum_moving_window
 from algorithms.hybrid_cusum import hybrid_cusum
+from evaluation.classification import compute_f1_score
 
 DATADIR = "data"
 
@@ -120,23 +121,23 @@ DATASETS = {
 ALGORITHMS = {
     "microsoft_ssa":microsoft_ssa,
     "hybrid_cusum": hybrid_cusum, 
-    "hybrid_cusum_moving_window": hybrid_cusum_moving_window,
-    "klcpd": KLCPD
+    "hybrid_cusum_moving_window": hybrid_cusum_moving_window
+    # "klcpd": KLCPD
 }
 
 
 
 PARAMS = {
     "microsoft_ssa": {
-        'training_window_size': [50, 30],
-         'seasonal_window_size':[10,5],
-         'change_history_length':[8, 10], 
+        'training_window_size': [30],
+         'seasonal_window_size':[20],
+         'change_history_length':[8], 
          'error_function': ['SignedDifference','AbsoluteDifference', 'SignedProportion', 'AbsoluteProportion', 'SquaredDifference'], 
-         'martingale': ['Power', 'Mixture'], 
+         'martingale': ['Power'],#, 'Mixture'], 
          'power_martingale_epsilon': [0.1], 
          'confidence': [95.0], 
          'columns': [{'result': 'ts'}]
-    }
+    },
     "klcpd": {
         'lambda_real': [0.001, 0.1,1,10],
          'lambda_ae':[0.001,0.1,1,10],
@@ -145,6 +146,8 @@ PARAMS = {
 }
 
 
-METRICS = {"compute_f1_score"}
+METRICS = {"compute_f1_score": compute_f1_score}
 
 MARGIN = 10
+
+RATIO = (0.3,0.3,0.4)
