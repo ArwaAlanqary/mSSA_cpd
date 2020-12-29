@@ -6,6 +6,8 @@ from algorithms.microsoft_ssa import microsoft_ssa
 # from algorithms.bocpdms_ import BOCPDMS
 from algorithms.hybrid_cusum_moving_window import hybrid_cusum_moving_window
 from algorithms.hybrid_cusum import hybrid_cusum
+from algorithms.binseg import binseg
+
 from evaluation.classification import compute_f1_score
 
 DATADIR = "data"
@@ -122,7 +124,8 @@ DATASETS = {
 ALGORITHMS = {
     "microsoft_ssa":microsoft_ssa,
     "hybrid_cusum": hybrid_cusum, 
-    "hybrid_cusum_moving_window": hybrid_cusum_moving_window
+    "hybrid_cusum_moving_window": hybrid_cusum_moving_window,
+    "binseg": binseg
     # "klcpd": KLCPD
     # "bocpdms": BOCPDMS
 }
@@ -135,7 +138,7 @@ PARAMS = {
          'seasonal_window_size':[20],
          'change_history_length':[8], 
          'error_function': ['SignedDifference','AbsoluteDifference', 'SignedProportion', 'AbsoluteProportion', 'SquaredDifference'], 
-         'martingale': ['Power'],#, 'Mixture'], 
+         'martingale': ['Power', 'Mixture'], 
          'power_martingale_epsilon': [0.1], 
          'confidence': [95.0], 
          'columns': [{'result': 'ts'}]
@@ -149,6 +152,19 @@ PARAMS = {
         "intensity": [50, 100, 200],
         "prior_a": [0.01, 1.0, 100],
         "prior_b": [0.01, 1.0, 100],
+    },
+    "binseg": {        
+        "method": ["mean", "var", "meanvar"],
+        "test_stat": ["Normal", "CUSUM", "CSS"],
+        "max_cp": ["max", "default"],
+        "penalty": [
+            "None",
+            "SIC",
+            "BIC",
+            "MBIC",
+            "AIC",
+            "Hannan-Quinn",
+            "Asymptotic"]
     }
 }
 

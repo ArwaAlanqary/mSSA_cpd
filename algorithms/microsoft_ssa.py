@@ -27,7 +27,7 @@ class microsoft_ssa:
     pass
 
   def detect(self, ts):
-    self.ts = ts
+    self.ts = self._format_input(self.ts)
     cpd = SsaChangePointDetector(training_window_size=self.training_window_size, 
                                  confidence=self.confidence, 
                                  seasonal_window_size=self.seasonal_window_size, 
@@ -36,8 +36,7 @@ class microsoft_ssa:
                                  martingale=self.martingale, 
                                  power_martingale_epsilon=self.power_martingale_epsilon, 
                                  columns=self.columns)
-    ts = self._format_input(self.ts)
-    cpd.fit(ts, verbose=0)
+    cpd.fit(self.ts, verbose=0)
     output = cpd.transform(ts)
     self.score = np.array(output['result.Martingale Score'])
     self.cp = utils.convert_binary_to_intervals(output['result.Alert'])

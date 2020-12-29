@@ -1,2 +1,3 @@
 scipy
 nimbusml
+rpy2
