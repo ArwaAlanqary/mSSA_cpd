@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from datetime import datetime
 import json
+import uuid
 
 def convert_binary_to_intervals(binary_array, min_interval_length=2): 
     """
@@ -163,8 +164,8 @@ def save_results_json(experiment, model, param, score, path, status='success', e
         results['score'] = None
     if not os.path.exists(path):
         os.makedirs(path)
-    with open('{0}/{1}_{2}.json'.format(path, experiment['data_name'], 
-        datetime.now().strftime('%Y%m%d%H%M%S')), 'w') as file:
+    file_name = experiment['data_name'] + "_" + _generate_file_uuid(param)
+    with open('{0}/{1}.json'.format(path, file_name), 'w') as file:
         json.dump(results, file, default=json_converter)
 
 def save_results_table(experiment, score, path, status='success'): 
@@ -177,3 +178,15 @@ def save_results_table(experiment, score, path, status='success'):
             outfile.write(f'{algorithm_name},{dataset}, {data_name}, {status}, {score},\n')
         else: 
             outfile.write(f'{algorithm_name},{dataset}, {data_name},{status},{None},\n')
+
+def _generate_file_uuid(param):
+    string_name = "".join(map(str,param.values()))
+    return str(uuid.uuid3(uuid.NAMESPACE_DNS, string_name))
+
+
+
+
+
+
+
+
