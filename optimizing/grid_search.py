@@ -37,6 +37,7 @@ class grid_search:
 				if self.store_search_results: 
 					save_results_json(self.experiment, model, param, score_i, self.results_path)
 			except Exception as error: 
+				print("FAIL", error)
 				self.score.append(-1)
 				if self.store_search_results: 
 					save_results_json(self.experiment, None, param, None, self.results_path, 'fail', error)

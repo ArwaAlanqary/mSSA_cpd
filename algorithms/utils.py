@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from datetime import datetime
 import json
+import uuid
 
 def convert_binary_to_intervals(binary_array, min_interval_length=2): 
     """
@@ -40,6 +41,41 @@ def convert_binary_to_intervals(binary_array, min_interval_length=2):
             list_of_intervals[-1][-1] = len(binary_array) - 1
         else:
             list_of_intervals.append([start, len(binary_array) - 1])
+    
+    return list_of_intervals  
+
+
+def convert_cp_to_intervals(change_points, min_interval_length=2): 
+    """
+    Converting a binary array of change points into a list of intervals.
+    Args:
+        binary_array (list):
+            Binary array with the same length of the timeseries.
+        min_interval_length (int):
+            Minimum allowed length of interval; min spacing between condecutive changepoints.
+    
+    Returns:
+        list_of_intervals (list):
+            List of tuples indicating the start and and of an interval.                 
+    """
+
+    list_of_intervals = list()
+    change_points = np.sort(np.array(change_points))
+    if len(change_points) == 0: 
+        return list_of_intervals
+    if change_points[0] != 0: 
+        change_points = np.insert(change_points,0,0)
+    start = int(change_points[0])
+    i = start
+    if min_interval_length: 
+        while i < len(change_points)-1:
+            if change_points[i+1] - start < min_interval_length:
+                i += 1
+                continue 
+            list_of_intervals.append([start, change_points[i+1]-1])
+            
+            start = change_points[i+1]
+            i += 1
     
     return list_of_intervals  
 
@@ -128,8 +164,8 @@ def save_results_json(experiment, model, param, score, path, status='success', e
         results['score'] = None
     if not os.path.exists(path):
         os.makedirs(path)
-    with open('{0}/{1}_{2}.json'.format(path, experiment['data_name'], 
-        datetime.now().strftime('%Y%m%d%H%M%S')), 'w') as file:
+    file_name = experiment['data_name'] + "_" + _generate_file_uuid(param)
+    with open('{0}/{1}.json'.format(path, file_name), 'w') as file:
         json.dump(results, file, default=json_converter)
 
 def save_results_table(experiment, score, path, status='success'): 
@@ -142,3 +178,15 @@ def save_results_table(experiment, score, path, status='success'):
             outfile.write(f'{algorithm_name},{dataset}, {data_name}, {status}, {score},\n')
         else: 
             outfile.write(f'{algorithm_name},{dataset}, {data_name},{status},{None},\n')
+
+def _generate_file_uuid(param):
+    string_name = "".join(map(str,param.values()))
+    return str(uuid.uuid3(uuid.NAMESPACE_DNS, string_name))
+
+
+
+
+
+
+
+
