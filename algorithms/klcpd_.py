@@ -72,7 +72,7 @@ class NetD(nn.Module):
 
 
 class KLCPD(nn.Module):
-    def __init__(self,lambda_real = 0.1,CRITIC_ITERS=5, weight_clip =0.1,  lambda_ae = 0.001, lr = 3e-4, eval_freq = 50, grad_clip = 10., weight_decay =0., momentum =0,   RNN_hid_dim =10,max_iter =2000, optim = 'adam', batch_size =64, wnd_dim=25, sub_dim = 1,gpu =  0,trn_ratio = 0.4, val_ratio = 0.7, random_seed =1126, data_name = 'data_name'):
+    def __init__(self,lambda_real = 0.1,CRITIC_ITERS=5, weight_clip =0.1,  lambda_ae = 0.001, lr = 3e-4, eval_freq = 50, grad_clip = 10., weight_decay =0., momentum =0,   RNN_hid_dim =10,max_iter =2000, optim = 'adam', batch_size =64, wnd_dim=25, sub_dim = 1,gpu =  0,trn_ratio = 1.0, val_ratio = 1.0, random_seed =1126, data_name = 'data_name', k = 3):
         super(KLCPD, self).__init__()
 
         self.trn_ratio = trn_ratio
@@ -82,7 +82,7 @@ class KLCPD(nn.Module):
         self.random_seed = random_seed
         self.wnd_dim = wnd_dim
         self.sub_dim = sub_dim
-
+        self.k = k 
         # RNN hyperparemters
         self.RNN_hid_dim = RNN_hid_dim 
         
@@ -143,7 +143,7 @@ class KLCPD(nn.Module):
         # [INFO] https://discuss.pytorch.org/t/non-reproducible-result-with-gpu/1831
         cudnn.enabled = True
 
-    def train(self, data_path = '..'):
+    def train(self, ts):
 
         # ========= Load Dataset and initialize model=========#
         self.Data = DataLoader(data_path,self.wnd_dim, trn_ratio=self.trn_ratio, val_ratio= self.val_ratio)
@@ -189,10 +189,10 @@ class KLCPD(nn.Module):
 
 
         # ========= Main loop for adversarial training kernel with negative samples X_f + noise =========#
-        Y_val = self.Data.val_set['Y'].numpy()
-        L_val = self.Data.val_set['L'].numpy()
-        Y_tst = self.Data.tst_set['Y'].numpy()
-        L_tst = self.Data.tst_set['L'].numpy()
+        # Y_val = self.Data.val_set['Y'].numpy()
+        # L_val = self.Data.val_set['L'].numpy()
+        # Y_tst = self.Data.tst_set['Y'].numpy()
+        # L_tst = self.Data.tst_set['L'].numpy()
 
         n_batchs = int(math.ceil(len(self.Data.trn_set['Y']) / float(self.batch_size)))
         print('n_batchs', n_batchs, 'batch_size', self.batch_size)
@@ -305,46 +305,46 @@ class KLCPD(nn.Module):
 
                 if gen_iterations % self.eval_freq == 0:
                     # ========= Main block for evaluate MMD(X_p_enc, X_f_enc) on RNN codespace  =========#
-                    val_dict = self.detect_evaluate( self.Data.val_set, Y_val, L_val)
-                    tst_dict = self.detect_evaluate( self.Data.tst_set, Y_tst, L_tst)
+                    # val_dict = self.detect_evaluate( self.Data.val_set, Y_val, L_val)
+                    # tst_dict = self.detect_evaluate( self.Data.tst_set, Y_tst, L_tst)
                     total_time = time.time() - start_time
-                    print('iter %4d tm %4.2fm val_mse %.1f val_mae %.1f val_auc %.6f'
-                            % (epoch, total_time / 60.0, val_dict['mse'], val_dict['mae'], val_dict['auc']), end='')
+                    # print('iter %4d tm %4.2fm val_mse %.1f val_mae %.1f val_auc %.6f'
+                    #         % (epoch, total_time / 60.0, val_dict['mse'], val_dict['mae'], val_dict['auc']), end='')
 
-                    print (" tst_mse %.1f tst_mae %.1f tst_auc %.6f" % (tst_dict['mse'], tst_dict['mae'], tst_dict['auc']), end='')
+                    # print (" tst_mse %.1f tst_mae %.1f tst_auc %.6f" % (tst_dict['mse'], tst_dict['mae'], tst_dict['auc']), end='')
 
                     assert(np.isnan(val_dict['auc']) != True)
                     #if val_dict['auc'] > best_val_auc:
                     #if val_dict['auc'] > best_val_auc and mmd2_real.mean().data[0] < best_mmd_real:
                     if mmd2_real.mean().data.item() < best_mmd_real:
-                        best_mmd_real = mmd2_real.mean().data.item()
-                        best_val_mae = val_dict['mae']
-                        best_val_auc = val_dict['auc']
-                        best_tst_auc = tst_dict['auc']
-                        best_epoch = epoch
-                        self.threshold = val_dict['threshold']
+                        # best_mmd_real = mmd2_real.mean().data.item()
+                        # best_val_mae = val_dict['mae']
+                        # best_val_auc = val_dict['auc']
+                        # best_tst_auc = tst_dict['auc']
+                        # best_epoch = epoch
+                        # self.threshold = val_dict['threshold']
                         save_pred_name = '%s/pred.pkl' % (self.save_path)
                         with open(save_pred_name, 'wb') as f:
                             pickle.dump(tst_dict, f)
                         torch.save(self.netG.state_dict(), '%s/netG.pkl' % (self.save_path))
                         torch.save(self.netD.state_dict(), '%s/netD.pkl' % (self.save_path))
-                    print(" [best_val_auc %.6f best_tst_auc %.6f best_epoch %3d]" % (best_val_auc, best_tst_auc, best_epoch))
+                    # print(" [best_val_auc %.6f best_tst_auc %.6f best_epoch %3d]" % (best_val_auc, best_tst_auc, best_epoch))
 
                 # stopping condition
                 #if best_mmd_real < 1e-4:
                 # if mmd2_real.mean().data.item() < 1e-5:
                 #     exit(0)
     
-    def detect(self, ts = None):
+    def detect(self, ts):
         # Y, L should be numpy array
 
-        L_tst = self.Data.tst_set['L'].numpy()
-        data = self.Data.tst_set
+        data = DataLoader(ts, self.wnd_dim, trn_ratio=self.trn_ratio, val_ratio= self.val_ratio)
+        
 
         self.netD.eval()
-        loader = self.Data
+        loader = data
         Y_pred = []
-        for inputs in loader.get_batches(data, self.batch_size, shuffle=False):
+        for inputs in loader.get_batches(self.Data.trn_set, self.batch_size, shuffle=False):
             X_p, X_f = inputs[0], inputs[1]
             self.batch_size = X_p.size(0)
 
@@ -357,40 +357,42 @@ class KLCPD(nn.Module):
         L_pred = Y_pred
         self.score = L_pred
         # get the best threshold somehow and calculate cps ..
-        binary = self.score > self.threshold
+        threshold = np.mean(self.score) + self.k * np.std(threshold)
+        
+        binary = self.score > threshold
         ### return binaries based on threshold 
 
         self.cp = utils.convert_binary_to_intervals(binary)
         
-    def detect_evaluate(self, data, Y_true, L_true):
-        # Y, L should be numpy array
-        self.netD.eval()
-        loader = self.Data
-        Y_pred = []
-        for inputs in loader.get_batches(data, self.batch_size, shuffle=False):
-            X_p, X_f = inputs[0], inputs[1]
-            self.batch_size = X_p.size(0)
-            X_p_enc, _ = self.netD(X_p)
-            X_f_enc, _ = self.netD(X_f)
-            Y_pred_batch = mmd_util.batch_mmd2_loss(X_p_enc, X_f_enc, self.sigma_var)
-            Y_pred.append(Y_pred_batch.data.cpu().numpy())
-        Y_pred = np.concatenate(Y_pred, axis=0)
+    # def detect_evaluate(self, data, Y_true, L_true):
+    #     # Y, L should be numpy array
+    #     self.netD.eval()
+    #     loader = self.Data
+    #     Y_pred = []
+    #     for inputs in loader.get_batches(data, self.batch_size, shuffle=False):
+    #         X_p, X_f = inputs[0], inputs[1]
+    #         self.batch_size = X_p.size(0)
+    #         X_p_enc, _ = self.netD(X_p)
+    #         X_f_enc, _ = self.netD(X_f)
+    #         Y_pred_batch = mmd_util.batch_mmd2_loss(X_p_enc, X_f_enc, self.sigma_var)
+    #         Y_pred.append(Y_pred_batch.data.cpu().numpy())
+    #     Y_pred = np.concatenate(Y_pred, axis=0)
 
-        L_pred = Y_pred
-        fp_list, tp_list, thresholds = sklearn.metrics.roc_curve(L_true, L_pred)
-        f1 = -1
-        threshold = L_pred.mean()
-        for thre in thresholds:
-            f1_temp = sklearn.metrics.f1_score(L_true, L_pred>thre)
-            if f1_temp>=f1:
-                f1 = f1_temp
-                threshold = thre
-                print('f1:', f1)
-        auc = sklearn.metrics.auc(fp_list, tp_list)
-        eval_dict = {'Y_pred': Y_pred,
-                     'L_pred': L_pred,
-                     'Y_true': Y_true,
-                     'L_true': L_true,
-                     'mse': -1, 'mae': -1, 'auc': auc, 'threshold': threshold}
-        return eval_dict
+    #     L_pred = Y_pred
+    #     fp_list, tp_list, thresholds = sklearn.metrics.roc_curve(L_true, L_pred)
+    #     f1 = -1
+    #     threshold = L_pred.mean()
+    #     for thre in thresholds:
+    #         f1_temp = sklearn.metrics.f1_score(L_true, L_pred>thre)
+    #         if f1_temp>=f1:
+    #             f1 = f1_temp
+    #             threshold = thre
+    #             print('f1:', f1)
+    #     auc = sklearn.metrics.auc(fp_list, tp_list)
+    #     eval_dict = {'Y_pred': Y_pred,
+    #                  'L_pred': L_pred,
+    #                  'Y_true': Y_true,
+    #                  'L_true': L_true,
+    #                  'mse': -1, 'mae': -1, 'auc': auc, 'threshold': threshold}
+    #     return eval_dict
 

@@ -31,7 +31,7 @@ class BOCPDMS:
     
     return ts
 
-  def train(self): 
+  def train(self, ts = None): 
     pass
 
   def detect(self, ts):

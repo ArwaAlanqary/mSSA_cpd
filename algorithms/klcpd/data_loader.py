@@ -10,9 +10,9 @@ from torch.autograd import Variable
 import pandas as pd
 
 class DataLoader(object):
-    def __init__(self, data_path,wnd_dim, trn_ratio=0.6, val_ratio=0.8, sub_dim = 1):
+    def __init__(self, array,wnd_dim, trn_ratio=0.6, val_ratio=0.8, sub_dim = 1):
         self.cuda = True
-        self.data_path = data_path
+        self.array = array
         self.p_wnd_dim = 25
         self.f_wnd_dim = wnd_dim
         self.sub_dim = sub_dim
@@ -28,15 +28,13 @@ class DataLoader(object):
 
     # load data
     def load_data(self, trn_ratio=0.4, val_ratio=0.7):
-        assert(os.path.lexists(self.data_path+'_ts.csv'))
-        ts = pd.read_csv(self.data_path+'_ts.csv', header = None)
-        self.Y = ts[[1]].values 
+        self.Y = ts 
         self.T, self.D = self.Y.shape                           # T: time length; D: variable dimension
                                           # Y: time series data, time length x number of variables
-        labels = pd.read_csv(self.data_path+'_labels.csv', header = None)
-        labels = labels.values[:,0]
-        self.L = np.zeros([self.T,1])                              # L: label of anomaly, time length x 1
-        self.L[labels] = 1
+        # labels = pd.read_csv(self.data_path+'_labels.csv', header = None)
+        # labels = labels.values[:,0]
+        # self.L = np.zeros([self.T,1])                              # L: label of anomaly, time length x 1
+        # self.L[labels] = 1
         self.n_trn = int(np.ceil(self.T * trn_ratio))           # n_trn: first index of val set
         self.n_val = int(np.ceil(self.T * val_ratio))           # n_val: first index of tst set
         self.var_dim = self.D * self.sub_dim
@@ -85,12 +83,12 @@ class DataLoader(object):
             X_p[i, :, :] = torch.from_numpy(data[l:m, :])
             X_f[i, :, :] = torch.from_numpy(data[m:u, :])
             Y[i, :] = torch.from_numpy(self.Y[m, :])
-            L[i] = torch.from_numpy(self.L[m])
-        return {'X_p': X_p, 'X_f': X_f, 'Y': Y, 'L': L}
+            # L[i] = torch.from_numpy(self.L[m])
+        return {'X_p': X_p, 'X_f': X_f, 'Y': Y}
 
     def get_batches(self, data_set, batch_size, shuffle=False):
         X_p, X_f = data_set['X_p'], data_set['X_f']
-        Y, L = data_set['Y'], data_set['L']
+        Y = data_set['Y']
         length = len(Y)
         if shuffle:
             index = torch.randperm(length)
@@ -101,17 +99,15 @@ class DataLoader(object):
             e_idx = min(length, s_idx + batch_size)
             excerpt = index[s_idx:e_idx]
             X_p_batch, X_f_batch = X_p[excerpt], X_f[excerpt]
-            Y_batch, L_batch = Y[excerpt], L[excerpt]
+            Y_batch = Y[excerpt]
             if self.cuda:
                 X_p_batch = X_p_batch.cuda()
                 X_f_batch = X_f_batch.cuda()
                 Y_batch = Y_batch.cuda()
-                L_batch = L_batch.cuda()
 
             data = [Variable(X_p_batch),
                     Variable(X_f_batch),
-                    Variable(Y_batch),
-                    Variable(L_batch)]
+                    Variable(Y_batch)]
             yield data
             s_idx += batch_size
 
