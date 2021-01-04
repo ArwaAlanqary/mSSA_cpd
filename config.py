@@ -156,7 +156,7 @@ PARAMS = {
     "binseg": {        
         "method": ["mean", "var", "meanvar"],
         "test_stat": ["Normal", "CUSUM", "CSS"],
-        "max_cp": ["default"],
+        "max_cp": ["max", "default"],
         "penalty": [
             "None",
             "SIC",

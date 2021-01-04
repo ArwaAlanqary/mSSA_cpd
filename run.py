@@ -8,10 +8,10 @@ from evaluation.classification import compute_f1_score
 
 from algorithms.utils import data_split, save_results_json, save_results_table
 
-#Specify experiment: 
+#Specify experiment
 algorithm_name = 'binseg'
-dataset = 'synth'
-data_names = ['mean'] ##All data files in the dataset
+dataset = 'yahoo'
+data_names = DATASETS[dataset] ##All data files in the dataset
 metric = 'compute_f1_score'
 
 #Specify paths
@@ -28,8 +28,8 @@ for data_name in data_names:
 	##Load data
 	data = pd.read_csv(os.path.join(data_path,  dataset,"{}_ts.csv".format(data_name)), header=None)
 	labels = pd.read_csv(os.path.join(data_path, dataset,"{}_labels.csv".format(data_name)), header=None)
-	ts = data[1].values
-	splitted_data = data_split(ts, labels, RATIO)
+	ts = data.values[:, 1:]
+	# splitted_data = data_split(ts, labels, RATIO)
 	##Search for best parameters
 	optimizer = grid_search(PARAMS[algorithm_name], ALGORITHMS[algorithm_name], METRICS[metric], True, experiment, search_results_path)
 	optimizer.search(ts, labels, MARGIN)

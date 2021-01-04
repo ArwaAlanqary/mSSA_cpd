@@ -29,7 +29,7 @@ class binseg:
         if self.penalty == "Asymptotic": 
             self.penalty_value = 0.05
         if self.max_cp == "max": 
-            self.max_cp = int(len(ts)/10) + 1
+            self.max_cp = int(len(ts)/2) + 1
         else:
             self.max_cp = 5
         self.method = method_map[self.method]
