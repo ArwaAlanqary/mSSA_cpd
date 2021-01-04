@@ -1,4 +1,3 @@
-iscipy
 nimbusml
 scipy
 matplotlib
