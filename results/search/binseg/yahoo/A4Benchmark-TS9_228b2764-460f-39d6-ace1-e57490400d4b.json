@@ -1,1 +1,1 @@
-{"status": "success", "error": "", "algorithm": "binseg", "dataset": "yahoo", "data_name": "A4Benchmark-TS9", "param": {"max_cp": "max", "method": "var", "penalty": "BIC", "test_stat": "Normal"}, "cp": [[0, 1097.0]], "score": {"metric": "compute_f1_score", "value": 0.25}}
+{"status": "success", "error": "", "algorithm": "binseg", "dataset": "yahoo", "data_name": "A4Benchmark-TS9", "param": {"max_cp": "max", "method": "var", "penalty": "BIC", "test_stat": "Normal"}, "cp": [[0, 1097.0], [1098.0, 1679]], "score": {"metric": "compute_f1_score", "value": 0.4}}
