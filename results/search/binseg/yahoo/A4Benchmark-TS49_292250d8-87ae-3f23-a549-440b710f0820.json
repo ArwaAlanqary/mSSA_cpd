@@ -1,0 +1,1 @@
+{"status": "fail", "error": "Error in cpt.var(mt, penalty = \"Hannan-Quinn\", test.stat = \"CUSUM\", method = \"BinSeg\",  : \n  Invalid test statistic, must be Normal or CSS\n", "algorithm": "binseg", "dataset": "yahoo", "data_name": "A4Benchmark-TS49", "param": {"max_cp": "max", "method": "var", "penalty": "Hannan-Quinn", "test_stat": "CUSUM"}, "cp": null, "score": null}

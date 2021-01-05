@@ -1,0 +1,1 @@
+{"status": "fail", "error": "too many indices for array: array is 1-dimensional, but 2 were indexed", "algorithm": "binseg", "dataset": "yahoo", "data_name": "A4Benchmark-TS42", "param": {"max_cp": "default", "method": "var", "penalty": "BIC", "test_stat": "CSS"}, "cp": null, "score": null}

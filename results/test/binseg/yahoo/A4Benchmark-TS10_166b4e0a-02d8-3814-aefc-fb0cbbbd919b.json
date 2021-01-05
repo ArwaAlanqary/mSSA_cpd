@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "binseg", "dataset": "yahoo", "data_name": "A4Benchmark-TS10", "param": {"test_stat": "Normal", "penalty": "None", "method": "var", "max_cp": "default"}, "cp": [[0, 55.0], [56.0, 102.0], [103.0, 246.0], [247.0, 425.0], [426.0, 430.0]], "score": {"metric": "compute_f1_score", "value": 0.28571428571428575}}
