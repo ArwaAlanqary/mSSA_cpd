@@ -50,7 +50,7 @@ class binseg:
         cmd = self.method.format(param_string)
         robjects.globalenv["mycpt"] = robjects.r(cmd)
         ecp = robjects.r("cpts(mycpt)")
-        self.cp = utils.convert_cp_to_intervals(ecp, min_interval_length=2)
+        self.cp = utils.convert_cp_to_intervals(ecp, len(ts), min_interval_length=2)
         
 
 
