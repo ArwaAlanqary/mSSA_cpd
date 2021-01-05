@@ -23,6 +23,7 @@ def convert_binary_to_intervals(binary_array, min_interval_length=2):
     binary_array = np.array(binary_array)
     change_points = np.nonzero(binary_array)[0]
     if len(change_points) == 0: 
+        list_of_intervals.append([0, len(binary_array)-1])
         return list_of_intervals
     if change_points[0] != 0: 
         change_points = np.insert(change_points,0,0)
@@ -45,7 +46,7 @@ def convert_binary_to_intervals(binary_array, min_interval_length=2):
     return list_of_intervals  
 
 
-def convert_cp_to_intervals(change_points, min_interval_length=2): 
+def convert_cp_to_intervals(change_points, len_ts, min_interval_length=2): 
     """
     Converting a binary array of change points into a list of intervals.
     Args:
@@ -62,6 +63,7 @@ def convert_cp_to_intervals(change_points, min_interval_length=2):
     list_of_intervals = list()
     change_points = np.sort(np.array(change_points))
     if len(change_points) == 0: 
+        list_of_intervals.append([0, len_ts-1])
         return list_of_intervals
     if change_points[0] != 0: 
         change_points = np.insert(change_points,0,0)
@@ -76,7 +78,7 @@ def convert_cp_to_intervals(change_points, min_interval_length=2):
             
             start = change_points[i+1]
             i += 1
-    
+    list_of_intervals.append([change_points[-1], len_ts-1])
     return list_of_intervals  
 
 
