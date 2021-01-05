@@ -22,7 +22,7 @@ class microsoft_ssa:
   def _format_input(self, ts):
     return pd.Series(ts.flatten(), name="ts")
 
-  def train(self): 
+  def train(self, ts): 
     pass
 
   def detect(self, ts):

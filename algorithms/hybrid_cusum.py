@@ -55,7 +55,7 @@ class hybrid_cusum:
             score = np.append(score, D_t)
         return np.max(score)
 
-    def train(self): 
+    def train(self, ts): 
         pass
 
     def detect(self, ts):

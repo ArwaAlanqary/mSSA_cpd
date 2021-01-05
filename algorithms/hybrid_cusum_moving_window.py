@@ -77,7 +77,7 @@ class hybrid_cusum_moving_window:
             score = np.append(score, D_t)
         return np.max(score)
 
-    def train(self): 
+    def train(self, ts): 
         pass
 
     def detect(self, ts):

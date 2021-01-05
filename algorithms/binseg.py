@@ -38,7 +38,7 @@ class binseg:
         
         self.ts = robjects.FloatVector(np.array(ts))
 
-    def train(self): 
+    def train(self, ts): 
         pass
 
 
