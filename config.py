@@ -6,7 +6,7 @@ from algorithms.klcpd_ import KLCPD
 from algorithms.bocpdms_ import BOCPDMS
 from algorithms.hybrid_cusum_moving_window import hybrid_cusum_moving_window
 from algorithms.hybrid_cusum import hybrid_cusum
-from algorithms.binseg import binseg
+#from algorithms.binseg import binseg
 
 from evaluation.classification import compute_f1_score
 
@@ -125,7 +125,7 @@ ALGORITHMS = {
     "microsoft_ssa":microsoft_ssa,
     "hybrid_cusum": hybrid_cusum, 
     "hybrid_cusum_moving_window": hybrid_cusum_moving_window,
-    "binseg": binseg,
+    #"binseg": binseg,
     "klcpd": KLCPD,
     "bocpdms": BOCPDMS
 }

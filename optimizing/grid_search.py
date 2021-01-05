@@ -30,7 +30,7 @@ class grid_search:
 		for param in self.grid: 
 			try: 
 				model = self.algorithm(**param)
-				model.train()
+				model.train(self.ts)
 				model.detect(self.ts)
 				score_i = self.scoring(self.labels, model.cp, margin)
 				self.score.append(score_i)

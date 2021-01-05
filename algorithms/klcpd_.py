@@ -14,11 +14,11 @@ import torch
 import torch.nn as nn
 from torch.autograd import Variable
 import torch.backends.cudnn as cudnn
-
+from tqdm import tqdm
 import algorithms.klcpd.mmd_util as mmd_util
-from klcpd.data_loader import DataLoader
-from klcpd.optim import Optim
-import algorithms.utils
+from algorithms.klcpd.data_loader import DataLoader
+from algorithms.klcpd.optim import Optim
+import algorithms.utils as utils
 
 class NetG(nn.Module):
     def __init__(self, wnd_dim,RNN_hid_dim,  data):
@@ -72,7 +72,7 @@ class NetD(nn.Module):
 
 
 class KLCPD(nn.Module):
-    def __init__(self,lambda_real = 0.1,CRITIC_ITERS=5, weight_clip =0.1,  lambda_ae = 0.001, lr = 3e-4, eval_freq = 50, grad_clip = 10., weight_decay =0., momentum =0,   RNN_hid_dim =10,max_iter =2000, optim = 'adam', batch_size =64, wnd_dim=25, sub_dim = 1,gpu =  0,trn_ratio = 1.0, val_ratio = 1.0, random_seed =1126, data_name = 'data_name', k = 3):
+    def __init__(self,lambda_real = 0.1,CRITIC_ITERS=5, weight_clip =0.1,  lambda_ae = 0.001, lr = 3e-4, eval_freq = 50, grad_clip = 10., weight_decay =0., momentum =0,   RNN_hid_dim =10,max_iter =200, optim = 'adam', batch_size =64, wnd_dim=25, sub_dim = 1,gpu =  0,trn_ratio = 1.0, val_ratio = 1.0, random_seed =1126, data_name = 'data_name', k = 3):
         super(KLCPD, self).__init__()
 
         self.trn_ratio = trn_ratio
@@ -105,7 +105,7 @@ class KLCPD(nn.Module):
 
 
         # save models
-        self.save_path = 'klcpd/exp_simulate/' + '%s.wnd-%d.lambda_ae-%f.lambda_real-%f.clip-%f' % (data_name, wnd_dim, lambda_ae, lambda_real, weight_clip)
+        self.save_path = 'algorithms/klcpd/exp_simulate/' + '%s.wnd-%d.lambda_ae-%f.lambda_real-%f.clip-%f' % (data_name, wnd_dim, lambda_ae, lambda_real, weight_clip)
         
         
         if not os.path.exists(self.save_path):
@@ -146,7 +146,7 @@ class KLCPD(nn.Module):
     def train(self, ts):
 
         # ========= Load Dataset and initialize model=========#
-        self.Data = DataLoader(data_path,self.wnd_dim, trn_ratio=self.trn_ratio, val_ratio= self.val_ratio)
+        self.Data = DataLoader(ts,self.wnd_dim, trn_ratio=self.trn_ratio, val_ratio= self.val_ratio)
         netG = NetG(self.wnd_dim, self.RNN_hid_dim, self.Data)
         netD = NetD(self.wnd_dim, self.RNN_hid_dim, self.Data)
         self.netG = netG
@@ -208,7 +208,7 @@ class KLCPD(nn.Module):
         best_mmd_real = 1e+6
         start_time = time.time()
         print('start training: lambda_ae', lambda_ae, 'lambda_real', lambda_real, 'weight_clip', self.weight_clip)
-        for epoch in range(1, self.max_iter + 1):
+        for epoch in tqdm(range(1, self.max_iter + 1)):
             trn_loader = self.Data.get_batches(self.Data.trn_set, batch_size=self.batch_size, shuffle=True)
             bidx = 0
             self.netD.train()
@@ -287,7 +287,7 @@ class KLCPD(nn.Module):
 
                 # batchwise MMD2 loss between X_f and Y_f
                 G_mmd2 = mmd_util.batch_mmd2_loss(X_f_enc, Y_f_enc, self.sigma_var)
-                print(G_mmd2.mean(), D_mmd2.mean().data.item())
+                #print(G_mmd2.mean(), D_mmd2.mean().data.item())
                 # update netG
                 self.netG.zero_grad()
                 lossG = G_mmd2.mean()
@@ -298,10 +298,10 @@ class KLCPD(nn.Module):
                 #G_mmd2 = Variable(torch.FloatTensor(batch_size).zero_())
                 gen_iterations += 1
 
-                print('[%5d/%5d] [%5d/%5d] [%6d] D_mmd2 %.4e G_mmd2 %.4e mmd2_real %.4e real_L2 %.6f fake_L2 %.6f'
-                      % (epoch, self.max_iter, bidx, n_batchs, gen_iterations,
-                         D_mmd2.mean().data.item(), G_mmd2.mean().data.item(), mmd2_real.mean().item(),
-                         real_L2_loss.data.item(), fake_L2_loss.data.item()))
+                #print('[%5d/%5d] [%5d/%5d] [%6d] D_mmd2 %.4e G_mmd2 %.4e mmd2_real %.4e real_L2 %.6f fake_L2 %.6f'
+                #      % (epoch, self.max_iter, bidx, n_batchs, gen_iterations,
+                #         D_mmd2.mean().data.item(), G_mmd2.mean().data.item(), mmd2_real.mean().item(),
+                #         real_L2_loss.data.item(), fake_L2_loss.data.item()))
 
                 if gen_iterations % self.eval_freq == 0:
                     # ========= Main block for evaluate MMD(X_p_enc, X_f_enc) on RNN codespace  =========#
@@ -313,19 +313,19 @@ class KLCPD(nn.Module):
 
                     # print (" tst_mse %.1f tst_mae %.1f tst_auc %.6f" % (tst_dict['mse'], tst_dict['mae'], tst_dict['auc']), end='')
 
-                    assert(np.isnan(val_dict['auc']) != True)
+                    # assert(np.isnan(val_dict['auc']) != True)
                     #if val_dict['auc'] > best_val_auc:
                     #if val_dict['auc'] > best_val_auc and mmd2_real.mean().data[0] < best_mmd_real:
                     if mmd2_real.mean().data.item() < best_mmd_real:
-                        # best_mmd_real = mmd2_real.mean().data.item()
+                        best_mmd_real = mmd2_real.mean().data.item()
                         # best_val_mae = val_dict['mae']
                         # best_val_auc = val_dict['auc']
                         # best_tst_auc = tst_dict['auc']
                         # best_epoch = epoch
                         # self.threshold = val_dict['threshold']
                         save_pred_name = '%s/pred.pkl' % (self.save_path)
-                        with open(save_pred_name, 'wb') as f:
-                            pickle.dump(tst_dict, f)
+                        #with open(save_pred_name, 'wb') as f:
+                        #    pickle.dump(tst_dict, f)
                         torch.save(self.netG.state_dict(), '%s/netG.pkl' % (self.save_path))
                         torch.save(self.netD.state_dict(), '%s/netD.pkl' % (self.save_path))
                     # print(" [best_val_auc %.6f best_tst_auc %.6f best_epoch %3d]" % (best_val_auc, best_tst_auc, best_epoch))
@@ -357,13 +357,13 @@ class KLCPD(nn.Module):
         L_pred = Y_pred
         self.score = L_pred
         # get the best threshold somehow and calculate cps ..
-        threshold = np.mean(self.score) + self.k * np.std(threshold)
+        threshold = np.mean(self.score) + self.k * np.std(self.score)
         
         binary = self.score > threshold
         ### return binaries based on threshold 
 
         self.cp = utils.convert_binary_to_intervals(binary)
-        
+        print('change points: ', self.cp)
     # def detect_evaluate(self, data, Y_true, L_true):
     #     # Y, L should be numpy array
     #     self.netD.eval()

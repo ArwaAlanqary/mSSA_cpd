@@ -1,0 +1,1 @@
+{"status": "fail", "error": "CUDA out of memory. Tried to allocate 26.00 MiB (GPU 0; 10.73 GiB total capacity; 323.52 MiB already allocated; 22.62 MiB free; 444.00 MiB reserved in total by PyTorch)", "algorithm": "klcpd", "dataset": "yahoo", "data_name": "A4Benchmark-TS1", "param": {"lambda_ae": 0.001, "lambda_real": 0.1, "wnd_dim": 20}, "cp": null, "score": null}
