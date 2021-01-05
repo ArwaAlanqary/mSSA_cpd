@@ -1,0 +1,1 @@
+{"status": "fail", "error": "name 'ts' is not defined", "algorithm": "klcpd", "dataset": "yahoo", "data_name": "A4Benchmark-TS5", "param": {"lambda_ae": 10, "lambda_real": 0.001, "wnd_dim": 25}, "cp": null, "score": null}

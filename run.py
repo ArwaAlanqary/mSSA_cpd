@@ -10,7 +10,6 @@ from algorithms.utils import data_split, save_results_json, save_results_table
 
 #Specify experiment
 algorithm_name = 'klcpd'
-algorithm_name = 'microsoft_ssa'
 dataset = 'yahoo'
 data_names = DATASETS[dataset] ##All data files in the dataset
 metric = 'compute_f1_score'
@@ -34,8 +33,7 @@ for data_name in data_names:
 	##Search for best parameters
 	optimizer = grid_search(PARAMS[algorithm_name], ALGORITHMS[algorithm_name], METRICS[metric], True, experiment, search_results_path)
 	optimizer.search(ts, labels, MARGIN)
-	## Generate model results with best parameteres
-	try: 
+	if True:#try: 
 		model = ALGORITHMS[algorithm_name](**optimizer.best_param)
 		model.train(ts)
 		model.detect(ts)
@@ -43,10 +41,10 @@ for data_name in data_names:
 		save_results_json(experiment, model, optimizer.best_param, score, test_restuls_path)
 		save_results_table(experiment, score, test_restuls_path)
 		print(data_name, " data successfully completed!")
-	except Exception as error:
-		save_results_json(experiment, None, optimizer.best_param, None, test_restuls_path, status='fail', error = error)
-		save_results_table(experiment, None, test_restuls_path, status='fail')
-		print(data_name, " data failed!")
+	#except Exception as error:
+	#	save_results_json(experiment, None, optimizer.best_param, None, test_restuls_path, status='fail', error = error)
+	#	save_results_table(experiment, None, test_restuls_path, status='fail')
+	#	print(data_name, " data failed!")
 
 
 

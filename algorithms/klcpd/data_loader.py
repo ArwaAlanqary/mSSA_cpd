@@ -28,7 +28,7 @@ class DataLoader(object):
 
     # load data
     def load_data(self, trn_ratio=0.4, val_ratio=0.7):
-        self.Y = ts 
+        self.Y = self.array 
         self.T, self.D = self.Y.shape                           # T: time length; D: variable dimension
                                           # Y: time series data, time length x number of variables
         # labels = pd.read_csv(self.data_path+'_labels.csv', header = None)
