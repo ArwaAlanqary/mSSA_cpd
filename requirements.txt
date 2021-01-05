@@ -1,5 +1,6 @@
 nimbusml
 scipy
+pandas
 matplotlib
 pytest
 rpy2

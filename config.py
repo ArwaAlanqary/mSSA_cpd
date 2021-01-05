@@ -133,15 +133,24 @@ ALGORITHMS = {
 
 
 PARAMS = {
+    # "microsoft_ssa": {
+    #     'training_window_size': [1000, 500, 200, 120, 100, 50, 30],
+    #      'seasonal_window_size':[100, 30, 20, 10, 5],
+    #      'change_history_length':[100, 50, 10], 
+    #      'error_function': ['SignedDifference','AbsoluteDifference', 'SignedProportion', 'AbsoluteProportion', 'SquaredDifference'], 
+    #      'martingale': ['Power', 'Mixture'], 
+    #      'power_martingale_epsilon': [0.05, 0.1, 0.5], 
+    #      'confidence': [99.0, 95.0, 90.0], 
+    #      'columns': [{'result': 'ts'}]
+    # },
     "microsoft_ssa": {
-        'training_window_size': [30],
-         'seasonal_window_size':[20],
-         'change_history_length':[8], 
+        'training_window_size': [120],
+         'seasonal_window_size':[30],
+         'change_history_length':[10], 
          'error_function': ['SignedDifference','AbsoluteDifference', 'SignedProportion', 'AbsoluteProportion', 'SquaredDifference'], 
-         'martingale': ['Power', 'Mixture'], 
+         'martingale': ['Power'], 
          'power_martingale_epsilon': [0.1], 
-         'confidence': [95.0], 
-         'columns': [{'result': 'ts'}]
+         'confidence': [95.0]
     },
     "klcpd": {
         'lambda_real': [0.001, 0.1,1,10],

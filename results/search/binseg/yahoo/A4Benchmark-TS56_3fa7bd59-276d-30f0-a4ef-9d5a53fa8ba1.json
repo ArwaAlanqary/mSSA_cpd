@@ -1,0 +1,1 @@
+{"status": "fail", "error": "Error in cpt.mean(mt, penalty = \"AIC\", test.stat = \"CSS\", method = \"BinSeg\",  : \n  Invalid test statistic, must be Normal or CUSUM\n", "algorithm": "binseg", "dataset": "yahoo", "data_name": "A4Benchmark-TS56", "param": {"max_cp": "default", "method": "mean", "penalty": "AIC", "test_stat": "CSS"}, "cp": null, "score": null}

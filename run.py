@@ -9,7 +9,7 @@ from evaluation.classification import compute_f1_score
 from algorithms.utils import data_split, save_results_json, save_results_table
 
 #Specify experiment
-algorithm_name = 'binseg'
+algorithm_name = 'microsoft_ssa'
 dataset = 'yahoo'
 data_names = DATASETS[dataset] ##All data files in the dataset
 metric = 'compute_f1_score'
@@ -41,9 +41,11 @@ for data_name in data_names:
 		score = METRICS[metric](labels, model.cp, MARGIN)
 		save_results_json(experiment, model, optimizer.best_param, score, test_restuls_path)
 		save_results_table(experiment, score, test_restuls_path)
+		print(data_name, " data successfully completed!")
 	except Exception as error:
-		print(error)
 		save_results_json(experiment, None, optimizer.best_param, None, test_restuls_path, status='fail', error = error)
 		save_results_table(experiment, None, test_restuls_path, status='fail')
+		print(data_name, " data failed!")
+
 
 
