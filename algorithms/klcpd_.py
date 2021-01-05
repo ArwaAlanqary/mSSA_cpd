@@ -15,10 +15,10 @@ import torch.nn as nn
 from torch.autograd import Variable
 import torch.backends.cudnn as cudnn
 
-import klcpd.mmd_util as mmd_util
-from klcpd.data_loader import DataLoader
-from klcpd.optim import Optim
-import utils
+import algorithms.klcpd.mmd_util as mmd_util
+from .klcpd.data_loader import DataLoader
+from .klcpd.optim import Optim
+import algorithms.utils
 
 class NetG(nn.Module):
     def __init__(self, wnd_dim,RNN_hid_dim,  data):

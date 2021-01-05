@@ -9,7 +9,7 @@ from evaluation.classification import compute_f1_score
 from algorithms.utils import data_split, save_results_json, save_results_table
 
 #Specify experiment
-algorithm_name = 'binseg'
+algorithm_name = 'klcpd'
 dataset = 'yahoo'
 data_names = DATASETS[dataset] ##All data files in the dataset
 metric = 'compute_f1_score'
@@ -36,7 +36,7 @@ for data_name in data_names:
 	## Generate model results with best parameteres
 	try: 
 		model = ALGORITHMS[algorithm_name](**optimizer.best_param)
-		model.train()
+		model.train(ts)
 		model.detect(ts)
 		score = METRICS[metric](labels, model.cp, MARGIN)
 		save_results_json(experiment, model, optimizer.best_param, score, test_restuls_path)
