@@ -134,14 +134,33 @@ ALGORITHMS = {
 
 PARAMS = {
     "microsoft_ssa": {
-        'training_window_size': [1000, 200, 100, 50],
-         'seasonal_window_size':[30, 10],
+        'training_window_size': [700, 400, 200, 50],
+         'seasonal_window_size':[30, 15, 5],
          'change_history_length':[10], 
          'error_function': ['SignedDifference','AbsoluteDifference', 'SignedProportion', 'AbsoluteProportion', 'SquaredDifference'], 
          'martingale': ['Power', 'Mixture'], 
          'power_martingale_epsilon': [0.1], 
          'confidence': [95.0]
     },
+    "hybrid_cusum": {
+        'window_size': [700, 400, 200, 50], 
+        'rows': [30, 15, 5], 
+        'rank': [None], 
+        'singular_threshold': [2, 5], 
+        'distance_threshold': [10, 5], 
+        'training_ratio': [0.5, 0.6], 
+        'skip': [True, False]
+    }, 
+    "hybrid_cusum_moving_window": {
+        'window_size': [700, 400, 200, 50], 
+        'rows': [30, 15, 5], 
+        'overlap_ratio': [0.0, 0.5, 0.9], 
+        'rank': [None], 
+        'singular_threshold': [2, 5], 
+        'distance_threshold': [10, 5], 
+        'training_ratio': [0.5, 0.6], 
+        'skip': [True, False]
+    }, 
     # "microsoft_ssa": {
     #     'training_window_size': [50, 10],
     #      'seasonal_window_size':[10],

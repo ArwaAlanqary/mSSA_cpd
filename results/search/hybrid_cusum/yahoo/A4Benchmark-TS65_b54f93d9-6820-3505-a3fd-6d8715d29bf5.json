@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "hybrid_cusum", "dataset": "yahoo", "data_name": "A4Benchmark-TS65", "param": {"distance_threshold": 10, "rank": null, "rows": 15, "singular_threshold": 2, "skip": false, "training_ratio": 0.6, "window_size": 400}, "cp": [[0, 691], [692, 1190], [1191, 1679]], "score": {"metric": "compute_f1_score", "value": 0.4}}
