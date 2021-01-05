@@ -1,9 +1,9 @@
 import os
 import numpy as np
 import pandas as pd
-import utils
+import algorithms.utils
 
-from bocpdms import CpModel, BVARNIG, Detector
+from algorithms.bocpdms import CpModel, BVARNIG, Detector
 
 class BOCPDMS: 
   def __init__(self, prior_a = 0.1, prior_b = 0.1, prior_mean_scale = 0, prior_var_scale= 1, intercept_grouping= None,intensity = 50,threshold = 100):
