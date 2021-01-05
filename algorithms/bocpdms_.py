@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import pandas as pd
-import algorithms.utils
+import algorithms.utils as utils
 
 from algorithms.bocpdms import CpModel, BVARNIG, Detector
 

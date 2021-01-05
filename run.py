@@ -9,7 +9,7 @@ from evaluation.classification import compute_f1_score
 from algorithms.utils import data_split, save_results_json, save_results_table
 
 #Specify experiment
-algorithm_name = 'klcpd'
+algorithm_name = 'bocpdms'
 dataset = 'yahoo'
 data_names = DATASETS[dataset] ##All data files in the dataset
 metric = 'compute_f1_score'
