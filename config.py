@@ -14,9 +14,16 @@ DATADIR = "data"
 
 DATASETS = {
     "synth": [
-        "struct",
-        "mean",
-        "energy"
+        "struct0", "struct1", "struct2", "struct3", "struct4", "struct5", 
+        "struct6", "struct7", "struct8", "struct9", "struct10", "struct11",
+        "struct12", "struct13", "struct14", "struct15", "struct16", "struct17",
+        "struct18", "struct19",
+        "mean0", "mean1", "mean2", "mean3", "mean4", "mean5", "mean6", "mean7", 
+        "mean8", "mean9", "mean10", "mean11", "mean12", "mean13", "mean14", "mean15",
+        "mean16", "mean17", "mean18", "mean19",
+        "energy0", "energy1", "energy2", "energy3", "energy4", "energy5", "energy6",
+        "energy7", "energy8", "energy9", "energy10", "energy11", "energy12", "energy13",
+        "energy14", "energy15", "energy16", "energy17", "energy18", "energy19" 
         ],
     "yahoo": [
         "A4Benchmark-TS1",
