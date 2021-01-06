@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model.BlockDiagram>
+  <comment>0.5 * (1 + sin(t))</comment>
+  <blocks>
+  
+    <model.BeanBlock>
+      <name>generator</name>
+      <class>jp.hasc.hasctool.core.runtime.source.SinWaveGenerator</class>
+      <properties>
+        <entry>
+          <string>cycle</string>
+          <long>1000000</long>
+        </entry>
+        <entry>
+          <string>tickInterval</string>
+          <long>10000</long>
+        </entry>
+        <entry>
+          <string>tickEnd</string>
+          <long>10000000</long>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    
+    <model.BeanBlock>
+      <name>sleepFilter</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.SleepFilter</class>
+      <properties>
+        <entry>
+          <string>timeScale</string>
+          <double>1.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    
+    <model.BeanBlock>
+      <name>add</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.ScalarAdder</class>
+      <properties>
+        <entry>
+          <string>offset</string>
+          <double>1.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    
+    <model.BeanBlock>
+      <name>mul</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.ScalarMultiplier</class>
+      <properties>
+        <entry>
+          <string>scale</string>
+          <double>0.5</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+        
+    <model.BeanBlock>
+      <name>waveView</name>
+      <class>jp.hasc.hasctool.ui.views.RuntimeWaveView</class>
+      <properties>
+        <entry>
+          <string>minValue</string>
+          <double>-0.2</double>
+        </entry>
+        <entry>
+          <string>maxValue</string>
+          <double>2.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    
+  </blocks>
+  
+  <connections>
+  
+    <model.Connection>
+      <output blockName="generator" portName="outputPort"/>
+      <input blockName="sleepFilter" portName="inputPort"/>
+    </model.Connection>
+    
+    <model.Connection>
+      <output blockName="sleepFilter" portName="outputPort"/>
+      <input blockName="add" portName="inputPort"/>
+    </model.Connection>
+    
+    <model.Connection>
+      <output blockName="add" portName="outputPort"/>
+      <input blockName="mul" portName="inputPort"/>
+    </model.Connection>
+
+    <model.Connection>
+      <output blockName="mul" portName="outputPort"/>
+      <input blockName="waveView" portName="inputPort"/>
+    </model.Connection>
+    
+  </connections>
+</model.BlockDiagram>

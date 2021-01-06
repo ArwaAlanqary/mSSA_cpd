@@ -1,0 +1,159 @@
+<model.BlockDiagram>
+  <comment>XbdExecutorのテスト（外側）。sampleData/0_sequence以下のcsvファイルを順に列挙し、temp/xbdBlockTest1_out 以下に出力する。reader.filePathプロパティと writer.filePathプロパティをセットするようなXbdExecutionRequestメッセージをXbdExecutorに渡して、xbdExecutionTest1Inner.hascxbdをバッチ実行する</comment>
+  <blocks>
+    <model.BeanBlock>
+      <name>find_files</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.FolderFileFinder</class>
+      <properties>
+        <entry>
+          <string>recursive</string>
+          <boolean>true</boolean>
+        </entry>
+        <entry>
+          <string>folderPath</string>
+          <string>$(projectRoot)/Feature</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>fileReader</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.path.FileReader</class>
+      <properties>
+        <entry>
+          <string>addFilePath</string>
+          <boolean>true</boolean>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>FilePathFilter</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.path.FilePathFilter</class>
+      <properties>
+        <entry>
+          <string>element</string>
+          <string>sequence</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>evalDataReader</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.path.FileReader</class>
+      <properties>
+        <entry>
+          <string>addFilePath</string>
+          <boolean>true</boolean>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>Evaluation</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.weka.EvaluationFilter</class>
+      <properties>
+        <entry>
+          <string>feature</string>
+          <string>mean,variance</string>
+        </entry>
+        <entry>
+          <string>element</string>
+          <string>stay,walk,jog,skip,stUp,stDown</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>writer</name>
+      <class>jp.hasc.hasctool.core.runtime.sink.LineWriterSink</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(projectRoot)/temp/svm_output.csv</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>SVM</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.weka.learning.SVMlearner</class>
+      <properties>
+        <entry>
+          <string>element</string>
+          <string>stay,walk,jog,skip,stUp,stDown</string>
+        </entry>
+        <entry>
+          <string>feature</string>
+          <string>mean,variance</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>getLeanData</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.weka.file.DataCreator</class>
+      <properties>
+        <entry>
+          <string>element</string>
+          <string>stay,walk,jog,skip,stUp,stDown</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>merger</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.weka.message.MessageMerger</class>
+      <properties>
+        <entry>
+          <string>inputPortCount</string>
+          <int>2</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>filter_CSV_files</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.RegexStringFilter</class>
+      <properties>
+        <entry>
+          <string>regex</string>
+          <string>\.csv$</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="FilePathFilter" portName="outputPort"/>
+      <input blockName="evalDataReader" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="Evaluation" portName="outputPort"/>
+      <input blockName="writer" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="fileReader" portName="outputPort"/>
+      <input blockName="getLeanData" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="getLeanData" portName="outputPort"/>
+      <input blockName="SVM" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="SVM" portName="outputPort"/>
+      <input blockName="merger" portName="inputPort[0]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="evalDataReader" portName="outputPort"/>
+      <input blockName="merger" portName="inputPort[1]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="merger" portName="outputPort"/>
+      <input blockName="Evaluation" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="find_files" portName="outputPort"/>
+      <input blockName="filter_CSV_files" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="filter_CSV_files" portName="outputPort"/>
+      <input blockName="fileReader" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="filter_CSV_files" portName="outputPort"/>
+      <input blockName="FilePathFilter" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

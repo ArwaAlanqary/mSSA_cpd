@@ -1,0 +1,14 @@
+TerminalType:ATR;WAA-001
+Frequency(Hz):100
+
+Activity:walk
+
+Gender: male
+Height(cm): 169
+Weight(kg): 46
+Shoes: sneakers
+Floor: asphalt
+Place: outdoor
+Pace(cm): 65
+TerminalPosition: waist
+TerminalMount: fixed

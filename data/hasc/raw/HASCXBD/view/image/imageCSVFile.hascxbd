@@ -1,0 +1,64 @@
+<model.BlockDiagram>
+  <blocks>
+    <model.BeanBlock>
+      <name>reader</name>
+      <class>jp.hasc.hasctool.core.runtime.source.LineReaderSource</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>csvToVector</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.CSVToVectorFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>waveImage</name>
+      <class>jp.hasc.hasctool.ui.views.WaveImageWidget</class>
+      <properties>
+        <entry>
+          <string>viewTimeMax</string>
+          <long>120000000</long>
+        </entry>
+        <entry>
+          <string>viewTimeWidth</string>
+          <long>120000000</long>
+        </entry>
+        <entry>
+          <string>maxValue</string>
+          <double>3.0</double>
+        </entry>
+        <entry>
+          <string>minValue</string>
+          <double>-3.0</double>
+        </entry>
+        <entry>
+          <string>filePath</string>
+          <string>$(projectRoot)/temp/wimg_output.png</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>toReTime</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.time.RelativeTimeFilter</class>
+      <properties/>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="reader" portName="outputPort"/>
+      <input blockName="csvToVector" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="csvToVector" portName="outputPort"/>
+      <input blockName="toReTime" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="toReTime" portName="outputPort"/>
+      <input blockName="waveImage" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

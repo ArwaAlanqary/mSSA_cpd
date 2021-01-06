@@ -1,0 +1,39 @@
+<model.BlockDiagram>
+  <blocks>
+    <model.BeanBlock>
+      <name>reader</name>
+      <class>jp.hasc.hasctool.core.runtime.source.LineReaderSource</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>evaluation</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.evaluation.EvaluationFilter</class>
+      <properties>
+        <entry>
+          <string>element</string>
+          <string>stay,walk,jog,skip,stUp,stDown</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>writer</name>
+      <class>jp.hasc.hasctool.core.runtime.sink.LineWriterSink</class>
+      <properties/>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="evaluation" portName="outputPort"/>
+      <input blockName="writer" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="reader" portName="outputPort"/>
+      <input blockName="evaluation" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

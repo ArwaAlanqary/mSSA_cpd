@@ -1,0 +1,45 @@
+<model.BlockDiagram>
+  <comment>just copy a text file</comment>
+  <blocks>
+    <model.BeanBlock>
+      <name>reader</name>
+      <class>jp.hasc.hasctool.core.runtime.source.LineReaderSource</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>writer</name>
+      <class>jp.hasc.hasctool.core.runtime.sink.LineWriterSink</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(projectRoot)/temp/LPModify_output.csv</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>LPModifier</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.weka.label.LPModifier</class>
+      <properties>
+        <entry>
+          <string>sampleNum</string>
+          <int>4</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="reader" portName="outputPort"/>
+      <input blockName="LPModifier" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="LPModifier" portName="outputPort"/>
+      <input blockName="writer" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

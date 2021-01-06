@@ -1,0 +1,130 @@
+<model.BlockDiagram>
+  <comment>XbdExecutorのテスト（外側）。sampleData/0_sequence以下のcsvファイルを順に列挙し、temp/xbdBlockTest1_out 以下に出力する。reader.filePathプロパティと writer.filePathプロパティをセットするようなXbdExecutionRequestメッセージをXbdExecutorに渡して、xbdExecutionTest1Inner.hascxbdをバッチ実行する</comment>
+  <blocks>
+    <model.BeanBlock>
+      <name>find_files</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.FolderFileFinder</class>
+      <properties>
+        <entry>
+          <string>recursive</string>
+          <boolean>true</boolean>
+        </entry>
+        <entry>
+          <string>folderPath</string>
+          <string>$(projectRoot)/eval/0_sequence</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>writer</name>
+      <class>jp.hasc.hasctool.core.runtime.sink.LineWriterSink</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(projectRoot)/temp/table/evalRe.csv</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>evalList</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.evaluation.EvaluationListCreator</class>
+      <properties>
+        <entry>
+          <string>element</string>
+          <string>stay,walk,jog,skip,stUp,stDown</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>meta</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.table.MetaElementFilter</class>
+      <properties>
+        <entry>
+          <string>metaElement</string>
+          <string>TerminalType,Frequency(Hz),Activity,性別,身長(cm),体重(kg),履物,路面状態,場所,センサデバイス取り付け位置,センサデバイス取り付け状態</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>merger</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.message.MessageMerger</class>
+      <properties>
+        <entry>
+          <string>inputPortCount</string>
+          <int>3</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>CSVToMETA</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.StringReplacer</class>
+      <properties>
+        <entry>
+          <string>destString</string>
+          <string>.meta</string>
+        </entry>
+        <entry>
+          <string>srcRegex</string>
+          <string>\.csv$</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>create</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.StringReplacer</class>
+      <properties>
+        <entry>
+          <string>srcString</string>
+          <string>$(projectRoot)/eval/</string>
+        </entry>
+        <entry>
+          <string>destString</string>
+          <string>$(projectRoot)/HASCdata/</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>FileName</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.table.FileNameFilter</class>
+      <properties/>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="find_files" portName="outputPort"/>
+      <input blockName="evalList" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="evalList" portName="outputPort"/>
+      <input blockName="merger" portName="inputPort[1]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="meta" portName="outputPort"/>
+      <input blockName="merger" portName="inputPort[2]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="merger" portName="outputPort"/>
+      <input blockName="writer" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="CSVToMETA" portName="outputPort"/>
+      <input blockName="meta" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="create" portName="outputPort"/>
+      <input blockName="CSVToMETA" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="find_files" portName="outputPort"/>
+      <input blockName="create" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="find_files" portName="outputPort"/>
+      <input blockName="FileName" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="FileName" portName="outputPort"/>
+      <input blockName="merger" portName="inputPort[0]"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

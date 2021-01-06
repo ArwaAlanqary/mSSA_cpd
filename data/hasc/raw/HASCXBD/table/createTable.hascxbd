@@ -1,0 +1,104 @@
+<model.BlockDiagram>
+  <comment>XbdExecutorのテスト（外側）。sampleData/0_sequence以下のcsvファイルを順に列挙し、temp/xbdBlockTest1_out 以下に出力する。reader.filePathプロパティと writer.filePathプロパティをセットするようなXbdExecutionRequestメッセージをXbdExecutorに渡して、xbdExecutionTest1Inner.hascxbdをバッチ実行する</comment>
+  <blocks>
+    <model.BeanBlock>
+      <name>find_files</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.FolderFileFinder</class>
+      <properties>
+        <entry>
+          <string>recursive</string>
+          <boolean>true</boolean>
+        </entry>
+        <entry>
+          <string>folderPath</string>
+          <string>$(projectRoot)/HASC2010corpus</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>filter_csv_files</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.RegexStringFilter</class>
+      <properties>
+        <entry>
+          <string>regex</string>
+          <string>\.csv$</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>writer</name>
+      <class>jp.hasc.hasctool.core.runtime.sink.LineWriterSink</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(projectRoot)/temp/table_output.csv</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>FileName</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.table.FileNameFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>filter_meta_files</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.RegexStringFilter</class>
+      <properties>
+        <entry>
+          <string>regex</string>
+          <string>\.meta$</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>Meta</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.table.MetaElementFilter</class>
+      <properties>
+        <entry>
+          <string>metaElement</string>
+          <string>Activity,TerminalType,Frequency(Hz),Gender,Height(cm),Weight(kg),Floor,Place,Shoes,TerminalMount,TerminalPosition</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>merger</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.message.MessageMerger</class>
+      <properties>
+        <entry>
+          <string>inputPortCount</string>
+          <int>2</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="filter_csv_files" portName="outputPort"/>
+      <input blockName="FileName" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="find_files" portName="outputPort"/>
+      <input blockName="filter_csv_files" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="filter_meta_files" portName="outputPort"/>
+      <input blockName="Meta" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="find_files" portName="outputPort"/>
+      <input blockName="filter_meta_files" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="FileName" portName="outputPort"/>
+      <input blockName="merger" portName="inputPort[0]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="Meta" portName="outputPort"/>
+      <input blockName="merger" portName="inputPort[1]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="merger" portName="outputPort"/>
+      <input blockName="writer" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

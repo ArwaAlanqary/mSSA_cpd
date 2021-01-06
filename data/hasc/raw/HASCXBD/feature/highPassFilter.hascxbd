@@ -1,0 +1,71 @@
+<model.BlockDiagram>
+  <comment>labeling |udpInput|&gt;1.2 and display to WaveView</comment>
+  <blocks>
+    <model.BeanBlock>
+      <name>IIRFilter</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.IIRFilter</class>
+      <properties>
+        <entry>
+          <string>coefficient</string>
+          <double>0.01</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>VectorAdder</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.VectorAdder</class>
+      <properties>
+        <entry>
+          <string>inputPortCount</string>
+          <int>2</int>
+        </entry>
+        <entry>
+          <string>primaryInputPortIndex</string>
+          <int>0</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>input</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.IdentityFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>output</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.IdentityFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>Multiplier-1</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.ScalarMultiplier</class>
+      <properties>
+        <entry>
+          <string>scale</string>
+          <double>-1.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="input" portName="outputPort"/>
+      <input blockName="IIRFilter" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="VectorAdder" portName="outputPort"/>
+      <input blockName="output" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="IIRFilter" portName="outputPort"/>
+      <input blockName="Multiplier-1" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="Multiplier-1" portName="outputPort"/>
+      <input blockName="VectorAdder" portName="inputPort[1]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="input" portName="outputPort"/>
+      <input blockName="VectorAdder" portName="inputPort[0]"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

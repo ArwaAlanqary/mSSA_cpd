@@ -1,0 +1,195 @@
+<model.BlockDiagram>
+  <comment>XbdExecutorのテスト（外側）。sampleData/0_sequence以下のcsvファイルを順に列挙し、temp/xbdBlockTest1_out 以下に出力する。reader.filePathプロパティと writer.filePathプロパティをセットするようなXbdExecutionRequestメッセージをXbdExecutorに渡して、xbdExecutionTest1Inner.hascxbdをバッチ実行する</comment>
+  <blocks>
+    <model.BeanBlock>
+      <name>set_reader_filePath</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.XERequestCreationFilter</class>
+      <properties>
+        <entry>
+          <string>propertyName</string>
+          <string>reader.filePath</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>XERequestMerger</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.XERequestMerger</class>
+      <properties>
+        <entry>
+          <string>inputPortCount</string>
+          <int>4</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>create_output_path</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.StringReplacer</class>
+      <properties>
+        <entry>
+          <string>srcString</string>
+          <string>$(projectRoot)/Feature</string>
+        </entry>
+        <entry>
+          <string>destString</string>
+          <string>$(projectRoot)/result</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>set_writer_filePath</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.XERequestCreationFilter</class>
+      <properties>
+        <entry>
+          <string>propertyName</string>
+          <string>writer.filePath</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>XbdExecutor</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.XbdExecutor</class>
+      <properties>
+        <entry>
+          <string>defaultXbdFilePath</string>
+          <string>createEvalFile.hascxbd</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>reader</name>
+      <class>jp.hasc.hasctool.core.runtime.source.LineReaderSource</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>set_labelLine</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.XERequestCreationFilter</class>
+      <properties>
+        <entry>
+          <string>propertyName</string>
+          <string>evalFileCreator.labelLine</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>set_eval_filePath</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.XERequestCreationFilter</class>
+      <properties>
+        <entry>
+          <string>propertyName</string>
+          <string>evalFileCreator.filePath</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>CSVtoLABEL</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.StringReplacer</class>
+      <properties>
+        <entry>
+          <string>destString</string>
+          <string>.label</string>
+        </entry>
+        <entry>
+          <string>srcRegex</string>
+          <string>\.csv$</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>create_target_path</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.StringReplacer</class>
+      <properties>
+        <entry>
+          <string>srcString</string>
+          <string>$(projectRoot)/Feature</string>
+        </entry>
+        <entry>
+          <string>destString</string>
+          <string>$(projectRoot)/HASC2010corpus</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>filePath</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.weka.message.MessageSplitter</class>
+      <properties>
+        <entry>
+          <string>label_filePath</string>
+          <string>filePath</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>label</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.weka.message.MessageSplitter</class>
+      <properties>
+        <entry>
+          <string>label_filePath</string>
+          <string>label</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="set_reader_filePath" portName="outputPort"/>
+      <input blockName="XERequestMerger" portName="inputPort[0]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="set_writer_filePath" portName="outputPort"/>
+      <input blockName="XERequestMerger" portName="inputPort[3]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="XERequestMerger" portName="outputPort"/>
+      <input blockName="XbdExecutor" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="set_labelLine" portName="outputPort"/>
+      <input blockName="XERequestMerger" portName="inputPort[1]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="set_eval_filePath" portName="outputPort"/>
+      <input blockName="XERequestMerger" portName="inputPort[2]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="create_output_path" portName="outputPort"/>
+      <input blockName="CSVtoLABEL" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="CSVtoLABEL" portName="outputPort"/>
+      <input blockName="set_writer_filePath" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="create_target_path" portName="outputPort"/>
+      <input blockName="set_eval_filePath" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="reader" portName="outputPort"/>
+      <input blockName="filePath" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="filePath" portName="outputPort"/>
+      <input blockName="set_reader_filePath" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="filePath" portName="outputPort"/>
+      <input blockName="create_output_path" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="filePath" portName="outputPort"/>
+      <input blockName="create_target_path" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="label" portName="outputPort"/>
+      <input blockName="set_labelLine" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="reader" portName="outputPort"/>
+      <input blockName="label" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

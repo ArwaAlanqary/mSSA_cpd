@@ -1,0 +1,40 @@
+<model.BlockDiagram>
+  <comment>XbdExecutorのテスト（外側）。sampleData/0_sequence以下のcsvファイルを順に列挙し、temp/xbdBlockTest1_out 以下に出力する。reader.filePathプロパティと writer.filePathプロパティをセットするようなXbdExecutionRequestメッセージをXbdExecutorに渡して、xbdExecutionTest1Inner.hascxbdをバッチ実行する</comment>
+  <blocks>
+    <model.BeanBlock>
+      <name>find_files</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.FolderFileFinder</class>
+      <properties>
+        <entry>
+          <string>recursive</string>
+          <boolean>true</boolean>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>writer</name>
+      <class>jp.hasc.hasctool.core.runtime.sink.LineWriterSink</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>EvalMerger</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.evaluation.EvaluationMerger</class>
+      <properties>
+        <entry>
+          <string>element</string>
+          <string>stay,walk,jog,skip,stUp,stDown</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="EvalMerger" portName="outputPort"/>
+      <input blockName="writer" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="find_files" portName="outputPort"/>
+      <input blockName="EvalMerger" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>
