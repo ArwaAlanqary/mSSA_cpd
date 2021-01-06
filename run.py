@@ -10,7 +10,7 @@ from algorithms.utils import data_split, save_results_json, save_results_table
 
 #Specify experiment
 algorithm_name = 'microsoft_ssa'
-dataset = 'yahoo'
+dataset = 'synth'
 data_names = DATASETS[dataset] ##All data files in the dataset
 metric = 'compute_f1_score'
 
