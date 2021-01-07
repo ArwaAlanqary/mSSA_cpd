@@ -9,8 +9,8 @@ from evaluation.classification import compute_f1_score
 from algorithms.utils import data_split, save_results_json, save_results_table
 
 #Specify experiment
-algorithm_name = 'hybrid_cusum_moving_window'
-dataset = 'struct'
+algorithm_name = 'microsoft_ssa'
+dataset = 'energy'
 data_names = DATASETS[dataset] ##All data files in the dataset
 metric = 'compute_f1_score'
 
