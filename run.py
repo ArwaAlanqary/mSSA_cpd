@@ -19,7 +19,7 @@ search_results_path = os.path.join(os.getcwd(), 'results', 'search', algorithm_n
 test_restuls_path = os.path.join(os.getcwd(), 'results', 'test', algorithm_name, dataset)
 data_path = os.path.join(os.getcwd(), DATADIR)
 
-for data_name in data_names:
+for data_name in data_names[90:]:
 	##Prepare experiment and paths
 	experiment = {'dataset': dataset, 
 				'data_name': data_name, 
