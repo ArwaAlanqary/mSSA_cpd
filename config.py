@@ -20,9 +20,10 @@ DATASETS = {
         "struct17", "struct18", "struct19"
     ], 
     "mean": [ 
-        "mean0", "mean1", "mean2", "mean3", "mean4", "mean5", "mean6", "mean7", 
-        "mean8", "mean9", "mean10", "mean11", "mean12", "mean13", "mean14", "mean15",
-        "mean16", "mean17", "mean18", "mean19"
+        #"mean0", "mean1", "mean2", "mean3", "mean4", "mean5", "mean6", "mean7", 
+        #"mean8", "mean9", "mean10", "mean11", "mean12", 
+        #"mean13", "mean14", "mean15","mean16", "mean17", "mean18", 
+        "mean19"
     ],
     "energy": [ 
         "energy0", "energy1", "energy2", "energy3", "energy4", "energy5", "energy6",
