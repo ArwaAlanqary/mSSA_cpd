@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model.BlockDiagram>
+  <blocks>
+  
+    <model.BeanBlock>
+      <name>reader</name>
+      <class>jp.hasc.hasctool.core.runtime.source.LineReaderSource</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    
+    <model.BeanBlock>
+      <name>csvToVector</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.CSVToVectorFilter</class>
+    </model.BeanBlock>
+          
+    
+    <model.BeanBlock>
+      <name>waveView</name>
+      <class>jp.hasc.hasctool.ui.views.RuntimeWaveView</class>
+      <properties>
+        <entry>
+          <string>name</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+        <entry>
+          <string>minValue</string>
+          <double>-2.0</double>
+        </entry>
+        <entry>
+          <string>maxValue</string>
+          <double>2.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    
+  </blocks>
+  
+  <connections>
+  
+    <model.Connection>
+      <output blockName="reader" portName="outputPort"/>
+      <input blockName="csvToVector" portName="inputPort"/>
+    </model.Connection>
+    
+ 
+    <model.Connection>
+      <output blockName="csvToVector" portName="outputPort"/>
+      <input blockName="waveView" portName="inputPort"/>
+    </model.Connection>
+    
+       
+  </connections>
+</model.BlockDiagram>

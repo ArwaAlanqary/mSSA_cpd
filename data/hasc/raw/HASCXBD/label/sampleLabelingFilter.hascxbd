@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model.BlockDiagram>
+  <comment>labeling f(t)>0.5 and write to a file</comment>
+  <blocks>
+  
+    <model.BeanBlock>
+      <name>reader</name>
+      <class>jp.hasc.hasctool.core.runtime.source.LineReaderSource</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    
+    <model.BeanBlock>
+      <name>csvToVector</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.CSVToVectorFilter</class>
+    </model.BeanBlock>
+    
+    <model.BeanBlock>
+      <name>vectorNorm</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.VectorNormFilter</class>
+    </model.BeanBlock>
+    
+    <model.BeanBlock>
+      <name>labeling</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.label.SampleLabelingFilter</class>
+      <properties>
+        <entry>
+          <string>threthold</string>
+          <double>0.5</double>
+        </entry>
+        <entry>
+          <string>label</string>
+          <string>HIGH</string>
+        </entry>
+        <entry>
+          <string>targetFilePath</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    
+    <model.BeanBlock>
+      <name>labelToCSV</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.LabelToCSVFilter</class>
+    </model.BeanBlock>
+            
+    <model.BeanBlock>
+      <name>writer</name>
+      <class>jp.hasc.hasctool.core.runtime.sink.LineWriterSink</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(projectRoot)/temp/sampleLabelFilter_output.label</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    
+  </blocks>
+  
+  <connections>
+  
+    <model.Connection>
+      <output blockName="reader" portName="outputPort"/>
+      <input blockName="csvToVector" portName="inputPort"/>
+    </model.Connection>
+    
+    <model.Connection>
+      <output blockName="csvToVector" portName="outputPort"/>
+      <input blockName="vectorNorm" portName="inputPort"/>
+    </model.Connection>
+    
+    <model.Connection>
+      <output blockName="vectorNorm" portName="outputPort"/>
+      <input blockName="labeling" portName="inputPort"/>
+    </model.Connection>
+    
+    <model.Connection>
+      <output blockName="labeling" portName="outputPort"/>
+      <input blockName="labelToCSV" portName="inputPort"/>
+    </model.Connection>
+    
+    <model.Connection>
+      <output blockName="labelToCSV" portName="outputPort"/>
+      <input blockName="writer" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

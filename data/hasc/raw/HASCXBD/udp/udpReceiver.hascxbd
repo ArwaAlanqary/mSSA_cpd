@@ -1,0 +1,86 @@
+<model.BlockDiagram>
+  <comment>UDPでCSVを受信し、ファイルに書き出し ＆ WaveViewに表示</comment>
+  <blocks>
+    <model.BeanBlock>
+      <name>receiver</name>
+      <class>jp.hasc.hasctool.core.runtime.source.UDPStringReceiver</class>
+      <properties>
+        <entry>
+          <string>port</string>
+          <int>6666</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>writer</name>
+      <class>jp.hasc.hasctool.core.runtime.sink.LineWriterSink</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(projectRoot)/temp/udp-$(currentDateTime).csv</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>csvToVector</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.CSVToVectorFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>waveView</name>
+      <class>jp.hasc.hasctool.ui.views.RuntimeWaveView</class>
+      <properties>
+        <entry>
+          <string>minValue</string>
+          <double>-2.0</double>
+        </entry>
+        <entry>
+          <string>maxValue</string>
+          <double>2.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>VectorElement0</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.VectorElementFilter</class>
+      <properties>
+        <entry>
+          <string>elementIndex</string>
+          <int>0</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>FFTFilter1</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.frequency.HighPassFilter</class>
+      <properties>
+        <entry>
+          <string>cutoffFrequency</string>
+          <int>2</int>
+        </entry>
+        <entry>
+          <string>sampleNum</string>
+          <int>128</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="receiver" portName="outputPort"/>
+      <input blockName="csvToVector" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="csvToVector" portName="outputPort"/>
+      <input blockName="VectorElement0" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="VectorElement0" portName="outputPort"/>
+      <input blockName="FFTFilter1" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="FFTFilter1" portName="outputPort"/>
+      <input blockName="waveView" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

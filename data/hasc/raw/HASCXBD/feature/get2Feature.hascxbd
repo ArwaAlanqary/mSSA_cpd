@@ -1,0 +1,135 @@
+<model.BlockDiagram>
+  <blocks>
+    <model.BeanBlock>
+      <name>reader</name>
+      <class>jp.hasc.hasctool.core.runtime.source.LineReaderSource</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>csvToVector</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.CSVToVectorFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>vectorNorm</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.VectorNormFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>mean</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.MeanFilter</class>
+      <properties>
+        <entry>
+          <string>sampleNum</string>
+          <int>128</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>variance</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.VarianceFilter</class>
+      <properties>
+        <entry>
+          <string>sampleNum</string>
+          <int>128</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>writer</name>
+      <class>jp.hasc.hasctool.core.runtime.sink.LineWriterSink</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(projectRoot)/temp/feature_Output.csv</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>concat</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.VectorConcatenater</class>
+      <properties>
+        <entry>
+          <string>inputPortCount</string>
+          <int>2</int>
+        </entry>
+        <entry>
+          <string>primaryInputPortIndex</string>
+          <int>0</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>downsample</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.interpolator.VectorPeriodicSignalSampler</class>
+      <properties>
+        <entry>
+          <string>timeStep</string>
+          <long>640000</long>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>vectortocsv</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.VectorToCSVFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>100HZ</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.interpolator.VectorPeriodicSignalSampler</class>
+      <properties>
+        <entry>
+          <string>timeStep</string>
+          <long>10000</long>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="reader" portName="outputPort"/>
+      <input blockName="csvToVector" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="vectorNorm" portName="outputPort"/>
+      <input blockName="mean" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="vectorNorm" portName="outputPort"/>
+      <input blockName="variance" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="mean" portName="outputPort"/>
+      <input blockName="concat" portName="inputPort[0]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="variance" portName="outputPort"/>
+      <input blockName="concat" portName="inputPort[1]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="concat" portName="outputPort"/>
+      <input blockName="downsample" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="downsample" portName="outputPort"/>
+      <input blockName="vectortocsv" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="vectortocsv" portName="outputPort"/>
+      <input blockName="writer" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="csvToVector" portName="outputPort"/>
+      <input blockName="100HZ" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="100HZ" portName="outputPort"/>
+      <input blockName="vectorNorm" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

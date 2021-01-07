@@ -1,0 +1,75 @@
+<model.BlockDiagram>
+  <blocks>
+    <model.BeanBlock>
+      <name>csvToVector</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.CSVToVectorFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>VectorTocsv</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.VectorToCSVFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>reader</name>
+      <class>jp.hasc.hasctool.core.runtime.source.LineReaderSource</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>writer</name>
+      <class>jp.hasc.hasctool.core.runtime.sink.LineWriterSink</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>TimeParser</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.time.TimeParserFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>toReTime</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.time.RelativeTimeFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>ScalarMultiple</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.ScalarMultiplier</class>
+      <properties>
+        <entry>
+          <string>scale</string>
+          <double>0.0010</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="reader" portName="outputPort"/>
+      <input blockName="csvToVector" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="VectorTocsv" portName="outputPort"/>
+      <input blockName="writer" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="TimeParser" portName="outputPort"/>
+      <input blockName="toReTime" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="csvToVector" portName="outputPort"/>
+      <input blockName="TimeParser" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="toReTime" portName="outputPort"/>
+      <input blockName="ScalarMultiple" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="ScalarMultiple" portName="outputPort"/>
+      <input blockName="VectorTocsv" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

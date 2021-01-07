@@ -1,0 +1,45 @@
+<model.BlockDiagram>
+  <comment></comment>
+  <blocks>
+    <model.BeanBlock>
+      <name>writer</name>
+      <class>jp.hasc.hasctool.core.runtime.sink.LineWriterSink</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(projectRoot)/temp/inf_effect.csv</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>reader</name>
+      <class>jp.hasc.hasctool.core.runtime.source.LineReaderSource</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>Information</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.table.InformationEffector</class>
+      <properties>
+        <entry>
+          <string>information</string>
+          <string>2_walk</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="reader" portName="outputPort"/>
+      <input blockName="Information" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="Information" portName="outputPort"/>
+      <input blockName="writer" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

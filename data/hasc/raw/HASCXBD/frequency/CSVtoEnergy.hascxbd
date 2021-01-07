@@ -1,0 +1,324 @@
+<model.BlockDiagram>
+  <blocks>
+    <model.BeanBlock>
+      <name>csvToVector</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.CSVToVectorFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>waveImage</name>
+      <class>jp.hasc.hasctool.ui.views.WaveImageWidget</class>
+      <properties>
+        <entry>
+          <string>viewTimeWidth</string>
+          <long>10000000</long>
+        </entry>
+        <entry>
+          <string>viewTimeMax</string>
+          <long>10000000</long>
+        </entry>
+        <entry>
+          <string>minValue</string>
+          <double>-5.0</double>
+        </entry>
+        <entry>
+          <string>maxValue</string>
+          <double>5.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>HanningWindow0</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.window.HanningWindowFunctionFilter</class>
+      <properties>
+        <entry>
+          <string>sampleNum</string>
+          <int>128</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>FFT0</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.frequency.FFTFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>VectorElement0</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.VectorElementFilter</class>
+      <properties>
+        <entry>
+          <string>elementIndex</string>
+          <int>0</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>VectorElement1</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.VectorElementFilter</class>
+      <properties>
+        <entry>
+          <string>elementIndex</string>
+          <int>1</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>VectorElement2</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.VectorElementFilter</class>
+      <properties>
+        <entry>
+          <string>elementIndex</string>
+          <int>2</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>HanningWindow1</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.window.HanningWindowFunctionFilter</class>
+      <properties>
+        <entry>
+          <string>sampleNum</string>
+          <int>128</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>FFT1</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.frequency.FFTFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>HanningWindow2</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.window.HanningWindowFunctionFilter</class>
+      <properties>
+        <entry>
+          <string>sampleNum</string>
+          <int>128</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>FFT2</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.frequency.FFTFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>Concat</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.VectorConcatenater</class>
+      <properties>
+        <entry>
+          <string>inputPortCount</string>
+          <int>3</int>
+        </entry>
+        <entry>
+          <string>primaryInputPortIndex</string>
+          <int>0</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>reader</name>
+      <class>jp.hasc.hasctool.core.runtime.source.LineReaderSource</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>PassF0</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.frequency.PassFrequencyFilter</class>
+      <properties>
+        <entry>
+          <string>startFrequency</string>
+          <int>33</int>
+        </entry>
+        <entry>
+          <string>endFrequency</string>
+          <int>64</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>PassF1</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.frequency.PassFrequencyFilter</class>
+      <properties>
+        <entry>
+          <string>endFrequency</string>
+          <int>64</int>
+        </entry>
+        <entry>
+          <string>startFrequency</string>
+          <int>33</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>PassF2</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.frequency.PassFrequencyFilter</class>
+      <properties>
+        <entry>
+          <string>endFrequency</string>
+          <int>64</int>
+        </entry>
+        <entry>
+          <string>startFrequency</string>
+          <int>33</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>norm</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.VectorNormFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>norm1</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.VectorNormFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>norm2</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.VectorNormFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>XbdBlock</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.XbdBlock</class>
+      <properties>
+        <entry>
+          <string>xbdFilePath</string>
+          <string>xbdBlockTest1Inner.hascxbd</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>CompToVec1</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.frequency.ComplexToVectorFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>CompToVec2</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.frequency.ComplexToVectorFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>CompToVec3</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.frequency.ComplexToVectorFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>100HZ</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.interpolator.VectorPeriodicSignalSampler</class>
+      <properties>
+        <entry>
+          <string>timeStep</string>
+          <long>10000</long>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="VectorElement1" portName="outputPort"/>
+      <input blockName="HanningWindow1" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="VectorElement2" portName="outputPort"/>
+      <input blockName="HanningWindow2" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="HanningWindow0" portName="outputPort"/>
+      <input blockName="FFT0" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="VectorElement0" portName="outputPort"/>
+      <input blockName="HanningWindow0" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="HanningWindow1" portName="outputPort"/>
+      <input blockName="FFT1" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="HanningWindow2" portName="outputPort"/>
+      <input blockName="FFT2" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="reader" portName="outputPort"/>
+      <input blockName="csvToVector" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="FFT0" portName="outputPort"/>
+      <input blockName="PassF0" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="FFT1" portName="outputPort"/>
+      <input blockName="PassF1" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="FFT2" portName="outputPort"/>
+      <input blockName="PassF2" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="norm" portName="outputPort"/>
+      <input blockName="Concat" portName="inputPort[0]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="norm1" portName="outputPort"/>
+      <input blockName="Concat" portName="inputPort[1]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="norm2" portName="outputPort"/>
+      <input blockName="Concat" portName="inputPort[2]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="Concat" portName="outputPort"/>
+      <input blockName="XbdBlock" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="XbdBlock" portName="outputPort"/>
+      <input blockName="waveImage" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="PassF0" portName="outputPort"/>
+      <input blockName="CompToVec1" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="PassF1" portName="outputPort"/>
+      <input blockName="CompToVec2" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="PassF2" portName="outputPort"/>
+      <input blockName="CompToVec3" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="CompToVec1" portName="outputPort"/>
+      <input blockName="norm" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="CompToVec2" portName="outputPort"/>
+      <input blockName="norm1" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="CompToVec3" portName="outputPort"/>
+      <input blockName="norm2" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="csvToVector" portName="outputPort"/>
+      <input blockName="100HZ" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="100HZ" portName="outputPort"/>
+      <input blockName="VectorElement0" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="100HZ" portName="outputPort"/>
+      <input blockName="VectorElement1" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="100HZ" portName="outputPort"/>
+      <input blockName="VectorElement2" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

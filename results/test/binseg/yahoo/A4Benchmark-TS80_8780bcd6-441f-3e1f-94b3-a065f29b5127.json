@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "binseg", "dataset": "yahoo", "data_name": "A4Benchmark-TS80", "param": {"test_stat": "CSS", "penalty": "Hannan-Quinn", "method": "var", "max_cp": "max"}, "cp": [[0, 839.0], [840.0, 1679]], "score": {"metric": "compute_f1_score", "value": 0.5714285714285715}}

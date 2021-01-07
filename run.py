@@ -9,8 +9,8 @@ from evaluation.classification import compute_f1_score
 from algorithms.utils import data_split, save_results_json, save_results_table
 
 #Specify experiment
-algorithm_name = 'bocpdms'
-dataset = 'yahoo'
+algorithm_name = 'binseg'
+dataset = 'mean'
 data_names = DATASETS[dataset] ##All data files in the dataset
 metric = 'compute_f1_score'
 
@@ -33,7 +33,7 @@ for data_name in data_names[90:]:
 	##Search for best parameters
 	optimizer = grid_search(PARAMS[algorithm_name], ALGORITHMS[algorithm_name], METRICS[metric], True, experiment, search_results_path)
 	optimizer.search(ts, labels, MARGIN)
-	try: 
+	try:
 		model = ALGORITHMS[algorithm_name](**optimizer.best_param)
 		model.train(ts)
 		model.detect(ts)

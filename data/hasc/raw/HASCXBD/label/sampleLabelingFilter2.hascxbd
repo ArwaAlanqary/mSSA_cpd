@@ -1,0 +1,89 @@
+<model.BlockDiagram>
+  <comment>labeling f(t)&gt;0.5 and display to WaveView</comment>
+  <blocks>
+    <model.BeanBlock>
+      <name>reader</name>
+      <class>jp.hasc.hasctool.core.runtime.source.LineReaderSource</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>csvToVector</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.CSVToVectorFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>sleepFilter</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.SleepFilter</class>
+      <properties>
+        <entry>
+          <string>timeScale</string>
+          <double>1.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>labeling</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.label.SampleLabelingFilter</class>
+      <properties>
+        <entry>
+          <string>threthold</string>
+          <double>0.5</double>
+        </entry>
+        <entry>
+          <string>label</string>
+          <string>HIGH</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>concatVL</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.ConcatenateVectorAndLabelFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>waveView</name>
+      <class>jp.hasc.hasctool.ui.views.RuntimeWaveView</class>
+      <properties>
+        <entry>
+          <string>minValue</string>
+          <double>-2.0</double>
+        </entry>
+        <entry>
+          <string>maxValue</string>
+          <double>2.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="reader" portName="outputPort"/>
+      <input blockName="csvToVector" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="csvToVector" portName="outputPort"/>
+      <input blockName="sleepFilter" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="sleepFilter" portName="outputPort"/>
+      <input blockName="concatVL" portName="vectorInputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="sleepFilter" portName="outputPort"/>
+      <input blockName="labeling" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="labeling" portName="outputPort"/>
+      <input blockName="concatVL" portName="labelInputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="concatVL" portName="outputPort"/>
+      <input blockName="waveView" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

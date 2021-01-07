@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model.BlockDiagram>
+  <blocks>
+  
+    <model.BeanBlock>
+      <name>reader</name>
+      <class>jp.hasc.hasctool.core.runtime.source.LineReaderSource</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    
+    <model.BeanBlock>
+      <name>csvToVector</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.CSVToVectorFilter</class>
+    </model.BeanBlock>
+      
+    <model.BeanBlock>
+      <name>vpsSampler</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.interpolator.VectorPeriodicSignalSampler</class>
+        <properties>
+        <entry>
+          <string>timeStep</string>
+          <long>10000</long>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    
+    <model.BeanBlock>
+      <name>vectortocsv</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.VectorToCSVFilter</class>
+    </model.BeanBlock>
+ 
+    
+    <model.BeanBlock>
+      <name>writer</name>
+      <class>jp.hasc.hasctool.core.runtime.sink.LineWriterSink</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(projectRoot)/temp/vpsSampler_output.csv</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    
+    
+    <model.BeanBlock>
+      <name>waveView</name>
+      <class>jp.hasc.hasctool.ui.views.RuntimeWaveView</class>
+      <properties>
+        <entry>
+          <string>name</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+        <entry>
+          <string>minValue</string>
+          <double>-2.0</double>
+        </entry>
+        <entry>
+          <string>maxValue</string>
+          <double>2.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    
+  </blocks>
+  
+  <connections>
+  
+    <model.Connection>
+      <output blockName="reader" portName="outputPort"/>
+      <input blockName="csvToVector" portName="inputPort"/>
+    </model.Connection>
+    
+ 
+    <model.Connection>
+      <output blockName="csvToVector" portName="outputPort"/>
+      <input blockName="vpsSampler" portName="inputPort"/>
+    </model.Connection>
+    
+    <model.Connection>
+      <output blockName="vpsSampler" portName="outputPort"/>
+      <input blockName="waveView" portName="inputPort"/>
+    </model.Connection>
+    
+    <model.Connection>
+      <output blockName="vpsSampler" portName="outputPort"/>
+      <input blockName="vectortocsv" portName="inputPort"/>
+    </model.Connection>
+    
+    <model.Connection>
+      <output blockName="vectortocsv" portName="outputPort"/>
+      <input blockName="writer" portName="inputPort"/>
+    </model.Connection>
+   
+    
+  </connections>
+</model.BlockDiagram>

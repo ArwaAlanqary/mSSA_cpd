@@ -1,0 +1,53 @@
+<model.BlockDiagram>
+  <comment>CSVファイルを読み込み、ベクトル信号の値を100加算し、CSVファイルを書き出す。readerとwriterのfilePathプロパティは、外側からセットされる</comment>
+  <blocks>
+    <model.BeanBlock>
+      <name>reader</name>
+      <class>jp.hasc.hasctool.core.runtime.source.LineReaderSource</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>writer</name>
+      <class>jp.hasc.hasctool.core.runtime.sink.LineWriterSink</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>CSVToVector</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.CSVToVectorFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>VectorToCSV</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.VectorToCSVFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>add_100</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.ScalarAdder</class>
+      <properties>
+        <entry>
+          <string>offset</string>
+          <double>100.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="reader" portName="outputPort"/>
+      <input blockName="CSVToVector" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="VectorToCSV" portName="outputPort"/>
+      <input blockName="writer" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="CSVToVector" portName="outputPort"/>
+      <input blockName="add_100" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="add_100" portName="outputPort"/>
+      <input blockName="VectorToCSV" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

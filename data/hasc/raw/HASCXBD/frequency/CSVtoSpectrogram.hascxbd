@@ -1,0 +1,152 @@
+<model.BlockDiagram>
+  <blocks>
+    <model.BeanBlock>
+      <name>csvToVector</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.CSVToVectorFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>Hanning</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.window.HanningWindowFunctionFilter</class>
+      <properties>
+        <entry>
+          <string>sampleNum</string>
+          <int>128</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>FFT</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.frequency.FFTFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>norm</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.VectorNormFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>CompToVec</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.frequency.ComplexToVectorFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>Spectrogram</name>
+      <class>jp.hasc.hasctool.ui.views.RuntimeSpectrogramView</class>
+      <properties>
+        <entry>
+          <string>maxValue</string>
+          <double>4.0</double>
+        </entry>
+        <entry>
+          <string>minValue</string>
+          <double>0.0</double>
+        </entry>
+        <entry>
+          <string>frequency</string>
+          <double>100.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>reader</name>
+      <class>jp.hasc.hasctool.core.runtime.source.LineReaderSource</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>Sleep</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.SleepFilter</class>
+      <properties>
+        <entry>
+          <string>timeScale</string>
+          <double>1.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>WaveView</name>
+      <class>jp.hasc.hasctool.ui.views.RuntimeWaveView</class>
+      <properties>
+        <entry>
+          <string>maxValue</string>
+          <double>2.0</double>
+        </entry>
+        <entry>
+          <string>minValue</string>
+          <double>-2.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>selectElements</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.VectorElementsFilter</class>
+      <properties>
+        <entry>
+          <string>startIndex</string>
+          <int>0</int>
+        </entry>
+        <entry>
+          <string>endIndex</string>
+          <int>63</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>100HZ</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.interpolator.VectorPeriodicSignalSampler</class>
+      <properties>
+        <entry>
+          <string>timeStep</string>
+          <long>10000</long>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="FFT" portName="outputPort"/>
+      <input blockName="CompToVec" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="Hanning" portName="outputPort"/>
+      <input blockName="FFT" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="reader" portName="outputPort"/>
+      <input blockName="csvToVector" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="Sleep" portName="outputPort"/>
+      <input blockName="norm" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="CompToVec" portName="outputPort"/>
+      <input blockName="selectElements" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="selectElements" portName="outputPort"/>
+      <input blockName="Spectrogram" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="csvToVector" portName="outputPort"/>
+      <input blockName="100HZ" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="100HZ" portName="outputPort"/>
+      <input blockName="Sleep" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="norm" portName="outputPort"/>
+      <input blockName="Hanning" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="norm" portName="outputPort"/>
+      <input blockName="WaveView" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

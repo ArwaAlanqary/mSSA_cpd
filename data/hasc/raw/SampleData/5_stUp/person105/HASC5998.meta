@@ -1,0 +1,14 @@
+TerminalType:ATR;WAA-001
+Frequency(Hz):100
+
+Activity:stUp
+
+Gender: male
+Height(cm): 169
+Weight(kg): 46
+Shoes: sneakers
+Floor: asphalt
+Place: outdoor
+HeightOfOneStairStep(cm): 17.0
+TerminalPosition: waist
+TerminalMount: fixed

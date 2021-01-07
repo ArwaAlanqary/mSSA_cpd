@@ -1,0 +1,108 @@
+<model.BlockDiagram>
+  <blocks>
+    <model.BeanBlock>
+      <name>labelReader</name>
+      <class>jp.hasc.hasctool.core.runtime.source.LineReaderSource</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>csvToLabel</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.CSVToLabelFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>targetFileReader</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.TargetFileReader</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>csvToVector</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.CSVToVectorFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>concatVL</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.ConcatenateVectorAndLabelFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>waveView</name>
+      <class>jp.hasc.hasctool.ui.views.RuntimeWaveView</class>
+      <properties>
+        <entry>
+          <string>name</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+        <entry>
+          <string>minValue</string>
+          <double>-2.0</double>
+        </entry>
+        <entry>
+          <string>maxValue</string>
+          <double>2.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>WaveImageWidget1</name>
+      <class>jp.hasc.hasctool.ui.views.WaveImageWidget</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(projectRoot)/temp/wvimg_output.png</string>
+        </entry>
+        <entry>
+          <string>viewTimeMax</string>
+          <long>120000000</long>
+        </entry>
+        <entry>
+          <string>viewTimeWidth</string>
+          <long>120000000</long>
+        </entry>
+        <entry>
+          <string>maxValue</string>
+          <double>3.0</double>
+        </entry>
+        <entry>
+          <string>minValue</string>
+          <double>-3.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="labelReader" portName="outputPort"/>
+      <input blockName="csvToLabel" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="csvToLabel" portName="outputPort"/>
+      <input blockName="concatVL" portName="labelInputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="labelReader" portName="outputPort"/>
+      <input blockName="targetFileReader" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="targetFileReader" portName="outputPort"/>
+      <input blockName="csvToVector" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="csvToVector" portName="outputPort"/>
+      <input blockName="concatVL" portName="vectorInputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="concatVL" portName="outputPort"/>
+      <input blockName="waveView" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="concatVL" portName="outputPort"/>
+      <input blockName="WaveImageWidget1" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

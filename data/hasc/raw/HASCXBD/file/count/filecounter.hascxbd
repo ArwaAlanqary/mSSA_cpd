@@ -1,0 +1,63 @@
+<model.BlockDiagram>
+  <comment>XbdExecutorのテスト（外側）。sampleData/0_sequence以下のcsvファイルを順に列挙し、temp/xbdBlockTest1_out 以下に出力する。reader.filePathプロパティと writer.filePathプロパティをセットするようなXbdExecutionRequestメッセージをXbdExecutorに渡して、xbdExecutionTest1Inner.hascxbdをバッチ実行する</comment>
+  <blocks>
+    <model.BeanBlock>
+      <name>find_files</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.FolderFileFinder</class>
+      <properties>
+        <entry>
+          <string>recursive</string>
+          <boolean>true</boolean>
+        </entry>
+        <entry>
+          <string>folderPath</string>
+          <string>$(projectRoot)/HASC2010corpus</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>metaFileCounter</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.count.MetaFileCounter</class>
+      <properties>
+        <entry>
+          <string>metaElement</string>
+          <string>TerminalType</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>metawriter</name>
+      <class>jp.hasc.hasctool.core.runtime.sink.LineWriterSink</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(projectRoot)/temp/fcount_output.csv</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>filter_meta_files</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.RegexStringFilter</class>
+      <properties>
+        <entry>
+          <string>regex</string>
+          <string>\.meta$</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="filter_meta_files" portName="outputPort"/>
+      <input blockName="metaFileCounter" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="find_files" portName="outputPort"/>
+      <input blockName="filter_meta_files" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="metaFileCounter" portName="outputPort"/>
+      <input blockName="metawriter" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

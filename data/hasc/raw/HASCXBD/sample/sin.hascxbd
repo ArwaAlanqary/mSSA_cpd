@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model.BlockDiagram>
+  <comment>sin(t)</comment>
+  <blocks>
+  
+    <model.BeanBlock>
+      <name>generator</name>
+      <class>jp.hasc.hasctool.core.runtime.source.SinWaveGenerator</class>
+      <properties>
+        <entry>
+          <string>cycle</string>
+          <long>1000000</long>
+        </entry>
+        <entry>
+          <string>tickInterval</string>
+          <long>10000</long>
+        </entry>
+        <entry>
+          <string>tickEnd</string>
+          <long>10000000</long>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    
+    <model.BeanBlock>
+      <name>sleepFilter</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.SleepFilter</class>
+      <properties>
+        <entry>
+          <string>timeScale</string>
+          <double>1.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    
+    <model.BeanBlock>
+      <name>waveView</name>
+      <class>jp.hasc.hasctool.ui.views.RuntimeWaveView</class>
+      <properties>
+        <entry>
+          <string>minValue</string>
+          <double>-2.0</double>
+        </entry>
+        <entry>
+          <string>maxValue</string>
+          <double>2.0</double>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    
+  </blocks>
+  
+  <connections>
+  
+    <model.Connection>
+      <output blockName="generator" portName="outputPort"/>
+      <input blockName="sleepFilter" portName="inputPort"/>
+    </model.Connection>
+    
+    <model.Connection>
+      <output blockName="sleepFilter" portName="outputPort"/>
+      <input blockName="waveView" portName="inputPort"/>
+    </model.Connection>
+    
+  </connections>
+  
+</model.BlockDiagram>

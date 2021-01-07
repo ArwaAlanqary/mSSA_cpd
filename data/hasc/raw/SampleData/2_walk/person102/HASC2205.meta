@@ -1,0 +1,16 @@
+LogVersion: 2
+
+TerminalType:Apple;iPhone3Gs
+Frequency(Hz):100
+
+Activity:walk
+
+Gender: male
+Height(cm): 171
+Weight(kg): 56
+Shoes: sandals
+Floor: carpet
+Place: indoor
+Pace(cm): 68
+TerminalPosition: waist;pocket
+TerminalMount: free

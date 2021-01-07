@@ -1,0 +1,96 @@
+<model.BlockDiagram>
+  <comment>XbdBlockのテスト（内側）。ベクトル信号を入力し、1加算したものと、0.5乗算したものを、連結して出力</comment>
+  <blocks>
+    <model.BeanBlock>
+      <name>input</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.IdentityFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>output</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.IdentityFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>mean</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.MeanFilter</class>
+      <properties>
+        <entry>
+          <string>sampleNum</string>
+          <int>128</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>downSample</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.interpolator.VectorPeriodicSignalSampler</class>
+      <properties>
+        <entry>
+          <string>timeStep</string>
+          <long>640000</long>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>max</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.MaxFilter</class>
+      <properties>
+        <entry>
+          <string>sampleNum</string>
+          <int>128</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>min</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.MinimumFilter</class>
+      <properties>
+        <entry>
+          <string>sampleNum</string>
+          <int>128</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>variance</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.VarianceFilter</class>
+      <properties>
+        <entry>
+          <string>sampleNum</string>
+          <int>128</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>norm</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.VectorNormFilter</class>
+      <properties/>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="downSample" portName="outputPort"/>
+      <input blockName="output" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="input" portName="outputPort"/>
+      <input blockName="max" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="input" portName="outputPort"/>
+      <input blockName="mean" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="input" portName="outputPort"/>
+      <input blockName="min" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="input" portName="outputPort"/>
+      <input blockName="variance" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="input" portName="outputPort"/>
+      <input blockName="downSample" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

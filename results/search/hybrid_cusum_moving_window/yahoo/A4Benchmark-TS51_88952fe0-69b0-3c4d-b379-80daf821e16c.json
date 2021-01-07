@@ -1,0 +1,1 @@
+{"status": "fail", "error": "error in window rows", "algorithm": "hybrid_cusum_moving_window", "dataset": "yahoo", "data_name": "A4Benchmark-TS51", "param": {"distance_threshold": 10, "overlap_ratio": 0.5, "rank": null, "rows": 30, "singular_threshold": 5, "skip": false, "training_ratio": 0.6, "window_size": 50}, "cp": null, "score": null}

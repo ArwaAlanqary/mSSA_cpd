@@ -1,0 +1,113 @@
+<model.BlockDiagram>
+  <comment>XbdExecutorのテスト（外側）。sampleData/0_sequence以下のcsvファイルを順に列挙し、temp/xbdBlockTest1_out 以下に出力する。reader.filePathプロパティと writer.filePathプロパティをセットするようなXbdExecutionRequestメッセージをXbdExecutorに渡して、xbdExecutionTest1Inner.hascxbdをバッチ実行する</comment>
+  <blocks>
+    <model.BeanBlock>
+      <name>find_files</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.FolderFileFinder</class>
+      <properties>
+        <entry>
+          <string>recursive</string>
+          <boolean>true</boolean>
+        </entry>
+        <entry>
+          <string>folderPath</string>
+          <string>$(projectRoot)/HASC2010corpus</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>filter_csv_files</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.RegexStringFilter</class>
+      <properties>
+        <entry>
+          <string>regex</string>
+          <string>\.csv$</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>set_reader_filePath</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.XERequestCreationFilter</class>
+      <properties>
+        <entry>
+          <string>propertyName</string>
+          <string>reader.filePath</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>XERequestMerger</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.XERequestMerger</class>
+      <properties>
+        <entry>
+          <string>inputPortCount</string>
+          <int>2</int>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>create_output_path</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.StringReplacer</class>
+      <properties>
+        <entry>
+          <string>srcString</string>
+          <string>$(projectRoot)/HASC2010corpus</string>
+        </entry>
+        <entry>
+          <string>destString</string>
+          <string>$(projectRoot)/Feature</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>set_writer_filePath</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.XERequestCreationFilter</class>
+      <properties>
+        <entry>
+          <string>propertyName</string>
+          <string>writer.filePath</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>XbdExecutor</name>
+      <class>jp.hasc.hasctool.core.runtime.hierarchize.XbdExecutor</class>
+      <properties>
+        <entry>
+          <string>defaultXbdFilePath</string>
+          <string>get2Feature.hascxbd</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="find_files" portName="outputPort"/>
+      <input blockName="filter_csv_files" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="set_reader_filePath" portName="outputPort"/>
+      <input blockName="XERequestMerger" portName="inputPort[0]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="set_writer_filePath" portName="outputPort"/>
+      <input blockName="XERequestMerger" portName="inputPort[1]"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="XERequestMerger" portName="outputPort"/>
+      <input blockName="XbdExecutor" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="create_output_path" portName="outputPort"/>
+      <input blockName="set_writer_filePath" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="filter_csv_files" portName="outputPort"/>
+      <input blockName="create_output_path" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="filter_csv_files" portName="outputPort"/>
+      <input blockName="set_reader_filePath" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>

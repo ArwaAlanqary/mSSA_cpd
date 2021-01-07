@@ -1,0 +1,72 @@
+<model.BlockDiagram>
+  <comment>copy and dump a label file</comment>
+  <blocks>
+    <model.BeanBlock>
+      <name>reader</name>
+      <class>jp.hasc.hasctool.core.runtime.source.LineReaderSource</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(inputFile.path)</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>csvToLabel</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.CSVToLabelFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>dumpMessage</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.XStreamDumpFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>writerDump</name>
+      <class>jp.hasc.hasctool.core.runtime.sink.LineWriterSink</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(projectRoot)/temp/labeltest1_dump.label</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>labelToCSV</name>
+      <class>jp.hasc.hasctool.core.runtime.filter.file.label.LabelToCSVFilter</class>
+      <properties/>
+    </model.BeanBlock>
+    <model.BeanBlock>
+      <name>writerClone</name>
+      <class>jp.hasc.hasctool.core.runtime.sink.LineWriterSink</class>
+      <properties>
+        <entry>
+          <string>filePath</string>
+          <string>$(projectRoot)/temp/labeltest1_clone.label</string>
+        </entry>
+      </properties>
+    </model.BeanBlock>
+  </blocks>
+  <connections>
+    <model.Connection>
+      <output blockName="reader" portName="outputPort"/>
+      <input blockName="csvToLabel" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="csvToLabel" portName="outputPort"/>
+      <input blockName="dumpMessage" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="dumpMessage" portName="outputPort"/>
+      <input blockName="writerDump" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="csvToLabel" portName="outputPort"/>
+      <input blockName="labelToCSV" portName="inputPort"/>
+    </model.Connection>
+    <model.Connection>
+      <output blockName="labelToCSV" portName="outputPort"/>
+      <input blockName="writerClone" portName="inputPort"/>
+    </model.Connection>
+  </connections>
+</model.BlockDiagram>
