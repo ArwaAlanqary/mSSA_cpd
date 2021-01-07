@@ -1,0 +1,1 @@
+{"status": "fail", "error": "Error in cpt.meanvar(mt, penalty = \"AIC\", test.stat = \"CUSUM\", method = \"BinSeg\",  : \n  Invalid test statistic, must be Normal, Gamma, Exponential or Poisson\n", "algorithm": "binseg", "dataset": "mean", "data_name": "mean2", "param": {"max_cp": "max", "method": "meanvar", "penalty": "AIC", "test_stat": "CUSUM"}, "cp": null, "score": null}

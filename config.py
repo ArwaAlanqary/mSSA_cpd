@@ -6,7 +6,7 @@ from algorithms.klcpd_ import KLCPD
 from algorithms.bocpdms_ import BOCPDMS
 from algorithms.hybrid_cusum_moving_window import hybrid_cusum_moving_window
 from algorithms.hybrid_cusum import hybrid_cusum
-# from algorithms.binseg import binseg
+from algorithms.binseg import binseg
 
 from evaluation.classification import compute_f1_score
 
@@ -16,13 +16,13 @@ DATASETS = {
     "struct": [ 
         "struct0", "struct1", "struct2", "struct3", "struct4", "struct5", 
         "struct6", "struct7", "struct8", "struct9", "struct10", "struct11",
-        "struct12", "struct13", "struct14", "struct15", "struct16", "struct17",
-        "struct18", "struct19"
+        "struct12", "struct13", "struct14", "struct15", "struct16", 
+        "struct17", "struct18", "struct19"
     ], 
     "mean": [ 
         "mean0", "mean1", "mean2", "mean3", "mean4", "mean5", "mean6", "mean7", 
-        "mean8", "mean9", "mean10", "mean11", "mean12", "mean13", "mean14", "mean15",
-        "mean16", "mean17", "mean18", "mean19"
+        "mean8", "mean9", "mean10", "mean11", "mean12", 
+        "mean13", "mean14", "mean15","mean16", "mean17", "mean18" , "mean19"
     ],
     "energy": [ 
         "energy0", "energy1", "energy2", "energy3", "energy4", "energy5", "energy6",
@@ -129,6 +129,26 @@ DATASETS = {
         "A4Benchmark-TS97",
         "A4Benchmark-TS98",
         "A4Benchmark-TS99",
+    ], 
+    'hasc': [
+        'HASC1001', 
+        'HASC1002', 
+        'HASC1003', 
+        'HASC1004',
+        'HASC1005',
+        'HASC1006',
+        'HASC1007',
+        'HASC1008',
+        'HASC1009',
+        'HASC1010',
+        'HASC1011',
+        'HASC1012',
+        'HASC1013',
+        'HASC1014',
+        'HASC1015',
+        'HASC1016',
+        'HASC1017',
+        'HASC1018',
     ]
     }
 
@@ -136,7 +156,7 @@ ALGORITHMS = {
     "microsoft_ssa":microsoft_ssa,
     "hybrid_cusum": hybrid_cusum, 
     "hybrid_cusum_moving_window": hybrid_cusum_moving_window,
-    # "binseg": binseg,
+    "binseg": binseg,
     "klcpd": KLCPD,
     "bocpdms": BOCPDMS
 }
@@ -172,15 +192,6 @@ PARAMS = {
         'training_ratio': [0.5, 0.6], 
         'skip': [True, False]
     }, 
-    # "microsoft_ssa": {
-    #     'training_window_size': [50, 10],
-    #      'seasonal_window_size':[10],
-    #      'change_history_length':[10], 
-    #      'error_function': ['SignedDifference'], 
-    #      'martingale': ['Power'], 
-    #      'power_martingale_epsilon': [0.1], 
-    #      'confidence': [95.0]
-    # },
     "klcpd": {
         'lambda_real': [0.001, 0.1,1,10],
          'lambda_ae':[0.001,0.1,1,10],

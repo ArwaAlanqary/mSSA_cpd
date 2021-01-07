@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "binseg", "dataset": "mean", "data_name": "mean6", "param": {"max_cp": "default", "method": "mean", "penalty": "None", "test_stat": "CUSUM"}, "cp": [[0, 1984.0], [1985.0, 2992.0], [2993.0, 3990.0], [3991.0, 4978.0], [4979.0, 4985.0], [4986.0, 4999]], "score": {"metric": "compute_f1_score", "value": 0.5}}

@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "binseg", "dataset": "energy", "data_name": "energy1", "param": {"max_cp": "max", "method": "var", "penalty": "AIC", "test_stat": "CSS"}, "cp": [[0, 1022.0], [1023.0, 1961.0], [1962.0, 2995.0], [2996.0, 3983.0], [3984.0, 4999]], "score": {"metric": "compute_f1_score", "value": 0.3636363636363636}}
