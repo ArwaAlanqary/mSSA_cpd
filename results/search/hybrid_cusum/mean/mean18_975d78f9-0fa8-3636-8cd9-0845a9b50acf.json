@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "hybrid_cusum", "dataset": "mean", "data_name": "mean18", "param": {"distance_threshold": 10, "rank": null, "rows": 5, "singular_threshold": 2, "skip": false, "training_ratio": 0.6, "window_size": 200}, "cp": [[0, 1136], [1137, 2257], [2258, 3115], [3116, 4999]], "score": {"metric": "compute_f1_score", "value": 0.2}}

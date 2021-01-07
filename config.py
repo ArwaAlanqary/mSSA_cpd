@@ -6,7 +6,7 @@ from algorithms.klcpd_ import KLCPD
 from algorithms.bocpdms_ import BOCPDMS
 from algorithms.hybrid_cusum_moving_window import hybrid_cusum_moving_window
 from algorithms.hybrid_cusum import hybrid_cusum
-# from algorithms.binseg import binseg
+from algorithms.binseg import binseg
 
 from evaluation.classification import compute_f1_score
 
@@ -20,10 +20,9 @@ DATASETS = {
         "struct17", "struct18", "struct19"
     ], 
     "mean": [ 
-        #"mean0", "mean1", "mean2", "mean3", "mean4", "mean5", "mean6", "mean7", 
-        #"mean8", "mean9", "mean10", "mean11", "mean12", 
-        #"mean13", "mean14", "mean15","mean16", "mean17", "mean18", 
-        "mean19"
+        "mean0", "mean1", "mean2", "mean3", "mean4", "mean5", "mean6", "mean7", 
+        "mean8", "mean9", "mean10", "mean11", "mean12", 
+        "mean13", "mean14", "mean15","mean16", "mean17", "mean18" , "mean19"
     ],
     "energy": [ 
         "energy0", "energy1", "energy2", "energy3", "energy4", "energy5", "energy6",
@@ -157,7 +156,7 @@ ALGORITHMS = {
     "microsoft_ssa":microsoft_ssa,
     "hybrid_cusum": hybrid_cusum, 
     "hybrid_cusum_moving_window": hybrid_cusum_moving_window,
-    # "binseg": binseg,
+    "binseg": binseg,
     "klcpd": KLCPD,
     "bocpdms": BOCPDMS
 }

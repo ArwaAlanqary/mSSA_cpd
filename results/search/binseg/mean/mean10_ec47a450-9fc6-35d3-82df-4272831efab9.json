@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "binseg", "dataset": "mean", "data_name": "mean10", "param": {"max_cp": "default", "method": "mean", "penalty": "None", "test_stat": "CUSUM"}, "cp": [[0, 1007.0], [1008.0, 1981.0], [1982.0, 2111.0], [2112.0, 2997.0], [2998.0, 4005.0], [4006.0, 4999]], "score": {"metric": "compute_f1_score", "value": 0.6666666666666666}}
