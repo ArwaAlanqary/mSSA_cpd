@@ -1,0 +1,1 @@
+{"status": "fail", "error": "Error in multiple.var.css(data, mul.method = method, penalty, pen.value,  : \n  MBIC penalty is not valid for nonparametric test statistics.\n", "algorithm": "binseg", "dataset": "struct", "data_name": "struct7", "param": {"max_cp": "max", "method": "var", "penalty": "MBIC", "test_stat": "CSS"}, "cp": null, "score": null}

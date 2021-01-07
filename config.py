@@ -129,6 +129,26 @@ DATASETS = {
         "A4Benchmark-TS97",
         "A4Benchmark-TS98",
         "A4Benchmark-TS99",
+    ], 
+    'hasc': [
+        'HASC1001', 
+        'HASC1002', 
+        'HASC1003', 
+        'HASC1004',
+        'HASC1005',
+        'HASC1006',
+        'HASC1007',
+        'HASC1008',
+        'HASC1009',
+        'HASC1010',
+        'HASC1011',
+        'HASC1012',
+        'HASC1013',
+        'HASC1014',
+        'HASC1015',
+        'HASC1016',
+        'HASC1017',
+        'HASC1018',
     ]
     }
 
@@ -172,15 +192,6 @@ PARAMS = {
         'training_ratio': [0.5, 0.6], 
         'skip': [True, False]
     }, 
-    # "microsoft_ssa": {
-    #     'training_window_size': [50, 10],
-    #      'seasonal_window_size':[10],
-    #      'change_history_length':[10], 
-    #      'error_function': ['SignedDifference'], 
-    #      'martingale': ['Power'], 
-    #      'power_martingale_epsilon': [0.1], 
-    #      'confidence': [95.0]
-    # },
     "klcpd": {
         'lambda_real': [0.001, 0.1,1,10],
          'lambda_ae':[0.001,0.1,1,10],
