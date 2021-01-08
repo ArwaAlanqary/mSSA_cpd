@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "hybrid_cusum", "dataset": "mean", "data_name": "mean7", "param": {"window_size": 50, "training_ratio": 0.5, "skip": false, "singular_threshold": 2, "rows": 5, "rank": null, "distance_threshold": 10}, "cp": [[0, 1001], [1002, 3001], [3002, 4999]], "score": {"metric": "compute_f1_score", "value": 0.6666666666666666}}

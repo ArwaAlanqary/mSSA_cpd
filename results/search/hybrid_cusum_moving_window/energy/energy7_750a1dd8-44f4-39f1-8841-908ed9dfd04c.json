@@ -1,0 +1,1 @@
+{"status": "fail", "error": "zero-size array to reduction operation maximum which has no identity", "algorithm": "hybrid_cusum_moving_window", "dataset": "energy", "data_name": "energy7", "param": {"distance_threshold": 5, "overlap_ratio": 0.9, "rank": null, "rows": 5, "singular_threshold": 5, "skip": false, "training_ratio": 0.6, "window_size": 700}, "cp": null, "score": null}

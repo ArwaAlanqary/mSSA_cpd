@@ -9,8 +9,17 @@ from evaluation.classification import compute_f1_score
 from algorithms.utils import data_split, save_results_json, save_results_table
 
 #Specify experiment
+<<<<<<< HEAD
 algorithm_name = 'mSSA'
+=======
+<<<<<<< HEAD
+algorithm_name = 'bocpdms'
+>>>>>>> 86668aa3e93496e47fe6e69f897271277b937142
 dataset = 'struct'
+=======
+algorithm_name = 'binseg'
+dataset = 'mean'
+>>>>>>> 750a327fdc82c6f468a2558c74b7c6190071d29c
 data_names = DATASETS[dataset] ##All data files in the dataset
 metric = 'compute_f1_score'
 
@@ -19,7 +28,8 @@ search_results_path = os.path.join(os.getcwd(), 'results', 'search', algorithm_n
 test_restuls_path = os.path.join(os.getcwd(), 'results', 'test', algorithm_name, dataset)
 data_path = os.path.join(os.getcwd(), DATADIR)
 
-for data_name in data_names:
+
+for data_name in data_names[:]:
 	##Prepare experiment and paths
 	experiment = {'dataset': dataset, 
 				'data_name': data_name, 
@@ -33,7 +43,7 @@ for data_name in data_names:
 	##Search for best parameters
 	optimizer = grid_search(PARAMS[algorithm_name], ALGORITHMS[algorithm_name], METRICS[metric], True, experiment, search_results_path)
 	optimizer.search(ts, labels, MARGIN)
-	if True: 
+	try:
 		model = ALGORITHMS[algorithm_name](**optimizer.best_param)
 		model.train(ts)
 		model.detect(ts)
@@ -41,10 +51,11 @@ for data_name in data_names:
 		save_results_json(experiment, model, optimizer.best_param, score, test_restuls_path)
 		save_results_table(experiment, score, test_restuls_path)
 		print(data_name, " data successfully completed!")
-	# except Exception as error:
-	# 	save_results_json(experiment, None, optimizer.best_param, None, test_restuls_path, status='fail', error = error)
-	# 	save_results_table(experiment, None, test_restuls_path, status='fail')
-	# 	print(data_name, " data failed!")
+	except Exception as error:
+		save_results_json(experiment, None, optimizer.best_param, None, test_restuls_path, status='fail', error = error)
+		save_results_table(experiment, None, test_restuls_path, status='fail')
+		print(data_name, " data failed!")
+
 
 
 

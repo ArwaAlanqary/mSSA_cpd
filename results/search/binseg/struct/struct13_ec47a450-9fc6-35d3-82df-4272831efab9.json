@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "binseg", "dataset": "struct", "data_name": "struct13", "param": {"max_cp": "default", "method": "mean", "penalty": "None", "test_stat": "CUSUM"}, "cp": [[0, 4751.0], [4752.0, 4779.0], [4780.0, 4825.0], [4826.0, 4899.0], [4900.0, 4971.0], [4972.0, 4999]], "score": {"metric": "compute_f1_score", "value": 0.16666666666666666}}
