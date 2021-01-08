@@ -6,6 +6,7 @@ from algorithms.klcpd_ import KLCPD
 from algorithms.bocpdms_ import BOCPDMS
 from algorithms.hybrid_cusum_moving_window import hybrid_cusum_moving_window
 from algorithms.hybrid_cusum import hybrid_cusum
+from algorithms.mSSA import MSSA
 # from algorithms.binseg import binseg
 
 from evaluation.classification import compute_f1_score
@@ -138,7 +139,8 @@ ALGORITHMS = {
     "hybrid_cusum_moving_window": hybrid_cusum_moving_window,
     # "binseg": binseg,
     "klcpd": KLCPD,
-    "bocpdms": BOCPDMS
+    "bocpdms": BOCPDMS,
+    "mSSA": MSSA
 }
 
 
@@ -186,6 +188,16 @@ PARAMS = {
          'lambda_ae':[0.001,0.1,1,10],
          'wnd_dim':[5,10,20,25]
     },
+    "mSSA": {
+        'window_size': [700, 400, 200, 50], 
+        'rows': [30, 15, 5], 
+        'rank': [None], 
+        'singular_threshold': [2, 5], 
+        'distance_threshold': [10, 5], 
+        'training_ratio': [0.5, 0.6], 
+        'skip': [True, False],
+        'normalize': [True, False]
+    }, 
     "bocpdms": {        
         "intensity": [50, 100, 200],
         "prior_a": [0.01, 1.0, 100],
