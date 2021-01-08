@@ -1,0 +1,10 @@
+\begin{tabular}{lllll}
+\toprule
+{} &        binseg & microsoft\_ssa &  hybrid\_cusum & hybrid\_cusum\_moving\_window \\
+\midrule
+yahoo  &  0.694(0.193) &   0.69(0.187) &   0.645(0.17) &               0.702(0.167) \\
+struct &   0.31(0.033) &  0.699(0.088) &  0.841(0.076) &               0.867(0.057) \\
+mean   &   0.626(0.16) &  0.781(0.071) &  0.812(0.076) &               0.797(0.085) \\
+energy &   0.61(0.155) &   0.81(0.071) &  0.778(0.134) &               0.785(0.119) \\
+\bottomrule
+\end{tabular}
