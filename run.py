@@ -10,7 +10,11 @@ from algorithms.utils import data_split, save_results_json, save_results_table
 
 #Specify experiment
 <<<<<<< HEAD
+algorithm_name = 'mSSA'
+=======
+<<<<<<< HEAD
 algorithm_name = 'bocpdms'
+>>>>>>> 86668aa3e93496e47fe6e69f897271277b937142
 dataset = 'struct'
 =======
 algorithm_name = 'binseg'
