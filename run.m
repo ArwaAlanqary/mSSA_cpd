@@ -9,7 +9,7 @@ clear
 % Specify experiment
 load('config.mat')
 algorithm_name = 'density_ratio';
-dataset = 'yahoo';
+dataset = 'struct';
 metric = 'compute_f1_score';
 data_names = config.DATASETS.(dataset);
 
