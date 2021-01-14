@@ -1,0 +1,1 @@
+{"status": "fail", "error": "training matrix size is less than the rank", "algorithm": "mSSA", "dataset": "hasc", "data_name": "HASC1005", "param": {"distance_threshold": 5, "normalize": true, "rank": null, "rows": 30, "singular_threshold": 5, "skip": true, "training_ratio": 0.6, "window_size": 50}, "cp": null, "score": null}
