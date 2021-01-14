@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "bocpdms", "dataset": "hasc", "data_name": "HASC1009", "param": {"intensity": 200, "prior_a": 100, "prior_b": 100}, "cp": [[0, 5], [6, 7], [8, 1912], [1913, 3840], [3841, 8783], [8784, 9745], [9746, 10776], [10777, 11772]], "score": {"metric": "compute_f1_score", "value": 0.1}}

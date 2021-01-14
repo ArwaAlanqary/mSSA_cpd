@@ -157,7 +157,7 @@ ALGORITHMS = {
     "microsoft_ssa":microsoft_ssa,
     "hybrid_cusum": hybrid_cusum, 
     "hybrid_cusum_moving_window": hybrid_cusum_moving_window,
-    "binseg": binseg,
+#    "binseg": binseg,
     "klcpd": KLCPD,
     "bocpdms": BOCPDMS,
     "mSSA": MSSA
