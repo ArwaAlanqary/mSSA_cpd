@@ -28,18 +28,19 @@ class grid_search:
 		self.ts = ts
 		self.labels = labels
 		for param in self.grid: 
-			try: 
-				model = self.algorithm(**param)
-				model.train(self.ts)
-				model.detect(self.ts)
-				score_i = self.scoring(self.labels, model.cp, margin)
-				self.score.append(score_i)
-				if self.store_search_results: 
-					save_results_json(self.experiment, model, param, score_i, self.results_path)
-			except Exception as error: 
-				print("FAIL", error)
-				self.score.append(-1)
-				if self.store_search_results: 
-					save_results_json(self.experiment, None, param, None, self.results_path, 'fail', error)
+                    if True:#try: 
+                                model = self.algorithm(**param)
+                                model.train(self.ts)
+                                model.detect(self.ts, self.labels)
+                                score_i = self.scoring(self.labels, model.cp, margin)
+                                self.score.append(score_i)
+                                print('score:', score_i)
+                                if self.store_search_results: 
+                                	save_results_json(self.experiment, model, param, score_i, self.results_path)
+                    else:#except Exception as error: 
+                                print("FAIL", error)
+                                self.score.append(-1)
+                                if self.store_search_results: 
+                                    save_results_json(self.experiment, None, param, None, self.results_path, 'fail', error)
 		self.best_param = self.grid[np.argmax(self.score)]
 
