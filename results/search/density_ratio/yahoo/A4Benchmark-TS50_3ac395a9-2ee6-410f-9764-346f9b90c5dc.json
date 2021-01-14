@@ -1,0 +1,1 @@
+{"status":"success","error":"","algorithm":"density_ratio","dataset":"yahoo","data_name":"A4Benchmark-TS50","param":{"n":25,"k":10,"alpha":0.1,"thr":2,"peak_dist":0.5,"fold":5},"cp":[[0,53],[54,221],[222,470],[471,643],[644,977],[978,1145],[1146,1316],[1317,1398],[1399,1565],[1566,1679]],"score":{"metric":"compute_f1_score","value":0.13333333333333333}}

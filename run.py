@@ -19,34 +19,34 @@ search_results_path = os.path.join(os.getcwd(), 'results', 'search', algorithm_n
 test_restuls_path = os.path.join(os.getcwd(), 'results', 'test', algorithm_name, dataset)
 data_path = os.path.join(os.getcwd(), DATADIR)
 
-
-for data_name in data_names[11:12]:
-	print(data_name)
+for data_name in data_names[:]:
 	##Prepare experiment and paths
-	experiment = {'dataset': dataset, 
+        experiment = {'dataset': dataset, 
 				'data_name': data_name, 
 				'algorithm_name': algorithm_name, 
 				'metric': metric}
 	##Load data
-	data = pd.read_csv(os.path.join(data_path,  dataset,"{}_ts.csv".format(data_name)), header=None)
-	labels = pd.read_csv(os.path.join(data_path, dataset,"{}_labels.csv".format(data_name)), header=None)
-	ts = data.values[:, 1:]
+        data = pd.read_csv(os.path.join(data_path,  dataset,"{}_ts.csv".format(data_name)), header=None)
+        labels = pd.read_csv(os.path.join(data_path, dataset,"{}_labels.csv".format(data_name)), header=None).iloc[:-1,:]
+        ts = data.values[:, 1:]
 	# splitted_data = data_split(ts, labels, RATIO)
 	##Search for best parameters
-	optimizer = grid_search(PARAMS[algorithm_name], ALGORITHMS[algorithm_name], METRICS[metric], True, experiment, search_results_path)
-	optimizer.search(ts, labels, MARGIN)
-	try:
-		model = ALGORITHMS[algorithm_name](**optimizer.best_param)
-		model.train(ts)
-		model.detect(ts)
-		score = METRICS[metric](labels, model.cp, MARGIN)
-		save_results_json(experiment, model, optimizer.best_param, score, test_restuls_path)
-		save_results_table(experiment, score, test_restuls_path)
-		print(data_name, " data successfully completed!")
-	except Exception as error:
-		save_results_json(experiment, None, optimizer.best_param, None, test_restuls_path, status='fail', error = error)
-		save_results_table(experiment, None, test_restuls_path, status='fail')
-		print(data_name, " data failed!")
+        optimizer = grid_search(PARAMS[algorithm_name], ALGORITHMS[algorithm_name], METRICS[metric], True, experiment, search_results_path)
+        optimizer.search(ts, labels, MARGIN)
+        optimizer.best_param['max_iter'] = 1000
+        try:
+                model = ALGORITHMS[algorithm_name](**optimizer.best_param)
+                model.train(ts)
+                model.detect(ts, labels)
+                score = METRICS[metric](labels, model.cp, MARGIN)
+                print('score: ', score)
+                save_results_json(experiment, model, optimizer.best_param, score, test_restuls_path)
+                save_results_table(experiment, score, test_restuls_path)
+                print(data_name, " data successfully completed!")
+        except Exception as error:
+        	save_results_json(experiment, None, optimizer.best_param, None, test_restuls_path, status='fail', error = error)
+        	save_results_table(experiment, None, test_restuls_path, status='fail')
+        	print(data_name, " data failed!")
 
 
 

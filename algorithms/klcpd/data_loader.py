@@ -8,7 +8,7 @@ import math
 import torch
 from torch.autograd import Variable
 import pandas as pd
-
+from sklearn.preprocessing import MinMaxScaler
 class DataLoader(object):
     def __init__(self, array,wnd_dim, trn_ratio=0.6, val_ratio=0.8, sub_dim = 1):
         self.cuda = True
@@ -28,7 +28,8 @@ class DataLoader(object):
 
     # load data
     def load_data(self, trn_ratio=0.4, val_ratio=0.7):
-        self.Y = self.array 
+        self.Y = self.array
+        self.Y = MinMaxScaler().fit_transform(self.Y)
         self.T, self.D = self.Y.shape                           # T: time length; D: variable dimension
                                           # Y: time series data, time length x number of variables
         # labels = pd.read_csv(self.data_path+'_labels.csv', header = None)

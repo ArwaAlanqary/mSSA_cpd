@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "klcpd", "dataset": "energy", "data_name": "energy6", "param": {"lambda_ae": 10, "lambda_real": 0.1, "wnd_dim": 30}, "cp": [[0, 373], [374, 1503], [1504, 1968], [1969, 1970], [1971, 1972], [1973, 1974], [1975, 1976], [1977, 3762], [3763, 4892], [4893, 4974]], "score": {"metric": "compute_f1_score", "value": 0.125}}
