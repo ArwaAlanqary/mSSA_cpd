@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "bocpdms", "dataset": "struct", "data_name": "struct8", "param": {"intensity": 50, "prior_a": 1.0, "prior_b": 0.01}, "cp": [[0, 1], [2, 53], [54, 945], [946, 1822], [1823, 3398], [3399, 4999]], "score": {"metric": "compute_f1_score", "value": 0.16666666666666666}}
