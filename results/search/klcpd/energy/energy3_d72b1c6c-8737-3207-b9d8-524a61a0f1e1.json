@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "klcpd", "dataset": "energy", "data_name": "energy3", "param": {"lambda_ae": 0.1, "lambda_real": 0.1, "wnd_dim": 20}, "cp": [[0, 4974]], "score": {"metric": "compute_f1_score", "value": 0.2857142857142857}}

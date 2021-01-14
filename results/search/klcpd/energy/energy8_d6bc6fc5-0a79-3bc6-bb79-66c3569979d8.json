@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "klcpd", "dataset": "energy", "data_name": "energy8", "param": {"lambda_ae": 10, "lambda_real": 0.1, "wnd_dim": 30}, "cp": [[0, 418], [419, 420], [421, 2409], [2410, 3093], [3094, 3095], [3096, 3498], [3499, 3968], [3969, 3970], [3971, 4974]], "score": {"metric": "compute_f1_score", "value": 0.13333333333333333}}

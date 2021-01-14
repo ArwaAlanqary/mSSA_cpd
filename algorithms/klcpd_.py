@@ -19,6 +19,10 @@ import algorithms.klcpd.mmd_util as mmd_util
 from algorithms.klcpd.data_loader import DataLoader
 from algorithms.klcpd.optim import Optim
 import algorithms.utils as utils
+MARGIN = 10
+from optimizing.grid_search import grid_search
+from evaluation.classification import compute_f1_score
+import matplotlib.pyplot as plt 
 
 class NetG(nn.Module):
     def __init__(self, wnd_dim,RNN_hid_dim,  data):
@@ -72,7 +76,7 @@ class NetD(nn.Module):
 
 
 class KLCPD(nn.Module):
-    def __init__(self,lambda_real = 0.1,CRITIC_ITERS=5, weight_clip =0.1,  lambda_ae = 0.001, lr = 3e-4, eval_freq = 50, grad_clip = 10., weight_decay =0., momentum =0,   RNN_hid_dim =10,max_iter =200, optim = 'adam', batch_size =64, wnd_dim=25, sub_dim = 1,gpu =  0,trn_ratio = 1.0, val_ratio = 1.0, random_seed =1126, data_name = 'data_name', k = 3):
+    def __init__(self,lambda_real = 0.1,CRITIC_ITERS=5, weight_clip =0.1,  lambda_ae = 0.001, lr = 3e-4, eval_freq = 50, grad_clip = 10., weight_decay =0., momentum =0,   RNN_hid_dim =10,max_iter =100, optim = 'adam', batch_size =64, wnd_dim=25, sub_dim = 1,gpu =  3,trn_ratio = 1.0, val_ratio = 1.0, random_seed =1126, data_name = 'data_name', k = 5):
         super(KLCPD, self).__init__()
 
         self.trn_ratio = trn_ratio
@@ -83,6 +87,7 @@ class KLCPD(nn.Module):
         self.wnd_dim = wnd_dim
         self.sub_dim = sub_dim
         self.k = k 
+        print(self.wnd_dim, lambda_ae, lambda_real)
         # RNN hyperparemters
         self.RNN_hid_dim = RNN_hid_dim 
         
@@ -144,7 +149,7 @@ class KLCPD(nn.Module):
         cudnn.enabled = True
 
     def train(self, ts):
-
+        print('shape:' , ts.shape) 
         # ========= Load Dataset and initialize model=========#
         self.Data = DataLoader(ts,self.wnd_dim, trn_ratio=self.trn_ratio, val_ratio= self.val_ratio)
         netG = NetG(self.wnd_dim, self.RNN_hid_dim, self.Data)
@@ -189,7 +194,8 @@ class KLCPD(nn.Module):
 
 
         # ========= Main loop for adversarial training kernel with negative samples X_f + noise =========#
-        # Y_val = self.Data.val_set['Y'].numpy()
+        Y_val = self.Data.trn_set['Y'].numpy()
+        print(Y_val.shape)
         # L_val = self.Data.val_set['L'].numpy()
         # Y_tst = self.Data.tst_set['Y'].numpy()
         # L_tst = self.Data.tst_set['L'].numpy()
@@ -308,6 +314,7 @@ class KLCPD(nn.Module):
                     # val_dict = self.detect_evaluate( self.Data.val_set, Y_val, L_val)
                     # tst_dict = self.detect_evaluate( self.Data.tst_set, Y_tst, L_tst)
                     total_time = time.time() - start_time
+                    print(mmd2_real.mean().data.item(),lossG.item() )
                     # print('iter %4d tm %4.2fm val_mse %.1f val_mae %.1f val_auc %.6f'
                     #         % (epoch, total_time / 60.0, val_dict['mse'], val_dict['mae'], val_dict['auc']), end='')
 
@@ -337,8 +344,10 @@ class KLCPD(nn.Module):
     # self.netG.load_state_dict(torch.load('%s/netG.pkl' % (self.save_path)))
     # self.netD.load_state_dict(torch.load('%s/netD.pkl' % (self.save_path)))
 
+        #self.netG.load_state_dict(torch.load('%s/netG.pkl' % (self.save_path)))
+        #self.netD.load_state_dict(torch.load('%s/netD.pkl' % (self.save_path))) 
     
-    def detect(self, ts):
+    def detect(self, ts, labels):
         # Y, L should be numpy array
 
         data = DataLoader(ts, self.wnd_dim, trn_ratio=self.trn_ratio, val_ratio= self.val_ratio)
@@ -360,12 +369,30 @@ class KLCPD(nn.Module):
         L_pred = Y_pred
         self.score = L_pred
         # get the best threshold somehow and calculate cps ..
-        
-        threshold = np.mean(self.score) + self.k * np.std(self.score)
-        binary = self.score > threshold
-        ### return binaries based on threshold 
 
+        score = []
+        thresholds = []
+        print(self.score.shape)
+        labels_ = labels.values[:,0]
+        L = np.zeros(self.score.shape)                              # L: label of anomaly, time length x 1
+        L[labels_] = 1
+        print(L)
+        fp_list, tp_list, allthresholds = sklearn.metrics.roc_curve(L, self.score)
+        auc = sklearn.metrics.auc(fp_list, tp_list)
+        print('auc: ', auc)
+        for threshold in allthresholds[:]:
+             #threshold = np.mean(self.score) + k * np.std(self.score)
+             thresholds.append(threshold)
+             binary = self.score > threshold
+             ### return binaries based on threshold 
+             cp = utils.convert_binary_to_intervals(binary)
+             score.append(compute_f1_score(labels, cp, MARGIN))
+        print(score, np.argmax(score))
+        best_threshold = thresholds[np.argmax(score)]
+        binary = self.score > best_threshold
         self.cp = utils.convert_binary_to_intervals(binary)
+        plt.plot(self.score)
+        plt.savefig('klcpd.png')
         print('change points: ', self.cp)
     # def detect_evaluate(self, data, Y_true, L_true):
     #     # Y, L should be numpy array
