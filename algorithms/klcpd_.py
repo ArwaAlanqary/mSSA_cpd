@@ -334,6 +334,9 @@ class KLCPD(nn.Module):
                 #if best_mmd_real < 1e-4:
                 # if mmd2_real.mean().data.item() < 1e-5:
                 #     exit(0)
+    # self.netG.load_state_dict(torch.load('%s/netG.pkl' % (self.save_path)))
+    # self.netD.load_state_dict(torch.load('%s/netD.pkl' % (self.save_path)))
+
     
     def detect(self, ts):
         # Y, L should be numpy array
@@ -357,8 +360,8 @@ class KLCPD(nn.Module):
         L_pred = Y_pred
         self.score = L_pred
         # get the best threshold somehow and calculate cps ..
-        threshold = np.mean(self.score) + self.k * np.std(self.score)
         
+        threshold = np.mean(self.score) + self.k * np.std(self.score)
         binary = self.score > threshold
         ### return binaries based on threshold 
 
