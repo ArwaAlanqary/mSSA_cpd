@@ -116,7 +116,6 @@ class MSSA:
 
                 base_matrix = current_ts[t:t+self.window_size,:].reshape([self.rows, self.cols], order = 'F')
                 base_matrix = base_matrix[:,np.arange(self.cols).reshape([self.no_ts,self.cols_ts]).flatten('F')]
-                print(base_matrix)
                 U,S,ـ = np.linalg.svd(base_matrix, full_matrices= False)
                 if not self.rank: 
                     r = utils.estimate_rank(base_matrix, 0.95)
@@ -134,14 +133,13 @@ class MSSA:
             
             test_matrix = current_ts[t-self.window_size:t].reshape([self.rows, self.cols], order = 'F')
             test_matrix = test_matrix[:,np.arange(self.cols).reshape([self.no_ts,self.cols_ts]).flatten('F')]
-            print(test_matrix)
                 
             test_vector = test_matrix[:, -3:]
             _,S, _ = np.linalg.svd(test_matrix, full_matrices= False)
             test_singular_values = S[:r]
             
             #distance detection 
-            D_t = (np.linalg.norm(perp_basis.T @ test_vector, 2))**2 - distance_shift_c
+            D_t = (np.linalg.norm(perp_basis.T @ test_vector, 2,0).max())**2 - distance_shift_c
             distance_score[t:t+step] = D_t
             self.distance_cusum_score[t:t+step] = max(self.distance_cusum_score[t-1] + D_t, 0)
             

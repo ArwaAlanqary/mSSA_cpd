@@ -4,7 +4,7 @@ import pandas as pd
 import json
 from sklearn.model_selection import ParameterGrid
 from algorithms.utils import save_results_json
-
+from tqdm import tqdm
 class grid_search: 
 	def __init__(self, params, algorithm, scoring, store_search_results = False, experiment = None, results_path=None): 
 		self.params = params
@@ -27,17 +27,17 @@ class grid_search:
 	def search(self, ts, labels, margin): 
 		self.ts = ts
 		self.labels = labels
-		for param in self.grid: 
-                    if True:#try: 
+		for param in tqdm(self.grid): 
+                    try: 
                                 model = self.algorithm(**param)
                                 model.train(self.ts)
-                                model.detect(self.ts, self.labels)
+                                model.detect(self.ts)
                                 score_i = self.scoring(self.labels, model.cp, margin)
                                 self.score.append(score_i)
                                 print('score:', score_i)
                                 if self.store_search_results: 
                                 	save_results_json(self.experiment, model, param, score_i, self.results_path)
-                    else:#except Exception as error: 
+                    except Exception as error: 
                                 print("FAIL", error)
                                 self.score.append(-1)
                                 if self.store_search_results: 
