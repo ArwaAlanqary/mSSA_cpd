@@ -9,6 +9,7 @@ from algorithms.hybrid_cusum import hybrid_cusum
 
 #from algorithms.binseg import binseg
 from algorithms.mSSA import MSSA
+from algorithms.mSSA_mw import MSSA_mw
 from evaluation.classification import compute_f1_score
 
 DATADIR = "data"
@@ -159,7 +160,8 @@ ALGORITHMS = {
     "hybrid_cusum_moving_window": hybrid_cusum_moving_window,
     "klcpd": KLCPD,
     "bocpdms": BOCPDMS,
-    "mSSA": MSSA
+    "mssa": MSSA,
+    "mssa_mw": MSSA_mw
 }
 
 
@@ -192,13 +194,24 @@ PARAMS = {
         'distance_threshold': [10, 5], 
         'training_ratio': [0.5, 0.6], 
         'skip': [True, False]
+    },  
+    "mssa_mw": {
+        'window_size': [700, 400, 200, 50], 
+        'rows': [30, 15, 5], 
+        'overlap_ratio': [0.0, 0.5, 0.9], 
+        'rank': [None], 
+        'singular_threshold': [2, 5], 
+        'distance_threshold': [10, 5], 
+        'training_ratio': [0.5, 0.6], 
+        'skip': [False],
+        'normalize': [True]
     }, 
     "klcpd": {
         'lambda_real': [0.001, 0.1,1,10],
          'lambda_ae':[0.001,0.1,1,10],
          'wnd_dim':[25]
     },
-    "mSSA": {
+    "mssa": {
         'window_size': [700, 400, 200, 50], 
         'rows': [30, 15, 5], 
         'rank': [None], 
