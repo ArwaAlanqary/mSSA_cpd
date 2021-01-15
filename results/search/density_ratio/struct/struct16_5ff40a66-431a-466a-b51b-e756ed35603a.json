@@ -1,0 +1,1 @@
+{"status":"success","error":"","algorithm":"density_ratio","dataset":"struct","data_name":"struct16","param":{"n":75,"k":10,"alpha":0.1,"thr":2,"peak_dist":0.5,"fold":5},"cp":[[0,88],[89,664],[665,798],[799,4041],[4042,4149],[4150,4520],[4521,4744],[4745,4999]],"score":{"metric":"compute_f1_score","value":0.14285714285714288}}

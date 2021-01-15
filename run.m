@@ -9,7 +9,7 @@ clear
 % Specify experiment
 load('config.mat')
 algorithm_name = 'density_ratio';
-dataset = 'struct';
+dataset = 'hasc';
 metric = 'compute_f1_score';
 data_names = config.DATASETS.(dataset);
 
@@ -27,7 +27,9 @@ grid = allcomb(config.PARAMS.n, config.PARAMS.k, config.PARAMS.alpha, ...
 % param = grid(2, :);
 % [~, cp] = density_ratio(ts, param(1), param(2), param(3), param(4), ...
 %             param(5), param(6));
+
 data_sets_length = length(data_names);
+
 parfor data_name_i = 1:data_sets_length
     data_name = data_names(data_name_i);
     experiment = struct('dataset', dataset, 'data_name', data_name, ...
