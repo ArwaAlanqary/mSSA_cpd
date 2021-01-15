@@ -1,20 +1,20 @@
-microsoft_ssa,energy, energy0, success, 0.9090909090909091,
-microsoft_ssa,energy, energy1, success, 0.8333333333333334,
-microsoft_ssa,energy, energy2, success, 0.8,
-microsoft_ssa,energy, energy3, success, 0.8,
-microsoft_ssa,energy, energy4, success, 0.7272727272727272,
-microsoft_ssa,energy, energy5, success, 0.8,
-microsoft_ssa,energy, energy6, success, 0.6666666666666667,
-microsoft_ssa,energy, energy7, success, 0.8333333333333334,
-microsoft_ssa,energy, energy8, success, 0.7272727272727272,
-microsoft_ssa,energy, energy9, success, 0.9090909090909091,
-microsoft_ssa,energy, energy10, success, 0.7272727272727272,
-microsoft_ssa,energy, energy11, success, 0.8,
-microsoft_ssa,energy, energy12, success, 0.9090909090909091,
-microsoft_ssa,energy, energy13, success, 0.9090909090909091,
-microsoft_ssa,energy, energy14, success, 0.7272727272727272,
-microsoft_ssa,energy, energy15, success, 0.8,
-microsoft_ssa,energy, energy16, success, 0.9090909090909091,
-microsoft_ssa,energy, energy17, success, 0.7692307692307692,
-microsoft_ssa,energy, energy18, success, 0.8,
-microsoft_ssa,energy, energy19, success, 0.8333333333333334,
+microsoft_ssa,energy,energy15,success,0.888888888888889
+microsoft_ssa,energy,energy1,success,0.9090909090909091
+microsoft_ssa,energy,energy10,success,0.8000000000000002
+microsoft_ssa,energy,energy5,success,0.888888888888889
+microsoft_ssa,energy,energy13,success,1.0
+microsoft_ssa,energy,energy19,success,0.9090909090909091
+microsoft_ssa,energy,energy7,success,0.9090909090909091
+microsoft_ssa,energy,energy18,success,0.888888888888889
+microsoft_ssa,energy,energy14,success,0.8000000000000002
+microsoft_ssa,energy,energy17,success,0.8333333333333333
+microsoft_ssa,energy,energy0,success,1.0
+microsoft_ssa,energy,energy8,success,0.8000000000000002
+microsoft_ssa,energy,energy12,success,1.0
+microsoft_ssa,energy,energy9,success,1.0
+microsoft_ssa,energy,energy11,success,0.888888888888889
+microsoft_ssa,energy,energy16,success,1.0
+microsoft_ssa,energy,energy6,success,0.7142857142857143
+microsoft_ssa,energy,energy4,success,0.8000000000000002
+microsoft_ssa,energy,energy2,success,0.888888888888889
+microsoft_ssa,energy,energy3,success,0.888888888888889
