@@ -10,7 +10,7 @@ from algorithms.utils import data_split, save_results_json, save_results_table
 
 #Specify experiment
 algorithm_name = 'mssa_mw'
-dataset = 'struct'
+dataset = 'hasc'
 data_names = DATASETS[dataset] ##All data files in the dataset
 metric = 'compute_f1_score'
 
@@ -19,7 +19,7 @@ search_results_path = os.path.join(os.getcwd(), 'results', 'search', algorithm_n
 test_restuls_path = os.path.join(os.getcwd(), 'results', 'test', algorithm_name, dataset)
 data_path = os.path.join(os.getcwd(), DATADIR)
 
-for data_name in data_names[:]:
+for data_name in data_names[13:]:
 	##Prepare experiment and paths
         experiment = {'dataset': dataset, 
 				'data_name': data_name, 
