@@ -9,8 +9,8 @@ from evaluation.classification import compute_f1_score
 from algorithms.utils import data_split, save_results_json, save_results_table
 
 #Specify experiment
-algorithm_name = 'klcpd'
-dataset = 'struct'
+algorithm_name = 'mssa_mw'
+dataset = 'hasc'
 data_names = DATASETS[dataset] ##All data files in the dataset
 metric = 'compute_f1_score'
 
@@ -19,7 +19,7 @@ search_results_path = os.path.join(os.getcwd(), 'results', 'search', algorithm_n
 test_restuls_path = os.path.join(os.getcwd(), 'results', 'test', algorithm_name, dataset)
 data_path = os.path.join(os.getcwd(), DATADIR)
 
-for data_name in data_names[:]:
+for data_name in data_names[8:11]:
 	##Prepare experiment and paths
         experiment = {'dataset': dataset, 
 				'data_name': data_name, 
@@ -27,17 +27,16 @@ for data_name in data_names[:]:
 				'metric': metric}
 	##Load data
         data = pd.read_csv(os.path.join(data_path,  dataset,"{}_ts.csv".format(data_name)), header=None)
-        labels = pd.read_csv(os.path.join(data_path, dataset,"{}_labels.csv".format(data_name)), header=None).iloc[:-1,:]
+        labels = pd.read_csv(os.path.join(data_path, dataset,"{}_labels.csv".format(data_name)), header=None).iloc[:,:]
         ts = data.values[:, 1:]
 	# splitted_data = data_split(ts, labels, RATIO)
 	##Search for best parameters
         optimizer = grid_search(PARAMS[algorithm_name], ALGORITHMS[algorithm_name], METRICS[metric], True, experiment, search_results_path)
         optimizer.search(ts, labels, MARGIN)
-        optimizer.best_param['max_iter'] = 1000
         try:
                 model = ALGORITHMS[algorithm_name](**optimizer.best_param)
                 model.train(ts)
-                model.detect(ts, labels)
+                model.detect(ts)
                 score = METRICS[metric](labels, model.cp, MARGIN)
                 print('score: ', score)
                 save_results_json(experiment, model, optimizer.best_param, score, test_restuls_path)

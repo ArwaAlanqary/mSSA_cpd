@@ -1,0 +1,1 @@
+{"status":"success","error":"","algorithm":"density_ratio","dataset":"hasc","data_name":"HASC1002","param":{"n":75,"k":10,"alpha":0.1,"thr":2,"peak_dist":0.5,"fold":5},"cp":[[0,302],[303,479],[480,797],[798,851],[852,1942],[1943,2015],[2016,2767],[2768,6006],[6007,6773],[6774,8827],[8828,9243],[9244,10752],[10753,11767]],"score":{"metric":"compute_f1_score","value":0.08}}

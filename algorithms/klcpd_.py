@@ -314,6 +314,7 @@ class KLCPD(nn.Module):
                     # val_dict = self.detect_evaluate( self.Data.val_set, Y_val, L_val)
                     # tst_dict = self.detect_evaluate( self.Data.tst_set, Y_tst, L_tst)
                     total_time = time.time() - start_time
+                    print(mmd2_real.mean().data.item(),lossG.item() )
                     # print('iter %4d tm %4.2fm val_mse %.1f val_mae %.1f val_auc %.6f'
                     #         % (epoch, total_time / 60.0, val_dict['mse'], val_dict['mae'], val_dict['auc']), end='')
 
@@ -340,6 +341,9 @@ class KLCPD(nn.Module):
                 #if best_mmd_real < 1e-4:
                 # if mmd2_real.mean().data.item() < 1e-5:
                 #     exit(0)
+    # self.netG.load_state_dict(torch.load('%s/netG.pkl' % (self.save_path)))
+    # self.netD.load_state_dict(torch.load('%s/netD.pkl' % (self.save_path)))
+
         #self.netG.load_state_dict(torch.load('%s/netG.pkl' % (self.save_path)))
         #self.netD.load_state_dict(torch.load('%s/netD.pkl' % (self.save_path))) 
     
@@ -365,6 +369,7 @@ class KLCPD(nn.Module):
         L_pred = Y_pred
         self.score = L_pred
         # get the best threshold somehow and calculate cps ..
+
         score = []
         thresholds = []
         print(self.score.shape)

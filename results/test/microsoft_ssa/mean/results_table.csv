@@ -1,20 +1,20 @@
-microsoft_ssa,mean, mean0, success, 0.8,
-microsoft_ssa,mean, mean1, success, 0.6666666666666666,
-microsoft_ssa,mean, mean2, success, 0.7272727272727272,
-microsoft_ssa,mean, mean3, success, 0.8333333333333334,
-microsoft_ssa,mean, mean4, success, 0.7692307692307692,
-microsoft_ssa,mean, mean5, success, 0.7272727272727272,
-microsoft_ssa,mean, mean6, success, 0.7272727272727272,
-microsoft_ssa,mean, mean7, success, 0.8,
-microsoft_ssa,mean, mean8, success, 0.9090909090909091,
-microsoft_ssa,mean, mean9, success, 0.9090909090909091,
-microsoft_ssa,mean, mean10, success, 0.9090909090909091,
-microsoft_ssa,mean, mean11, success, 0.6666666666666666,
-microsoft_ssa,mean, mean12, success, 0.8,
-microsoft_ssa,mean, mean13, success, 0.8,
-microsoft_ssa,mean, mean14, success, 0.7272727272727272,
-microsoft_ssa,mean, mean15, success, 0.8333333333333334,
-microsoft_ssa,mean, mean16, success, 0.7142857142857143,
-microsoft_ssa,mean, mean17, success, 0.8,
-microsoft_ssa,mean, mean18, success, 0.7272727272727272,
-microsoft_ssa,mean, mean19, success, 0.7692307692307692,
+microsoft_ssa,mean,mean7,success,0.888888888888889
+microsoft_ssa,mean,mean3,success,0.9090909090909091
+microsoft_ssa,mean,mean18,success,0.8000000000000002
+microsoft_ssa,mean,mean5,success,0.8000000000000002
+microsoft_ssa,mean,mean13,success,0.888888888888889
+microsoft_ssa,mean,mean9,success,1.0
+microsoft_ssa,mean,mean10,success,1.0
+microsoft_ssa,mean,mean12,success,0.888888888888889
+microsoft_ssa,mean,mean6,success,0.8000000000000002
+microsoft_ssa,mean,mean16,success,0.7692307692307693
+microsoft_ssa,mean,mean2,success,0.8000000000000002
+microsoft_ssa,mean,mean19,success,0.8333333333333333
+microsoft_ssa,mean,mean1,success,0.7272727272727272
+microsoft_ssa,mean,mean14,success,0.8000000000000002
+microsoft_ssa,mean,mean8,success,1.0
+microsoft_ssa,mean,mean15,success,0.9090909090909091
+microsoft_ssa,mean,mean4,success,0.8333333333333333
+microsoft_ssa,mean,mean0,success,0.888888888888889
+microsoft_ssa,mean,mean11,success,0.7272727272727272
+microsoft_ssa,mean,mean17,success,0.888888888888889

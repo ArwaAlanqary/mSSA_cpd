@@ -123,6 +123,19 @@ class hybrid_cusum_moving_window:
                     distance_h = self.distance_threshold * eps
                     t = t+self.window_size
                     rebase = False
+                base_matrix = np.reshape(current_ts[t-self.window_size: t], (self.rows, self.cols), order="F")
+                U,S,ـ = np.linalg.svd(base_matrix, full_matrices= False)
+                if not self.rank: 
+                    r = utils.estimate_rank(base_matrix, 0.95)
+                else: 
+                    r = self.rank
+                singular_values = S[:r]
+                perp_basis = U[:, r:]
+                singular_shift_c = self._estimate_singular_shift_c(base_matrix, r)
+                distance_shift_c, eps = self._estimate_distance_shift_c(base_matrix, r)
+                singular_h = self.singular_threshold * singular_shift_c
+                distance_h = self.distance_threshold * eps
+
                 if t <= len(current_ts) - (self.window_size - self.window_overlap):
                     test_matrix = np.reshape(current_ts[t-self.window_overlap: t + (self.window_size - self.window_overlap)], (self.rows, self.cols), order="F") 
                     _,S, _ = np.linalg.svd(test_matrix, full_matrices= False)

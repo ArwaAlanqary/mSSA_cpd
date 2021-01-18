@@ -1,0 +1,1 @@
+{"status": "fail", "error": "training matrix size is less than the rank", "algorithm": "mssa_mw", "dataset": "struct", "data_name": "struct17", "param": {"distance_threshold": 10, "normalize": true, "overlap_ratio": 0.5, "rank": null, "rows": 30, "singular_threshold": 5, "skip": false, "training_ratio": 0.5, "window_size": 200}, "cp": null, "score": null}
