@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "klcpd", "dataset": "hasc", "data_name": "HASC1012", "param": {"wnd_dim": 25, "lambda_real": 0.001, "lambda_ae": 0.001, "max_iter": 1000}, "cp": [[0, 11742]], "score": {"metric": "compute_f1_score", "value": 0.15384615384615385}}

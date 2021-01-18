@@ -1,1 +1,1 @@
-{"status": "success", "error": "", "algorithm": "klcpd", "dataset": "hasc", "data_name": "HASC1001", "param": {"lambda_ae": 1, "lambda_real": 1, "wnd_dim": 25}, "cp": [[0, 11831]], "score": {"metric": "compute_f1_score", "value": 0.16666666666666669}}
+{"status": "success", "error": "", "algorithm": "klcpd", "dataset": "hasc", "data_name": "HASC1001", "param": {"lambda_ae": 1, "lambda_real": 1, "wnd_dim": 25}, "cp": [[0, 11856]], "score": {"metric": "compute_f1_score", "value": 0.15384615384615385}}
