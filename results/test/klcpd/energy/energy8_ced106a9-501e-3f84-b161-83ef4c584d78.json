@@ -1,1 +1,0 @@
-{"status": "fail", "error": "fit_transform() missing 1 required positional argument: 'X'", "algorithm": "klcpd", "dataset": "energy", "data_name": "energy8", "param": {"wnd_dim": 5, "lambda_real": 0.001, "lambda_ae": 0.001, "max_iter": 1000}, "cp": null, "score": null}
