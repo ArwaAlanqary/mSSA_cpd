@@ -10,8 +10,8 @@ from evaluation.classification import compute_f1_score
 from algorithms.utils import data_split, save_results_json, save_results_table
 
 #Specify experiment
-algorithm_name = 'binseg'
-dataset = 'hasc'
+algorithm_name = 'no_change'
+dataset = 'energy'
 data_names = DATASETS[dataset] ##All data files in the dataset
 metric = 'compute_f1_score'
 
@@ -30,7 +30,7 @@ for data_name in data_names:
         data = pd.read_csv(os.path.join(data_path,  dataset,"{}_ts.csv".format(data_name)), header=None)
         labels = pd.read_csv(os.path.join(data_path, dataset,"{}_labels.csv".format(data_name)), header=None).iloc[:,:]
         ts = data.values[:, 1:]
-        ts = np.linalg.norm(ts, ord = 2, axis = 1)
+        # ts = np.linalg.norm(ts, ord = 2, axis = 1)
 	# splitted_data = data_split(ts, labels, RATIO)
 	##Search for best parameters
         optimizer = grid_search(PARAMS[algorithm_name], ALGORITHMS[algorithm_name], METRICS[metric], True, experiment, search_results_path)

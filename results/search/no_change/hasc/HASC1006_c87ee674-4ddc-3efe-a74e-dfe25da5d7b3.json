@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "no_change", "dataset": "hasc", "data_name": "HASC1006", "param": {}, "cp": [[0, 11861]], "score": {"metric": "compute_f1_score", "value": 0.14285714285714288}}
