@@ -1,0 +1,1 @@
+{"status": "fail", "error": "Error in cpt.meanvar(mt, penalty = \"SIC\", test.stat = \"CSS\", method = \"BinSeg\",  : \n  Invalid test statistic, must be Normal, Gamma, Exponential or Poisson\n", "algorithm": "binseg", "dataset": "hasc", "data_name": "HASC1003", "param": {"max_cp": "max", "method": "meanvar", "penalty": "SIC", "test_stat": "CSS"}, "cp": null, "score": null}

@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "binseg", "dataset": "hasc", "data_name": "HASC1004", "param": {"max_cp": "default", "method": "var", "penalty": "Asymptotic", "test_stat": "Normal"}, "cp": [[0, 1455.0], [1456.0, 3924.0], [3925.0, 4897.0], [4898.0, 8331.0], [8332.0, 8864.0], [8865.0, 11842]], "score": {"metric": "compute_f1_score", "value": 0.11764705882352942}}

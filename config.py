@@ -157,6 +157,7 @@ ALGORITHMS = {
     "hybrid_cusum_moving_window": hybrid_cusum_moving_window,
     "klcpd": KLCPD,
     "bocpdms": BOCPDMS,
+    "binseg": binseg,
     "mssa": MSSA,
     "mssa_mw": MSSA_mw
 }
