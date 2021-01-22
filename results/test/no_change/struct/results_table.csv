@@ -1,20 +1,20 @@
-no_change,struct, struct0, success, 0.2857142857142857,
-no_change,struct, struct1, success, 0.2857142857142857,
-no_change,struct, struct2, success, 0.2857142857142857,
-no_change,struct, struct3, success, 0.2857142857142857,
-no_change,struct, struct4, success, 0.2857142857142857,
-no_change,struct, struct5, success, 0.2857142857142857,
-no_change,struct, struct6, success, 0.2857142857142857,
-no_change,struct, struct7, success, 0.2857142857142857,
-no_change,struct, struct8, success, 0.2857142857142857,
-no_change,struct, struct9, success, 0.2857142857142857,
-no_change,struct, struct10, success, 0.2857142857142857,
-no_change,struct, struct11, success, 0.2857142857142857,
-no_change,struct, struct12, success, 0.2857142857142857,
-no_change,struct, struct13, success, 0.2857142857142857,
-no_change,struct, struct14, success, 0.2857142857142857,
-no_change,struct, struct15, success, 0.2857142857142857,
-no_change,struct, struct16, success, 0.2857142857142857,
-no_change,struct, struct17, success, 0.2857142857142857,
-no_change,struct, struct18, success, 0.2857142857142857,
-no_change,struct, struct19, success, 0.2857142857142857,
+no_change,struct,struct19,success,0.33333333333333337
+no_change,struct,struct18,success,0.33333333333333337
+no_change,struct,struct4,success,0.33333333333333337
+no_change,struct,struct11,success,0.33333333333333337
+no_change,struct,struct5,success,0.33333333333333337
+no_change,struct,struct10,success,0.33333333333333337
+no_change,struct,struct3,success,0.33333333333333337
+no_change,struct,struct16,success,0.33333333333333337
+no_change,struct,struct2,success,0.33333333333333337
+no_change,struct,struct17,success,0.33333333333333337
+no_change,struct,struct9,success,0.33333333333333337
+no_change,struct,struct8,success,0.33333333333333337
+no_change,struct,struct6,success,0.33333333333333337
+no_change,struct,struct13,success,0.33333333333333337
+no_change,struct,struct7,success,0.33333333333333337
+no_change,struct,struct12,success,0.33333333333333337
+no_change,struct,struct1,success,0.33333333333333337
+no_change,struct,struct14,success,0.33333333333333337
+no_change,struct,struct0,success,0.33333333333333337
+no_change,struct,struct15,success,0.33333333333333337

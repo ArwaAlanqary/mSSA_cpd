@@ -26,8 +26,6 @@ class microsoft_ssa:
     pass
 
   def detect(self, ts):
-    if min(ts.shape) > 1:
-        raise
     self.ts = self._format_input(ts)
 
     cpd = SsaChangePointDetector(training_window_size=self.training_window_size, 
