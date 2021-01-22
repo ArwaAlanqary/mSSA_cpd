@@ -9,9 +9,11 @@ function [score, cp] = density_ratio(ts, n, k, alpha, thr, peak_dist, fold)
     
     score1 = change_detection(ts,n,k,alpha,fold);
     score2 = change_detection(ts(:,end:-1:1),n,k,alpha,fold);
+    score2 = score2(end:-1:1);
     score = score1+score2;
     threshold = mean(score) + thr*std(score);
-    distance = peak_dist*n;
+    distance = peak_dist*(n+k-2);
+    score = [zeros(1,n-2+k),score];
     [~, cp] = findpeaks(score,'MinPeakHeight',threshold, ...
                         'MinPeakDistance',distance);
     if isempty(cp)
