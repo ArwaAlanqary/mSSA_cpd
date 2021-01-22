@@ -8,6 +8,7 @@ from algorithms.hybrid_cusum_moving_window import hybrid_cusum_moving_window
 from algorithms.binseg import binseg
 from algorithms.mSSA import MSSA
 from algorithms.mSSA_mw import MSSA_mw
+from algorithms.no_change import no_change
 from evaluation.classification import compute_f1_score
 
 DATADIR = "data"
@@ -159,7 +160,8 @@ ALGORITHMS = {
     "bocpdms": BOCPDMS,
     "binseg": binseg,
     "mssa": MSSA,
-    "mssa_mw": MSSA_mw
+    "mssa_mw": MSSA_mw, 
+    "no_change": no_change
 }
 
 
@@ -236,6 +238,9 @@ PARAMS = {
             "AIC",
             "Hannan-Quinn",
             "Asymptotic"]
+    }
+    "no_change": {
+    
     }
 }
 
