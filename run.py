@@ -10,7 +10,7 @@ from evaluation.classification import compute_f1_score
 from algorithms.utils import data_split, save_results_json, save_results_table
 
 #Specify experiment
-algorithm_name = 'microsoft_ssa'
+algorithm_name = 'mssa'
 dataset = 'hasc'
 data_names = DATASETS[dataset] ##All data files in the dataset
 metric = 'compute_f1_score'
@@ -20,7 +20,7 @@ search_results_path = os.path.join(os.getcwd(), 'results', 'search', algorithm_n
 test_restuls_path = os.path.join(os.getcwd(), 'results', 'test', algorithm_name, dataset)
 data_path = os.path.join(os.getcwd(), DATADIR)
 
-for data_name in data_names[17:]:
+for data_name in data_names[:-1]:
 	##Prepare experiment and paths
         experiment = {'dataset': dataset, 
 				'data_name': data_name, 
@@ -31,7 +31,7 @@ for data_name in data_names[17:]:
         labels = pd.read_csv(os.path.join(data_path, dataset,"{}_labels.csv".format(data_name)), header=None).iloc[:,:]
         ts = data.values[:, 1:]
         ts = np.linalg.norm(ts, ord = 2, axis = 1)
-        # ts.reshape(-1,1)
+        ts = ts.reshape(-1,1)
         # print(ts.size)
 	# splitted_data = data_split(ts, labels, RATIO)
 	##Search for best parameters
