@@ -238,7 +238,7 @@ PARAMS = {
             "AIC",
             "Hannan-Quinn",
             "Asymptotic"]
-    }
+    },
     "no_change": {
     
     }
