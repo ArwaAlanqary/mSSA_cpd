@@ -1,1 +1,0 @@
-{"status": "fail", "error": "error in window rows", "algorithm": "hybrid_cusum_moving_window", "dataset": "struct", "data_name": "struct9", "param": {"distance_threshold": 10, "overlap_ratio": 0.5, "rank": null, "rows": 30, "singular_threshold": 2, "skip": true, "training_ratio": 0.5, "window_size": 50}, "cp": null, "score": null}

@@ -4,7 +4,7 @@ import pandas as pd
 import algorithms.utils as utils
 from sklearn.preprocessing import StandardScaler
 
-class MSSA_mw: 
+class mssa_mw: 
 
     def __init__(self, window_size = 200, rows= 30, rank=None, singular_threshold=2, 
            distance_threshold = 10, training_ratio= .5, skip = True, normalize = True, overlap_ratio = 0.0):
@@ -166,7 +166,7 @@ class MSSA_mw:
                 singular_test = False
             test_vector = current_ts[t:t+self.rows,:]
             #distance detection 
-            D_t = (np.linalg.norm(perp_basis.T @ test_vector, 2,0).max())**2 - distance_shift_c
+            D_t = (np.linalg.norm(perp_basis.T @ test_vector, 2,0).sum())**2 - distance_shift_c
             distance_score[t:t+step] = D_t
             distance_cusum_score[t:t+step] = max(distance_cusum_score[t-1] + D_t, 0)
             if distance_cusum_score[t] >= distance_h:
@@ -176,7 +176,7 @@ class MSSA_mw:
                 else: 
                     current_cp[t+self.rows] = 1 #Count cp at the end of the test vector 
                     t = t+self.rows
-                rebase=True 
+                rebase = True 
                 continue 
             
             #singular values detection 

@@ -5,7 +5,7 @@ import algorithms.utils as utils
 
 from algorithms.bocpdms import CpModel, BVARNIG, Detector
 
-class BOCPDMS: 
+class bocpdms: 
   def __init__(self, prior_a = 0.1, prior_b = 0.1, prior_mean_scale = 0, prior_var_scale= 1, intercept_grouping= None,intensity = 50,threshold = 100):
     self.prior_a = prior_a
     self.prior_b = prior_b

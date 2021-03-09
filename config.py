@@ -2,12 +2,13 @@
 #                      Experiment parameters and settings                    #
 ##############################################################################
 from algorithms.microsoft_ssa import microsoft_ssa
-from algorithms.klcpd_ import KLCPD
-from algorithms.bocpdms_ import BOCPDMS
-from algorithms.hybrid_cusum_moving_window import hybrid_cusum_moving_window
+from algorithms.klcpd_ import klcpd
+from algorithms.bocpdms_ import bocpdms
 from algorithms.binseg import binseg
-from algorithms.mSSA import MSSA
-from algorithms.mSSA_mw import MSSA_mw
+from algorithms.mssa import mssa
+from algorithms.mssa_mw import mssa_mw
+from algorithms.mssa_dist import mssa_dist
+from algorithms.mssa_mw_dist import mssa_mw_dist
 from algorithms.no_change import no_change
 from evaluation.classification import compute_f1_score
 
@@ -155,13 +156,14 @@ DATASETS = {
 
 ALGORITHMS = {
     "microsoft_ssa":microsoft_ssa,
-    "hybrid_cusum_moving_window": hybrid_cusum_moving_window,
-    "klcpd": KLCPD,
-    "bocpdms": BOCPDMS,
+    "klcpd": klcpd,
+    "bocpdms": bocpdms,
     "binseg": binseg,
-    "mssa": MSSA,
-    "mssa_mw": MSSA_mw, 
-    "no_change": no_change
+    "mssa": mssa,
+    "mssa_mw": mssa_mw, 
+    "mssa_dist": mssa_dist,
+    "no_change": no_change, 
+    "mssa_mw_dist": mssa_mw_dist
 }
 
 
@@ -176,25 +178,6 @@ PARAMS = {
          'power_martingale_epsilon': [0.1, 0.5], 
          'confidence': [95.0]
     },
-    "hybrid_cusum": {
-        'window_size': [700, 400, 200, 50], 
-        'rows': [30, 15, 5], 
-        'rank': [None], 
-        'singular_threshold': [2, 5], 
-        'distance_threshold': [10, 5], 
-        'training_ratio': [0.5, 0.6], 
-        'skip': [True, False]
-    }, 
-    "hybrid_cusum_moving_window": {
-        'window_size': [700, 400, 200, 50], 
-        'rows': [30, 15, 5], 
-        'overlap_ratio': [0.0, 0.5, 0.9], 
-        'rank': [None], 
-        'singular_threshold': [2, 5], 
-        'distance_threshold': [10, 5], 
-        'training_ratio': [0.5, 0.6], 
-        'skip': [True, False]
-    },  
     "mssa_mw": {
         'window_size': [700, 400, 200, 50], 
         'rows': [30, 15, 5], 
@@ -220,6 +203,24 @@ PARAMS = {
         'training_ratio': [0.5, 0.6], 
         'skip': [True, False],
         'normalize': [True, False]
+    }, 
+    "mssa_dist": {
+        'window_size': [700, 400, 200, 50], 
+        'rows': [30, 15, 5], 
+        'rank': [None], 
+        'distance_threshold': [10, 5], 
+        'training_ratio': [0.5, 0.6], 
+        'skip': [True, False],
+        'normalize': [True, False]
+    }, 
+    "mssa_mw_dist": {
+        'window_size': [700, 400, 200, 50], 
+        'rows': [30, 15, 5], 
+        'rank': [None], 
+        'distance_threshold': [10, 5], 
+        'training_ratio': [0.5, 0.6], 
+        'skip': [False],
+        'normalize': [True]
     }, 
     "bocpdms": {        
         "intensity": [50, 100, 200],

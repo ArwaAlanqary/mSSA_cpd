@@ -5,7 +5,7 @@ import algorithms.utils as utils
 from sklearn.preprocessing import StandardScaler
 
 
-class MSSA: 
+class mssa: 
 
     def __init__(self, window_size = 200, rows= 30, rank=None, singular_threshold=2, 
            distance_threshold = 10, training_ratio= .5, skip = True, normalize = True):
@@ -134,12 +134,12 @@ class MSSA:
             test_matrix = current_ts[t-self.window_size:t].reshape([self.rows, self.cols], order = 'F')
             test_matrix = test_matrix[:,np.arange(self.cols).reshape([self.no_ts,self.cols_ts]).flatten('F')]
                 
-            test_vector = test_matrix[:, -3:]
+            test_vector = test_matrix[:, -self.no_ts:]
             _,S, _ = np.linalg.svd(test_matrix, full_matrices= False)
             test_singular_values = S[:r]
             
             #distance detection 
-            D_t = (np.linalg.norm(perp_basis.T @ test_vector, 2,0).max())**2 - distance_shift_c
+            D_t = (np.linalg.norm(perp_basis.T @ test_vector, 2,0).sum())**2 - distance_shift_c
             distance_score[t:t+step] = D_t
             self.distance_cusum_score[t:t+step] = max(self.distance_cusum_score[t-1] + D_t, 0)
             
@@ -151,15 +151,19 @@ class MSSA:
             if self.distance_cusum_score[t] >= distance_h:
                 current_cp[t] = 1
                 rebase=True 
+                print("Distance detection")
                 continue
             
             if self.singular_cusum_score[t] >= singular_h: 
                 current_cp[t] = 1
                 rebase=True 
+                print("Singular values detection")
                 continue
             t = t+step
         cp = cp+current_cp
         cp = 1* (cp!=0)
         self.cp = utils.convert_binary_to_intervals(cp, min_interval_length=2)
+        self.sv_score = singular_score
+        self.distance_score = distance_score
 
 

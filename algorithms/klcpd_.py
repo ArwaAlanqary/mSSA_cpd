@@ -75,7 +75,7 @@ class NetD(nn.Module):
 
 
 
-class KLCPD(nn.Module):
+class klcpd(nn.Module):
     def __init__(self,lambda_real = 0.1,CRITIC_ITERS=5, weight_clip =0.1,  lambda_ae = 0.001, lr = 3e-4, eval_freq = 50, grad_clip = 10., weight_decay =0., momentum =0,   RNN_hid_dim =10,max_iter =100, optim = 'adam', batch_size =64, wnd_dim=25, sub_dim = 1,gpu =  3,trn_ratio = 1.0, val_ratio = 1.0, random_seed =1126, data_name = 'data_name', k = 5):
         super(KLCPD, self).__init__()
 

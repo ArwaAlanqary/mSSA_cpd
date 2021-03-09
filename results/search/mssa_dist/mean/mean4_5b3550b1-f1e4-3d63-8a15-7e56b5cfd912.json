@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "mssa_dist", "dataset": "mean", "data_name": "mean4", "param": {"distance_threshold": 10, "normalize": false, "rank": null, "rows": 5, "skip": false, "training_ratio": 0.5, "window_size": 400}, "cp": [[0, 1001], [1002, 2000], [2001, 4001], [4002, 4999]], "score": {"metric": "compute_f1_score", "value": 0.8}}

@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "mssa_dist", "dataset": "hasc", "data_name": "HASC1001", "param": {"distance_threshold": 10, "normalize": true, "rank": null, "rows": 5, "skip": true, "training_ratio": 0.6, "window_size": 700}, "cp": [[0, 2169], [2170, 4979], [4980, 9794], [9795, 35570]], "score": {"metric": "compute_f1_score", "value": 0.25}}
