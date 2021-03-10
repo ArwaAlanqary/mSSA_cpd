@@ -31,9 +31,10 @@ for data_name in data_names:
         labels = pd.read_csv(os.path.join(data_path, dataset,"{}_labels.csv".format(data_name)), header=None).iloc[:,:]
         ts = data.values[:, 1:]
         # ts = np.linalg.norm(ts, ord = 2, axis = 1)
-        ts = ts.reshape(-1,1)
+        # ts = ts.reshape(-1,1)
         # print(ts.size)
 	# splitted_data = data_split(ts, labels, RATIO)
+        
 	##Search for best parameters
         optimizer = grid_search(PARAMS[algorithm_name], ALGORITHMS[algorithm_name], METRICS[metric], True, experiment, search_results_path)
         optimizer.search(ts, labels, MARGIN)

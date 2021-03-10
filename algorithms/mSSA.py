@@ -28,7 +28,7 @@ class mssa:
                 raise RuntimeError('Rank is bigger then matrix size')
         # Window size must be at least 4 ts so the matrix can be 2Xts
         if self.window_size < self.no_ts *2:
-            raise RuntimeError('Window size is too small, must be > 2*')
+            raise RuntimeError('Window size is too small, must be > 2*rows')
         ## Minimum size of should be 2
         if self.rows > self.window_size/2 or self.rows < 2: 
             raise RuntimeError('Number of rows is not correct, must be 2 < rows <window_size/2')
@@ -80,41 +80,40 @@ class mssa:
     def detect(self, ts):
 
         self.ts = self._format_input(ts)
-        if self.ts.ndim == 2: 
-            dimentsions = self.ts.shape[1]
-            cp = np.zeros_like(self.ts[:, 0])
-        else: 
-            dimentsions = 1
-            cp = np.zeros_like(self.ts)
+        # if self.ts.ndim == 2: 
+        #     dimentsions = self.ts.shape[1]
+        #     cp = np.zeros_like(self.ts[:, 0])
+        # else: 
+        #     dimentsions = 1
+        #     cp = np.zeros_like(self.ts)
         if self.skip: 
             step = self.rows
         else: 
             step = 1
         
-        self.no_ts = dimentsions
+        cp = np.zeros_like(self.ts[:, 0])
+        self.no_ts = self.ts.shape[1]
         self.cols_ts = int(self.window_size/self.rows)
         self.cols = self.cols_ts*self.no_ts
         self.window_size = self.cols_ts*self.rows
-        current_ts = self.ts[:, :]
         
         if self.normalize and self.no_ts > 1:
             self.scaler = StandardScaler()
-            current_ts = self.scaler.fit_transform(self.ts)
+            self.ts = self.scaler.fit_transform(self.ts)
             
 
         t = 0
         rebase = True
-        singular_score = np.zeros_like(current_ts[:,0])
-        distance_score = np.zeros_like(current_ts[:,0])
-        self.singular_cusum_score = np.zeros_like(current_ts[:,0])
-        self.distance_cusum_score = np.zeros_like(current_ts[:,0])
-        current_cp = np.zeros_like(current_ts[:,0])
-        while t <= len(current_ts)-step:
+        self.singular_score = np.zeros_like(self.ts[:,0])
+        self.distance_score = np.zeros_like(self.ts[:,0])
+        self.singular_cusum_score = np.zeros_like(self.ts[:,0])
+        self.distance_cusum_score = np.zeros_like(self.ts[:,0])
+        while t <= len(self.ts)-step:
             if rebase: 
-                if t > len(current_ts) - step - self.window_size: 
+                if t > len(self.ts) - step - self.window_size: 
                     break
 
-                base_matrix = current_ts[t:t+self.window_size,:].reshape([self.rows, self.cols], order = 'F')
+                base_matrix = self.ts[t:t+self.window_size,:].reshape([self.rows, self.cols], order = 'F')
                 base_matrix = base_matrix[:,np.arange(self.cols).reshape([self.no_ts,self.cols_ts]).flatten('F')]
                 U,S,ـ = np.linalg.svd(base_matrix, full_matrices= False)
                 if not self.rank: 
@@ -130,8 +129,9 @@ class mssa:
                 distance_h = self.distance_threshold * eps
                 t += self.window_size
                 rebase = False
+                print(distance_h)
             
-            test_matrix = current_ts[t-self.window_size:t].reshape([self.rows, self.cols], order = 'F')
+            test_matrix = self.ts[t-self.window_size:t].reshape([self.rows, self.cols], order = 'F')
             test_matrix = test_matrix[:,np.arange(self.cols).reshape([self.no_ts,self.cols_ts]).flatten('F')]
                 
             test_vector = test_matrix[:, -self.no_ts:]
@@ -140,30 +140,26 @@ class mssa:
             
             #distance detection 
             D_t = (np.linalg.norm(perp_basis.T @ test_vector, 2,0).sum())**2 - distance_shift_c
-            distance_score[t:t+step] = D_t
+            self.distance_score[t:t+step] = D_t
             self.distance_cusum_score[t:t+step] = max(self.distance_cusum_score[t-1] + D_t, 0)
             
             #singular values detection 
             D_t = np.linalg.norm(test_singular_values - singular_values) - singular_shift_c
-            singular_score[t:t+step] = D_t
+            self.singular_score[t:t+step] = D_t
             self.singular_cusum_score[t:t+step] = max(self.singular_cusum_score[t-1] + D_t, 0)
             
             if self.distance_cusum_score[t] >= distance_h:
-                current_cp[t] = 1
+                cp[t] = 1
                 rebase=True 
                 print("Distance detection")
                 continue
             
             if self.singular_cusum_score[t] >= singular_h: 
-                current_cp[t] = 1
+                cp[t] = 1
                 rebase=True 
                 print("Singular values detection")
                 continue
             t = t+step
-        cp = cp+current_cp
-        cp = 1* (cp!=0)
         self.cp = utils.convert_binary_to_intervals(cp, min_interval_length=2)
-        self.sv_score = singular_score
-        self.distance_score = distance_score
 
 
