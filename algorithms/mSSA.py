@@ -39,7 +39,8 @@ class mssa:
         return np.array(ts) 
 
     def _estimate_distance_shift_c(self, matrix, r): 
-        cols = int(np.shape(matrix)[1]*self.training_ratio)
+        cols_ts = int(self.cols_ts * self.training_ratio)
+        cols = self.no_ts * cols_ts
         if cols < r: 
             raise RuntimeError("training matrix size is less than the rank")
         base_matrix = matrix[:, :cols]
@@ -48,25 +49,31 @@ class mssa:
         perp_basis = U[:,r:]
         proj = perp_basis.T @ matrix[:, cols:]
         proj = np.linalg.norm(proj, 2, 0)
+        proj = np.sum(proj.reshape(-1, self.no_ts), axis=1)
         eps = np.max(proj)**2
-        # Noise estimation
+        # Noise variance estimation
         U,S,VT = np.linalg.svd(matrix, full_matrices=False)
         noise_matrix = U[:, r:] @ np.diag(S[r:]) @ VT[r:, :]
         number_of_samples = noise_matrix.size
         variance = (1/(number_of_samples-1)) * np.linalg.norm(noise_matrix - np.mean(noise_matrix), 'fro')**2
-
+        # variance_list = []
+        # for i in range(self.no_ts): 
+        #     current_mat = noise_matrix[:, i::self.no_ts]
+        #     variance_list.append((1/(self.window_size-1)) * np.linalg.norm(current_mat - np.mean(current_mat), 'fro')**2)
+        # variance = np.max(variance_list)
         return (eps + (self.rows-r)*variance), eps+1e-10
 
 
-    def _estimate_singular_shift_c(self, matrix,r): 
-        cols = int(np.shape(matrix)[1]*self.training_ratio)
+    def _estimate_singular_shift_c(self, matrix, r): 
+        cols_ts = int(self.cols_ts * self.training_ratio)
+        cols = self.no_ts * cols_ts
         if cols < r: 
             raise RuntimeError("training matrix size is less than the rank")
         base_matrix = matrix[:, :cols]
         _,S,_ = np.linalg.svd(base_matrix, full_matrices=False)
         singular_values = S[:r]
         score = np.array([])
-        for t in np.arange(cols, np.shape(matrix)[1], 1):
+        for t in np.arange(cols, np.shape(matrix)[1], self.no_ts):
             test_matrix = matrix[:, t-cols:t]
             _,test_singular_values, _ = np.linalg.svd(test_matrix, full_matrices= False)
             test_singular_values = test_singular_values[:r]
@@ -122,14 +129,13 @@ class mssa:
                     r = self.rank
                 singular_values = S[:r]
                 perp_basis = U[:, r:]
-
                 singular_shift_c = self._estimate_singular_shift_c(base_matrix, r)
                 distance_shift_c, eps = self._estimate_distance_shift_c(base_matrix, r)
                 singular_h = self.singular_threshold * singular_shift_c
                 distance_h = self.distance_threshold * eps
                 t += self.window_size
                 rebase = False
-                print(distance_h)
+
             
             test_matrix = self.ts[t-self.window_size:t].reshape([self.rows, self.cols], order = 'F')
             test_matrix = test_matrix[:,np.arange(self.cols).reshape([self.no_ts,self.cols_ts]).flatten('F')]
