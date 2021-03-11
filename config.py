@@ -151,8 +151,22 @@ DATASETS = {
         'HASC1016',
         'HASC1017',
         'HASC1018',
-    ]
-    }
+    ],
+    "beedance": [ 
+        "beedance-1",
+        "beedance-2",
+        "beedance-3",
+        "beedance-4",
+        "beedance-5",
+        "beedance-6"],
+    "occupancy": [ 
+        "occupancy"],
+    "multi": [ 
+        "multi0",
+        "multi1",
+        "multi2",
+        "multi3",
+        "multi4",]}
 
 ALGORITHMS = {
     "microsoft_ssa":microsoft_ssa,
