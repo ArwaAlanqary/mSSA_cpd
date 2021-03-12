@@ -28,7 +28,7 @@ class mssa:
                 raise RuntimeError('Rank is bigger then matrix size')
         # Window size must be at least 4 ts so the matrix can be 2Xts
         if self.window_size < self.no_ts *2:
-            raise RuntimeError('Window size is too small, must be > 2*')
+            raise RuntimeError('Window size is too small, must be > 2*rows')
         ## Minimum size of should be 2
         if self.rows > self.window_size/2 or self.rows < 2: 
             raise RuntimeError('Number of rows is not correct, must be 2 < rows <window_size/2')
@@ -39,7 +39,8 @@ class mssa:
         return np.array(ts) 
 
     def _estimate_distance_shift_c(self, matrix, r): 
-        cols = int(np.shape(matrix)[1]*self.training_ratio)
+        cols_ts = int(self.cols_ts * self.training_ratio)
+        cols = self.no_ts * cols_ts
         if cols < r: 
             raise RuntimeError("training matrix size is less than the rank")
         base_matrix = matrix[:, :cols]
@@ -48,25 +49,31 @@ class mssa:
         perp_basis = U[:,r:]
         proj = perp_basis.T @ matrix[:, cols:]
         proj = np.linalg.norm(proj, 2, 0)
+        proj = np.sum(proj.reshape(-1, self.no_ts), axis=1)
         eps = np.max(proj)**2
-        # Noise estimation
+        # Noise variance estimation
         U,S,VT = np.linalg.svd(matrix, full_matrices=False)
         noise_matrix = U[:, r:] @ np.diag(S[r:]) @ VT[r:, :]
         number_of_samples = noise_matrix.size
         variance = (1/(number_of_samples-1)) * np.linalg.norm(noise_matrix - np.mean(noise_matrix), 'fro')**2
-
+        # variance_list = []
+        # for i in range(self.no_ts): 
+        #     current_mat = noise_matrix[:, i::self.no_ts]
+        #     variance_list.append((1/(self.window_size-1)) * np.linalg.norm(current_mat - np.mean(current_mat), 'fro')**2)
+        # variance = np.max(variance_list)
         return (eps + (self.rows-r)*variance), eps+1e-10
 
 
-    def _estimate_singular_shift_c(self, matrix,r): 
-        cols = int(np.shape(matrix)[1]*self.training_ratio)
+    def _estimate_singular_shift_c(self, matrix, r): 
+        cols_ts = int(self.cols_ts * self.training_ratio)
+        cols = self.no_ts * cols_ts
         if cols < r: 
             raise RuntimeError("training matrix size is less than the rank")
         base_matrix = matrix[:, :cols]
         _,S,_ = np.linalg.svd(base_matrix, full_matrices=False)
         singular_values = S[:r]
         score = np.array([])
-        for t in np.arange(cols, np.shape(matrix)[1], 1):
+        for t in np.arange(cols, np.shape(matrix)[1], self.no_ts):
             test_matrix = matrix[:, t-cols:t]
             _,test_singular_values, _ = np.linalg.svd(test_matrix, full_matrices= False)
             test_singular_values = test_singular_values[:r]
@@ -80,41 +87,40 @@ class mssa:
     def detect(self, ts):
 
         self.ts = self._format_input(ts)
-        if self.ts.ndim == 2: 
-            dimentsions = self.ts.shape[1]
-            cp = np.zeros_like(self.ts[:, 0])
-        else: 
-            dimentsions = 1
-            cp = np.zeros_like(self.ts)
+        # if self.ts.ndim == 2: 
+        #     dimentsions = self.ts.shape[1]
+        #     cp = np.zeros_like(self.ts[:, 0])
+        # else: 
+        #     dimentsions = 1
+        #     cp = np.zeros_like(self.ts)
         if self.skip: 
             step = self.rows
         else: 
             step = 1
         
-        self.no_ts = dimentsions
+        cp = np.zeros_like(self.ts[:, 0])
+        self.no_ts = self.ts.shape[1]
         self.cols_ts = int(self.window_size/self.rows)
         self.cols = self.cols_ts*self.no_ts
         self.window_size = self.cols_ts*self.rows
-        current_ts = self.ts[:, :]
         
         if self.normalize and self.no_ts > 1:
             self.scaler = StandardScaler()
-            current_ts = self.scaler.fit_transform(self.ts)
+            self.ts = self.scaler.fit_transform(self.ts)
             
 
         t = 0
         rebase = True
-        singular_score = np.zeros_like(current_ts[:,0])
-        distance_score = np.zeros_like(current_ts[:,0])
-        self.singular_cusum_score = np.zeros_like(current_ts[:,0])
-        self.distance_cusum_score = np.zeros_like(current_ts[:,0])
-        current_cp = np.zeros_like(current_ts[:,0])
-        while t <= len(current_ts)-step:
+        self.singular_score = np.zeros_like(self.ts[:,0])
+        self.distance_score = np.zeros_like(self.ts[:,0])
+        self.singular_cusum_score = np.zeros_like(self.ts[:,0])
+        self.distance_cusum_score = np.zeros_like(self.ts[:,0])
+        while t <= len(self.ts)-step:
             if rebase: 
-                if t > len(current_ts) - step - self.window_size: 
+                if t > len(self.ts) - step - self.window_size: 
                     break
 
-                base_matrix = current_ts[t:t+self.window_size,:].reshape([self.rows, self.cols], order = 'F')
+                base_matrix = self.ts[t:t+self.window_size,:].reshape([self.rows, self.cols], order = 'F')
                 base_matrix = base_matrix[:,np.arange(self.cols).reshape([self.no_ts,self.cols_ts]).flatten('F')]
                 U,S,ـ = np.linalg.svd(base_matrix, full_matrices= False)
                 if not self.rank: 
@@ -123,15 +129,15 @@ class mssa:
                     r = self.rank
                 singular_values = S[:r]
                 perp_basis = U[:, r:]
-
                 singular_shift_c = self._estimate_singular_shift_c(base_matrix, r)
                 distance_shift_c, eps = self._estimate_distance_shift_c(base_matrix, r)
                 singular_h = self.singular_threshold * singular_shift_c
                 distance_h = self.distance_threshold * eps
                 t += self.window_size
                 rebase = False
+
             
-            test_matrix = current_ts[t-self.window_size:t].reshape([self.rows, self.cols], order = 'F')
+            test_matrix = self.ts[t-self.window_size:t].reshape([self.rows, self.cols], order = 'F')
             test_matrix = test_matrix[:,np.arange(self.cols).reshape([self.no_ts,self.cols_ts]).flatten('F')]
                 
             test_vector = test_matrix[:, -self.no_ts:]
@@ -140,30 +146,26 @@ class mssa:
             
             #distance detection 
             D_t = (np.linalg.norm(perp_basis.T @ test_vector, 2,0).sum())**2 - distance_shift_c
-            distance_score[t:t+step] = D_t
+            self.distance_score[t:t+step] = D_t
             self.distance_cusum_score[t:t+step] = max(self.distance_cusum_score[t-1] + D_t, 0)
             
             #singular values detection 
             D_t = np.linalg.norm(test_singular_values - singular_values) - singular_shift_c
-            singular_score[t:t+step] = D_t
+            self.singular_score[t:t+step] = D_t
             self.singular_cusum_score[t:t+step] = max(self.singular_cusum_score[t-1] + D_t, 0)
             
             if self.distance_cusum_score[t] >= distance_h:
-                current_cp[t] = 1
+                cp[t] = 1
                 rebase=True 
                 print("Distance detection")
                 continue
             
             if self.singular_cusum_score[t] >= singular_h: 
-                current_cp[t] = 1
+                cp[t] = 1
                 rebase=True 
                 print("Singular values detection")
                 continue
             t = t+step
-        cp = cp+current_cp
-        cp = 1* (cp!=0)
         self.cp = utils.convert_binary_to_intervals(cp, min_interval_length=2)
-        self.sv_score = singular_score
-        self.distance_score = distance_score
 
 
