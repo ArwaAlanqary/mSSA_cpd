@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "mssa_mw_dist", "dataset": "struct", "data_name": "struct18", "param": {"window_size": 200, "training_ratio": 0.5, "skip": false, "rows": 5, "rank": null, "normalize": true, "distance_threshold": 10}, "cp": [[0, 1000], [1001, 2000], [2001, 3001], [3002, 4003], [4004, 4999]], "score": {"metric": "compute_f1_score", "value": 1.0}}

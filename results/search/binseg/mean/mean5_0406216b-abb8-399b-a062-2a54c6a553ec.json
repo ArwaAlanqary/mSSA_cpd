@@ -1,1 +1,0 @@
-{"status": "fail", "error": "Error in cpt.mean(mt, penalty = \"Asymptotic\", test.stat = \"CSS\", method = \"BinSeg\",  : \n  Invalid test statistic, must be Normal or CUSUM\n", "algorithm": "binseg", "dataset": "mean", "data_name": "mean5", "param": {"max_cp": "max", "method": "mean", "penalty": "Asymptotic", "test_stat": "CSS"}, "cp": null, "score": null}

@@ -1,1 +1,0 @@
-{"status": "fail", "error": "name 'ts' is not defined", "algorithm": "klcpd", "dataset": "yahoo", "data_name": "A4Benchmark-TS71", "param": {"lambda_ae": 1, "lambda_real": 1, "wnd_dim": 20}, "cp": null, "score": null}

@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "bocpdms", "dataset": "yahoo", "data_name": "A4Benchmark-TS61", "param": {"intensity": 50, "prior_a": 100, "prior_b": 100}, "cp": [[0, 2], [3, 1679]], "score": {"metric": "compute_f1_score", "value": 0.6666666666666666}}

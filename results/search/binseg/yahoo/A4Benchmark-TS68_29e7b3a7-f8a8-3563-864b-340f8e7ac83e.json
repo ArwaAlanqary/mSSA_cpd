@@ -1,1 +1,0 @@
-{"status": "fail", "error": "Error in penalty_decision(penalty, pen.value, n, diffparam, asymcheck = costfunc,  : \n  Asymptotic penalties have not been implemented yet for CUSUM\n", "algorithm": "binseg", "dataset": "yahoo", "data_name": "A4Benchmark-TS68", "param": {"max_cp": "default", "method": "mean", "penalty": "Asymptotic", "test_stat": "CUSUM"}, "cp": null, "score": null}

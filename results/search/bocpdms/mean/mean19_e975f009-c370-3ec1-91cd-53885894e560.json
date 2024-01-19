@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "bocpdms", "dataset": "mean", "data_name": "mean19", "param": {"intensity": 50, "prior_a": 1.0, "prior_b": 100}, "cp": [[0, 1], [2, 291], [292, 416], [417, 899], [900, 1044], [1045, 1997], [1998, 2019], [2020, 3987], [3988, 4016], [4017, 4062], [4063, 4999]], "score": {"metric": "compute_f1_score", "value": 0.23529411764705885}}

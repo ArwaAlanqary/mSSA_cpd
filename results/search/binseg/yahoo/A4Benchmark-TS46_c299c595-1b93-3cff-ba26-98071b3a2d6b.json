@@ -1,1 +1,0 @@
-{"status": "fail", "error": "Error in multiple.mean.cusum(data, mul.method = method, penalty, pen.value,  : \n  MBIC penalty is not valid for nonparametric test statistics.\n", "algorithm": "binseg", "dataset": "yahoo", "data_name": "A4Benchmark-TS46", "param": {"max_cp": "default", "method": "mean", "penalty": "MBIC", "test_stat": "CUSUM"}, "cp": null, "score": null}

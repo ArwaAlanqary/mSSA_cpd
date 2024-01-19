@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "binseg", "dataset": "mean", "data_name": "mean19", "param": {"max_cp": "default", "method": "meanvar", "penalty": "SIC", "test_stat": "Normal"}, "cp": [[0, 36.0], [37.0, 1004.0], [1005.0, 2030.0], [2031.0, 2069.0], [2070.0, 3981.0], [3982.0, 4999]], "score": {"metric": "compute_f1_score", "value": 0.3333333333333333}}

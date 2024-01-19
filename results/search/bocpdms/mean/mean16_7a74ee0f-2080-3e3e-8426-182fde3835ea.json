@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "bocpdms", "dataset": "mean", "data_name": "mean16", "param": {"intensity": 200, "prior_a": 100, "prior_b": 100}, "cp": [[0, 1], [2, 4], [5, 6], [7, 12], [13, 975], [976, 1036], [1037, 1935], [1936, 2037], [2038, 3088], [3089, 4999]], "score": {"metric": "compute_f1_score", "value": 0.125}}

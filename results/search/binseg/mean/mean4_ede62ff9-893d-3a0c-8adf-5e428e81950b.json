@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "binseg", "dataset": "mean", "data_name": "mean4", "param": {"max_cp": "default", "method": "meanvar", "penalty": "Asymptotic", "test_stat": "Normal"}, "cp": [[0, 15.0], [16.0, 45.0], [46.0, 1015.0], [1016.0, 1999.0], [2000.0, 3999.0], [4000.0, 4999]], "score": {"metric": "compute_f1_score", "value": 0.5}}

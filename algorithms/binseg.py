@@ -8,15 +8,12 @@ import scipy
 
 
 class binseg: 
-    def __init__(self, method, test_stat, max_cp, penalty):
+    def __init__(self, method , max_cp, test_stat, penalty , penalty_value = 0):
         self.method = method
         self.test_stat = test_stat
         self.max_cp = max_cp
         self.penalty = penalty
-        self.penalty_value = 0
-        self.ts = None
-        self.score = None
-        self.cp = None
+        self.penalty_value = penalty_value
 
 
     def _format_input(self, ts):
@@ -26,16 +23,9 @@ class binseg:
             "var": "cpt.var({})",
             "meanvar": "cpt.meanvar({})",
         }
-        if self.penalty == "Asymptotic": 
-            self.penalty_value = 0.05
-        if self.max_cp == "max": 
-            self.max_cp = int(len(ts)/2) + 1
-        else:
-            self.max_cp = 5
         self.method = method_map[self.method]
         self.penalty = "'" + self.penalty + "'"
         self.test_stat = "'" + self.test_stat + "'"
-        
         self.ts = robjects.FloatVector(np.array(ts))
 
     def train(self, ts): 

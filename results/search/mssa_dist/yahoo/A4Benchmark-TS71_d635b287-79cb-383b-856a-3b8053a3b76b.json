@@ -1,1 +1,0 @@
-{"status": "fail", "error": "training matrix size is less than the rank", "algorithm": "mssa_dist", "dataset": "yahoo", "data_name": "A4Benchmark-TS71", "param": {"distance_threshold": 5, "normalize": false, "rank": null, "rows": 15, "skip": true, "training_ratio": 0.6, "window_size": 200}, "cp": null, "score": null}

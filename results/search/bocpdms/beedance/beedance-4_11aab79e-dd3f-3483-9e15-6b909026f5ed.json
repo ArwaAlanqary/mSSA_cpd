@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "bocpdms", "dataset": "beedance", "data_name": "beedance-4", "param": {"intensity": 100, "prior_a": 0.01, "prior_b": 1.0}, "cp": [[0, 1], [2, 89], [90, 283], [284, 316], [317, 2267]], "score": {"metric": "compute_f1_score", "value": 0.2608695652173913}}

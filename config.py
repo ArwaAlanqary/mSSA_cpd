@@ -1,21 +1,9 @@
 ##############################################################################
 #                      Experiment parameters and settings                    #
 ##############################################################################
-from algorithms.microsoft_ssa import microsoft_ssa
-from algorithms.klcpd_ import klcpd
-from algorithms.bocpdms_ import bocpdms
-from algorithms.binseg import binseg
-from algorithms.mssa import mssa
-from algorithms.mssa_mw import mssa_mw
-from algorithms.mssa_dist import mssa_dist
-from algorithms.mssa_mw_dist import mssa_mw_dist
-from algorithms.no_change import no_change
-from evaluation.classification import compute_f1_score
-
-DATADIR = "data"
 
 DATASETS = {
-    "struct": [ 
+    "frequency": [ 
         "struct0", "struct1", "struct2", "struct3", "struct4", "struct5", 
         "struct6", "struct7", "struct8", "struct9", "struct10", "struct11",
         "struct12", "struct13", "struct14", "struct15", "struct16", 
@@ -161,45 +149,38 @@ DATASETS = {
         "beedance-6"],
     "occupancy": [ 
         "occupancy"],
-    "multi": [ 
+    "mixed": [ 
         "multi0",
         "multi1",
         "multi2",
         "multi3",
         "multi4",]}
 
-ALGORITHMS = {
-    "microsoft_ssa":microsoft_ssa,
-    "klcpd": klcpd,
-    "bocpdms": bocpdms,
-    "binseg": binseg,
-    "mssa": mssa,
-    "mssa_mw": mssa_mw, 
-    "mssa_dist": mssa_dist,
-    "no_change": no_change, 
-    "mssa_mw_dist": mssa_mw_dist
-}
-
-
-
 PARAMS = {
     "microsoft_ssa": {
-        'training_window_size': [700, 400, 200, 50],
-         'seasonal_window_size':[30, 15, 5],
-         'change_history_length':[50, 10], 
+        'training_window_size': [0.6], #* mean interval length between change points (across dataset)
+         'seasonal_window_size':[1, 0.5, 0.1], # sqrt(training_window_size)
+         'change_history_length':[10, 30, 50],
          'error_function': ['SignedDifference','AbsoluteDifference', 'SignedProportion', 'AbsoluteProportion', 'SquaredDifference'], 
          'martingale': ['Power', 'Mixture'], 
          'power_martingale_epsilon': [0.1, 0.5], 
          'confidence': [95.0]
     },
+    "mssa": {
+        'window_size': [0.6], #* mean interval length between change points (across dataset)
+        'rows': [1, 0.5, 0.1], # * sqrt(training_window_size)
+        'rank': [0.5, 0.95, 3, 5], 
+        'distance_threshold': [1, 5, 10], 
+        'training_ratio': [0.9], 
+        'skip': [False],
+        'normalize': [True]
+    }, 
     "mssa_mw": {
-        'window_size': [700, 400, 200, 50], 
-        'rows': [30, 15, 5], 
-        'overlap_ratio': [0.0, 0.5, 0.9], 
-        'rank': [None], 
-        'singular_threshold': [2, 5], 
-        'distance_threshold': [10, 5], 
-        'training_ratio': [0.5, 0.6], 
+        'window_size': [0.6], #* mean interval length between change points (across dataset)
+        'rows':  [1, 0.5, 0.1], # * sqrt(training_window_size)
+        'rank': [0.5, 0.95, 3, 5], 
+        'distance_threshold': [1, 5, 10], 
+        'training_ratio': [0.9], 
         'skip': [False],
         'normalize': [True]
     }, 
@@ -208,34 +189,6 @@ PARAMS = {
          'lambda_ae':[0.001,0.1,1,10],
          'wnd_dim':[25]
     },
-    "mssa": {
-        'window_size': [700, 400, 200, 50], 
-        'rows': [30, 15, 5], 
-        'rank': [None], 
-        'singular_threshold': [2, 5], 
-        'distance_threshold': [10, 5], 
-        'training_ratio': [0.5, 0.6], 
-        'skip': [True, False],
-        'normalize': [True, False]
-    }, 
-    "mssa_dist": {
-        'window_size': [700, 400, 200, 50], 
-        'rows': [30, 15, 5], 
-        'rank': [None], 
-        'distance_threshold': [10, 5], 
-        'training_ratio': [0.5, 0.6], 
-        'skip': [True, False],
-        'normalize': [True, False]
-    }, 
-    "mssa_mw_dist": {
-        'window_size': [700, 400, 200, 50], 
-        'rows': [30, 15, 5], 
-        'rank': [None], 
-        'distance_threshold': [10, 5], 
-        'training_ratio': [0.5, 0.6], 
-        'skip': [False],
-        'normalize': [True]
-    }, 
     "bocpdms": {        
         "intensity": [50, 100, 200],
         "prior_a": [0.01, 1.0, 100],
@@ -244,7 +197,7 @@ PARAMS = {
     "binseg": {        
         "method": ["mean", "var", "meanvar"],
         "test_stat": ["Normal", "CUSUM", "CSS"],
-        "max_cp": ["max", "default"],
+        "max_cp": ["max", "default"], #Max = total number of cp in the dataset # default = total number of cp/number of ts
         "penalty": [
             "None",
             "SIC",
@@ -252,16 +205,65 @@ PARAMS = {
             "MBIC",
             "AIC",
             "Hannan-Quinn",
-            "Asymptotic"]
+            "Asymptotic"] # 0.05
     },
     "no_change": {
     
     }
 }
 
+DEFAULT = {
+    "microsoft_ssa": {
+        'change_history_length':10,
+        'confidence': 95.0,
+        'error_function': 'SignedDifference',
+        'martingale': 'Power', 
+        'power_martingale_epsilon': 0.1,
+        'seasonal_window_size': 1, 
+        'training_window_size': 0.6, 
+    },
+    "mssa": {
+        'distance_threshold': 5, 
+        'normalize': True,
+        'rank': 0.95, 
+        'rows': 1,
+        'skip': False,
+        'training_ratio': 0.9,
+        'window_size': 0.6
+    }, 
+    "mssa_mw": {
+        'distance_threshold': 5, 
+        'normalize': True,
+        'rank': 0.95, 
+        'rows': 1,
+        'skip': False,
+        'training_ratio': 0.9,
+        'window_size': 0.6
+    },
+    "klcpd": {
+        'lambda_ae': 0.001, 
+        'lambda_real': 0.1, 
+        'wnd_dim': 25
+    },
 
-METRICS = {"compute_f1_score": compute_f1_score}
+    "bocpdms": {        
+        "intensity": 100,
+        "prior_a": 1.0,
+        "prior_b": 1.0,
+    },
+
+    "binseg": {
+        'max_cp': 'default', 
+        'method': 'mean', 
+        'penalty': 'MBIC', 
+        'test_stat': 'Normal'
+    },
+
+    "no_change": {
+    
+    }
+}
+
 
 MARGIN = 10
 
-RATIO = (0.3,0.3,0.4)

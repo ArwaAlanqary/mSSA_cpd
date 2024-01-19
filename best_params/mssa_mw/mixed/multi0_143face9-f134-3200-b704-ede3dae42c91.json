@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "mssa_mw_dist", "dataset": "multi", "data_name": "multi0", "param": {"window_size": 0.6, "training_ratio": 0.9, "skip": false, "rows": 1, "rank": 0.95, "normalize": true, "distance_threshold": 1}, "cp": [[0, 205], [206, 402], [403, 579], [580, 806], [807, 999]], "score": {"metric": "compute_f1_score", "value": 0.8000000000000002}}

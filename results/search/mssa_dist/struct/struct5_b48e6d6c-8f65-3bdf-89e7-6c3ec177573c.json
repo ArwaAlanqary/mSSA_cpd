@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "mssa_dist", "dataset": "struct", "data_name": "struct5", "param": {"distance_threshold": 5, "normalize": true, "rank": null, "rows": 5, "skip": false, "training_ratio": 0.6, "window_size": 700}, "cp": [[0, 2000], [2001, 3308], [3309, 4999]], "score": {"metric": "compute_f1_score", "value": 0.4444444444444444}}

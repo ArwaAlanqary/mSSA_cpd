@@ -7,13 +7,14 @@ from sklearn.preprocessing import StandardScaler
 class no_change: 
 
     def __init__(self):
-        self.cp = None
+    	self.cp = None
 
     def train(self, ts): 
         pass
 
     def detect(self, ts):
-        self.cp = [[0, len(ts)-1]]
+    	self.ts = ts
+    	self.cp = [[0, len(ts)-1]]
         
         
 
