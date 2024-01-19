@@ -1,1 +1,0 @@
-{"status": "fail", "error": "too many indices for array: array is 1-dimensional, but 2 were indexed", "algorithm": "mssa", "dataset": "hasc", "data_name": "HASC1018", "param": {"window_size": 700, "training_ratio": 0.5, "skip": true, "singular_threshold": 2, "rows": 30, "rank": null, "normalize": true, "distance_threshold": 10}, "cp": null, "score": null}

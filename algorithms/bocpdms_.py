@@ -16,7 +16,7 @@ class bocpdms:
     self.threshold = threshold
 
   def _format_input(self, ts):
-    
+    self.ts = ts
     if len(ts.shape) == 1:
         ts = ts.reshape(-1,1) 
 

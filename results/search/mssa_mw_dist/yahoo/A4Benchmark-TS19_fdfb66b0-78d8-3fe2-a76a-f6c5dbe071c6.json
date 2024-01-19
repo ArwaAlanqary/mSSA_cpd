@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "mssa_mw_dist", "dataset": "yahoo", "data_name": "A4Benchmark-TS19", "param": {"distance_threshold": 5, "normalize": true, "rank": null, "rows": 5, "skip": false, "training_ratio": 0.6, "window_size": 400}, "cp": [[0, 660], [661, 1295], [1296, 1679]], "score": {"metric": "compute_f1_score", "value": 0.25}}

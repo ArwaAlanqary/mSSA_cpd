@@ -1,1 +1,0 @@
-{"status": "fail", "error": "index 5000 is out of bounds for axis 0 with size 5000", "algorithm": "mssa_mw", "dataset": "energy", "data_name": "energy5", "param": {"distance_threshold": 10, "normalize": true, "overlap_ratio": 0.5, "rank": null, "rows": 5, "singular_threshold": 5, "skip": false, "training_ratio": 0.6, "window_size": 50}, "cp": null, "score": null}

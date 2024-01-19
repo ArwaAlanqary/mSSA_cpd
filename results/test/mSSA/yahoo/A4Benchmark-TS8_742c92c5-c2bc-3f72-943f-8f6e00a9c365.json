@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "hybrid_cusum", "dataset": "yahoo", "data_name": "A4Benchmark-TS8", "param": {"window_size": 700, "training_ratio": 0.5, "skip": false, "singular_threshold": 2, "rows": 5, "rank": null, "distance_threshold": 10}, "cp": [[0, 840], [841, 1679]], "score": {"metric": "compute_f1_score", "value": 0.8}}

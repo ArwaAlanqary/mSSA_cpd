@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "binseg", "dataset": "multi", "data_name": "multi0", "param": {"test_stat": "CSS", "penalty": "None", "method": "var", "max_cp": "default"}, "cp": [[0, 189.0], [190.0, 332.0], [333.0, 573.0], [574.0, 797.0], [798.0, 999]], "score": {"metric": "compute_f1_score", "value": 0.6}}

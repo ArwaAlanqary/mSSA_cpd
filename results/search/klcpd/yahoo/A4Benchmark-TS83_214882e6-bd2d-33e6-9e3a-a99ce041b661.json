@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "klcpd", "dataset": "yahoo", "data_name": "A4Benchmark-TS83", "param": {"lambda_ae": 0.1, "lambda_real": 1, "wnd_dim": 10}, "cp": [[0, 142], [143, 879], [880, 902], [903, 918], [919, 959], [960, 982], [983, 1486], [1487, 1590], [1591, 1654]], "score": {"metric": "compute_f1_score", "value": 0.1818181818181818}}

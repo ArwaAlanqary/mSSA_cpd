@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "hybrid_cusum", "dataset": "mean", "data_name": "mean0", "param": {"distance_threshold": 10, "rank": null, "rows": 30, "singular_threshold": 5, "skip": false, "training_ratio": 0.6, "window_size": 400}, "cp": [[0, 1406], [1407, 3186], [3187, 4018], [4019, 4999]], "score": {"metric": "compute_f1_score", "value": 0.2}}

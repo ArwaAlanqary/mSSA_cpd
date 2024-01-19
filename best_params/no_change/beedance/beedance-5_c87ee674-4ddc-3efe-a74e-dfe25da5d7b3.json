@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "no_change", "dataset": "beedance", "data_name": "beedance-5", "param": {}, "cp": [[0, 812]], "score": {"metric": "compute_f1_score", "value": 0.06666666666666667}}

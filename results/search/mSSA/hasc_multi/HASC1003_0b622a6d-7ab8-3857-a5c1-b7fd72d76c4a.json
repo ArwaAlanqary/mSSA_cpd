@@ -1,1 +1,0 @@
-{"status": "fail", "error": "zero-size array to reduction operation maximum which has no identity", "algorithm": "mSSA", "dataset": "hasc", "data_name": "HASC1003", "param": {"distance_threshold": 10, "normalize": false, "rank": null, "rows": 5, "singular_threshold": 2, "skip": false, "training_ratio": 0.5, "window_size": 50}, "cp": null, "score": null}

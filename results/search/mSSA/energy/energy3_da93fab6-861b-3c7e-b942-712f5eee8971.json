@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "hybrid_cusum", "dataset": "energy", "data_name": "energy3", "param": {"distance_threshold": 5, "rank": null, "rows": 15, "singular_threshold": 2, "skip": true, "training_ratio": 0.6, "window_size": 200}, "cp": [[0, 1154], [1155, 3179], [3180, 4229], [4230, 4999]], "score": {"metric": "compute_f1_score", "value": 0.2}}

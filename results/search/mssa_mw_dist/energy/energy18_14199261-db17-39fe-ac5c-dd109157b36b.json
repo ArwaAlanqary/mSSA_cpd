@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "mssa_mw_dist", "dataset": "energy", "data_name": "energy18", "param": {"distance_threshold": 5, "normalize": true, "rank": null, "rows": 15, "skip": false, "training_ratio": 0.6, "window_size": 400}, "cp": [[0, 3011], [3012, 3810], [3811, 4999]], "score": {"metric": "compute_f1_score", "value": 0.2222222222222222}}

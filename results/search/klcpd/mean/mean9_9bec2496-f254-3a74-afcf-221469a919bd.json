@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "klcpd", "dataset": "mean", "data_name": "mean9", "param": {"lambda_ae": 10, "lambda_real": 0.1, "wnd_dim": 25}, "cp": [[0, 130], [131, 371], [372, 1993], [1994, 1995], [1996, 2235], [2236, 4000], [4001, 4002], [4003, 4004], [4005, 4999]], "score": {"metric": "compute_f1_score", "value": 0.42857142857142855}}

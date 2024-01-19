@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "binseg", "dataset": "mean", "data_name": "mean8", "param": {"max_cp": "max", "method": "var", "penalty": "BIC", "test_stat": "Normal"}, "cp": [[0, 999.0], [1000.0, 3024.0], [3025.0, 4999]], "score": {"metric": "compute_f1_score", "value": 0.4444444444444444}}

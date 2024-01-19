@@ -1,1 +1,0 @@
-{"status": "fail", "error": "Error in cpt.mean(mt, penalty = \"None\", test.stat = \"CSS\", method = \"BinSeg\",  : \n  Invalid test statistic, must be Normal or CUSUM\n", "algorithm": "binseg", "dataset": "hasc", "data_name": "HASC1007", "param": {"max_cp": "default", "method": "mean", "penalty": "None", "test_stat": "CSS"}, "cp": null, "score": null}

@@ -15,18 +15,16 @@ class microsoft_ssa:
     self.martingale = martingale
     self.power_martingale_epsilon = power_martingale_epsilon
     self.confidence = confidence
-    self.ts = None
-    self.score = None
-    self.cp = None
 
   def _format_input(self, ts):
-    return pd.Series(ts.flatten(), name="ts")
+    self.ts = pd.Series(ts.flatten(), name="ts")
+
 
   def train(self, ts): 
     pass
 
   def detect(self, ts):
-    self.ts = self._format_input(ts)
+    self._format_input(ts)
 
     cpd = SsaChangePointDetector(training_window_size=self.training_window_size, 
                                  confidence=self.confidence, 

@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "klcpd", "dataset": "mean", "data_name": "mean10", "param": {"lambda_ae": 10, "lambda_real": 0.001, "wnd_dim": 25}, "cp": [[0, 1000], [1001, 1002], [1003, 1004], [1005, 1006], [1007, 1008], [1009, 1010], [1011, 4005], [4006, 4999]], "score": {"metric": "compute_f1_score", "value": 0.4615384615384615}}

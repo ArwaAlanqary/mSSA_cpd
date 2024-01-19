@@ -1,0 +1,1 @@
+{"status": "success", "error": "", "algorithm": "mssa_dist", "dataset": "beedance", "data_name": "beedance-2", "param": {"window_size": 0.6, "training_ratio": 0.9, "skip": false, "rows": 1, "rank": 0.5, "normalize": true, "distance_threshold": 5}, "cp": [[0, 41], [42, 104], [105, 1123]], "score": {"metric": "compute_f1_score", "value": 0.23076923076923078}}

@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "binseg", "dataset": "energy", "data_name": "energy16", "param": {"max_cp": "max", "method": "var", "penalty": "Hannan-Quinn", "test_stat": "CSS"}, "cp": [[0, 1082.0], [1083.0, 2968.0], [2969.0, 3939.0], [3940.0, 4999]], "score": {"metric": "compute_f1_score", "value": 0.2}}

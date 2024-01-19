@@ -7,7 +7,10 @@ def _compute_true_positive(actual, detected, margin=0):
     detected_cp = np.array(detected)[:, 0]
     true_positive = 0
     for cp in actual_cp: 
-        if min(np.abs(detected_cp - cp)) <= margin: 
+        arg_min = np.argmin(np.abs(detected_cp - cp))
+        val_min = min(np.abs(detected_cp - cp))
+        if val_min <= margin: 
+            detected_cp[arg_min] = np.array(actual)[-1, 1] + margin*10
             true_positive += 1
     return true_positive
 
@@ -24,7 +27,7 @@ def _compute_precision(actual, detected, margin=0):
     return true_positive/total_number_of_detected_cp
 
 
-def compute_f1_score(actual, detected, margin=0):
+def f1_score(actual, detected, margin=0):
     """
     Compute the the f1 score.
     Args:

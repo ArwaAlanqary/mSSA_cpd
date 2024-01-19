@@ -5,6 +5,32 @@ from datetime import datetime
 import json
 import uuid
 
+def format_params(algorithm, params, meta_data): 
+    if algorithm == "binseg":
+        if params["max_cp"] == "max": 
+            params["max_cp"] = meta_data["num_cp"]
+        else:
+            params["max_cp"] = meta_data["num_cp"] / meta_data["num_ts"]
+        if params["penalty"] == "Asymptotic": 
+            params["penalty_value"] = 0.05
+        else: 
+            params["penalty_value"] = 0
+        return params
+
+    elif algorithm == "mssa" or algorithm == "mssa_mw": 
+        params["window_size"] = int(params["window_size"] * meta_data["mean_interval"])
+        params["rows"] = int(np.sqrt(params["rows"]* params["window_size"]))
+        return params
+
+    elif algorithm == "microsoft_ssa": 
+        params["training_window_size"] = int(params["training_window_size"] * meta_data["mean_interval"])
+        params["seasonal_window_size"] = int(np.sqrt(params["seasonal_window_size"]* params["training_window_size"]))
+        return params 
+
+    else: 
+        return params 
+
+
 def convert_binary_to_intervals(binary_array, min_interval_length=2): 
     """
     Converting a binary array of change points into a list of intervals.
@@ -84,6 +110,7 @@ def convert_cp_to_intervals(change_points, len_ts, min_interval_length=2):
 
 def estimate_rank(mat, th = 0.9):
     _,S,_ = np.linalg.svd(mat)
+    # S = S**2
     S = np.cumsum(S)
     threshold = th*S[-1]
     r = np.argmax(S>threshold)

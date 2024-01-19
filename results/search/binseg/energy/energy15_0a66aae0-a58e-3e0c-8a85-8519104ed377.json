@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "binseg", "dataset": "energy", "data_name": "energy15", "param": {"max_cp": "default", "method": "var", "penalty": "BIC", "test_stat": "Normal"}, "cp": [[0, 998.0], [999.0, 1979.0], [1980.0, 2034.0], [2035.0, 2990.0], [2991.0, 4020.0], [4021.0, 4999]], "score": {"metric": "compute_f1_score", "value": 0.5}}

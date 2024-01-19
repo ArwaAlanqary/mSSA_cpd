@@ -1,1 +1,0 @@
-{"status": "fail", "error": "training matrix size is less than the rank", "algorithm": "hybrid_cusum_moving_window", "dataset": "yahoo", "data_name": "A4Benchmark-TS46", "param": {"distance_threshold": 10, "overlap_ratio": 0.0, "rank": null, "rows": 15, "singular_threshold": 5, "skip": false, "training_ratio": 0.6, "window_size": 200}, "cp": null, "score": null}

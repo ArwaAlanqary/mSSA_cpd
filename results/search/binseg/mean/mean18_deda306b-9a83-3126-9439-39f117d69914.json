@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "binseg", "dataset": "mean", "data_name": "mean18", "param": {"max_cp": "default", "method": "var", "penalty": "Hannan-Quinn", "test_stat": "CSS"}, "cp": [[0, 4999]], "score": {"metric": "compute_f1_score", "value": 0.2857142857142857}}

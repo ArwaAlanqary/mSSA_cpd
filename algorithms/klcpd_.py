@@ -14,14 +14,12 @@ import torch
 import torch.nn as nn
 from torch.autograd import Variable
 import torch.backends.cudnn as cudnn
-from tqdm import tqdm
 import algorithms.klcpd.mmd_util as mmd_util
 from algorithms.klcpd.data_loader import DataLoader
 from algorithms.klcpd.optim import Optim
 import algorithms.utils as utils
 MARGIN = 10
-from optimizing.grid_search import grid_search
-from evaluation.classification import compute_f1_score
+from evaluation.classification import f1_score
 import matplotlib.pyplot as plt 
 
 class NetG(nn.Module):
@@ -77,7 +75,7 @@ class NetD(nn.Module):
 
 class klcpd(nn.Module):
     def __init__(self,lambda_real = 0.1,CRITIC_ITERS=5, weight_clip =0.1,  lambda_ae = 0.001, lr = 3e-4, eval_freq = 50, grad_clip = 10., weight_decay =0., momentum =0,   RNN_hid_dim =10,max_iter =100, optim = 'adam', batch_size =64, wnd_dim=25, sub_dim = 1,gpu =  3,trn_ratio = 1.0, val_ratio = 1.0, random_seed =1126, data_name = 'data_name', k = 5):
-        super(KLCPD, self).__init__()
+        super(klcpd, self).__init__()
 
         self.trn_ratio = trn_ratio
         self.val_ratio = val_ratio
@@ -214,7 +212,7 @@ class klcpd(nn.Module):
         best_mmd_real = 1e+6
         start_time = time.time()
         print('start training: lambda_ae', lambda_ae, 'lambda_real', lambda_real, 'weight_clip', self.weight_clip)
-        for epoch in tqdm(range(1, self.max_iter + 1)):
+        for epoch in range(1, self.max_iter + 1):
             trn_loader = self.Data.get_batches(self.Data.trn_set, batch_size=self.batch_size, shuffle=True)
             bidx = 0
             self.netD.train()
@@ -386,7 +384,7 @@ class klcpd(nn.Module):
              binary = self.score > threshold
              ### return binaries based on threshold 
              cp = utils.convert_binary_to_intervals(binary)
-             score.append(compute_f1_score(labels, cp, MARGIN))
+             score.append(f1_score(labels, cp, MARGIN))
         print(score, np.argmax(score))
         best_threshold = thresholds[np.argmax(score)]
         binary = self.score > best_threshold

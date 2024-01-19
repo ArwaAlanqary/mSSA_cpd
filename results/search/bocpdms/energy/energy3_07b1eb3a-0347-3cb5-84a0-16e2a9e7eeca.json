@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "bocpdms", "dataset": "energy", "data_name": "energy3", "param": {"intensity": 200, "prior_a": 1.0, "prior_b": 0.01}, "cp": [[0, 335], [336, 1165], [1166, 4095], [4096, 4999]], "score": {"metric": "compute_f1_score", "value": 0.2}}

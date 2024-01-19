@@ -1,1 +1,0 @@
-{"status": "success", "error": "", "algorithm": "binseg", "dataset": "mean", "data_name": "mean6", "param": {"max_cp": "default", "method": "var", "penalty": "AIC", "test_stat": "CSS"}, "cp": [[0, 2994.0], [2995.0, 3990.0], [3991.0, 4999]], "score": {"metric": "compute_f1_score", "value": 0.6666666666666666}}
